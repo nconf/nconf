@@ -1168,7 +1168,7 @@ $fattr,$fval
                 @item_links = &makeValuesDistinct(@item_links);
             }
 
-            # skip writing items to config, which are linked to objects that don't exist on the current collector (as evaluated above)
+            ##### (1C) skip writing items to config, which are linked to objects that don't exist on the current collector (as evaluated above)
             if($has_empty_linking_attrs == 1){next}
 
             print FILE "define $item {\n";
@@ -1179,7 +1179,7 @@ $fattr,$fval
                 if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){ $fattr=$attr->[0];$fval=$attr->[1];write FILE}
             }
 
-            ##### (1C) write linked items (processed above) to config
+            ##### (1D) write linked items (processed above) to config
             foreach my $attr (@item_links){
 
                 if($class eq "advanced-service"){

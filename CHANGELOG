@@ -25,7 +25,6 @@ ADDED   NConf can now handle 'modules'
 ADDED   new deployment module, see documentation for details
 ADDED   jQuery - most GUIs will also load jQuery and use its functionality
 ADDED   jQuery UI - most elements are designed with jQuery UI and use its themeroller styles.
-###tbd: ADDED   importer for XML files generated with "nagios2xml" (contributed by Stefan Fischer)
 ADDED   option 'illegal_object_name_chars' to test nagios.cfg file which is used for syntax checking. This is to make sure that generated 
         configuration files containing illegal chars in object names cannot be deployed anymore.
 ADDED   'link_bidirectional' flag to allow attributes of type 'assign_*' to be visible in both classes that are linked to eachother
@@ -56,7 +55,9 @@ ADDED   when adding/modifying service parameters on a service, NConf will automa
 ADDED   bevore applying some inheritance from host to services, there is now also a preview of attributes, which would be removed from its services
 ADDED   NConf will now check for updates and show an info box (only: if not disabled; if user belongs to admin group; on HOME page)
 ADDED   progress bar to generate_config process
-ADDED   multimodify of "assign_many" attributes (like contact_groups) now have a mode selection for how to apply the values: override (as until now) or add as additional
+ADDED   multimodify of "assign_many" attributes (like contact_groups) now have a mode selection for how to apply the values: 
+        override (as until now) or add as additional
+ADDED   advanced-services which allow more liberty and can be assigned to multiple hosts and hostgroups
 
 REMOVED 'extended_host_info.cfg' and 'extended_service_info.cfg' files. The original contents of those files are now written to 'hosts.cfg' 
         and 'services.cfg' respectively. Also, those properties are now available both on Collector and Monitor servers.
