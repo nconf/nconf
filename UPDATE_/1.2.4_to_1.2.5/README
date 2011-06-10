@@ -1,0 +1,49 @@
+####################################################
+##  Update information for NConf 1.2.4 to 1.2.5   ##
+####################################################
+
+##------------------------------------------------##
+##       Changes to the NConf configuration       ##
+##------------------------------------------------##
+
+The following configuration option(s) have been added:
+$STATIC_CONFIG
+
+Add the following line(s) to your 'config/nconf.php' file:
+$STATIC_CONFIG = array("static_cfg");
+
+This new option is mandatory. If you do not add it to your configuration, NConf will not
+work properly and you will not be able to use NConf until you've done so.
+
+Here is some additional information about the new option. For more detailed information,
+please refer to the 'config.orig' folder or to the online documentation.
+
+---
+# Static Nagios configuration files
+
+# CAUTION: Static files will not be syntax checked by NConf!
+# List of folders containing additional files that you would like to make editable within NConf (basic text editing).
+# All folders listed here will be included in the output file, together with the generated config.
+# We recommend you to copy your static files into the 'nconf/static_cfg' folder.
+
+# If security permits it, you could make your active Nagios configuration editable in NConf directly.
+# We discourage users from doing this though, because there is a risk that they could accidentally damage their Nagios configuration.
+---
+
+##------------------------------------------------##
+##              Additional changes                ##
+##------------------------------------------------##
+
+For security reasons, the file 'config/.file_accounts' has been replaced by 
+'config/.file_accounts.php'. Please remove the old '.file_accounts' file 
+and replace it with the new .php file from the 'config.orig' folder.
+
+If you are using Auth by file, make sure you migrate any existing accounts to the new file also.
+Please note that the separator/delimiter has been changed to "::" (2 colons). You will have
+to replace any "," (commas) after copying your users to the new file.
+
+The 'URLROOTPATH' constant has become obsolete. You may remove it from your 'config/nconf.php' file.
+
+####################################################
+##           End of update information            ##
+####################################################

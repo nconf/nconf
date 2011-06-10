@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1981"
+   name=""
+   committed-date="2010-12-16T09:23:07.812833Z"
+   url="https://pkg-svn1/itispa/SupportSystemsAndTools/Tools/NConf/Source/include/modules/deployment/rsync"
+   last-author="fga"
+   kind="dir"
+   uuid="1003ec8d-2520-0410-834b-8cb842f278c2"
+   revision="2146"/>
+<entry
+   committed-rev="1981"
+   name="class.deployment_rsync.php"
+   text-time="2010-12-16T09:21:39.000000Z"
+   committed-date="2010-12-16T09:23:07.812833Z"
+   checksum="9894a5ebe8cf768e88b9252d82c279d9"
+   last-author="fga"
+   kind="file"/>
+</wc-entries>

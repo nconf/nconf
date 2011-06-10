@@ -1,0 +1,36 @@
+####################################################
+##  Update information for NConf 1.2.6 to 1.2.7   ##
+####################################################
+
+##------------------------------------------------##
+##       Changes to the NConf configuration       ##
+##------------------------------------------------##
+Added:
+- Deployment module
+  To merge your old deployment or setting up the deployment, please read the online documentation
+  http://dev.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:modules:deployment:main
+ 
+
+
+The following configuration option(s) have been removed:
+- CONF_DEPLOY_URL
+- CONF_DEPLOY_USER
+- CONF_DEPLOY_PWD
+
+optional: new constant DEBUG_GENERATE [1-5]
+
+##------------------------------------------------##
+##              Additional changes                ##
+##------------------------------------------------##
+
+New files generated: host_dependencies.cfg, service_dependencies.cfg 
+Files not generated anymore: extended_host_info.cfg, extended_service_info.cfg
+
+
+Security bug in 'call_ajax.php'
+- Please remove this file from your nconf/ directory
+- a more secure file handler was implemented ('call_file.php')
+
+####################################################
+##           End of update information            ##
+####################################################

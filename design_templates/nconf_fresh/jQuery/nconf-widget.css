@@ -1,0 +1,229 @@
+/* custom css for NConf on jquery stuff */
+
+/* tooltip style for jquery.nconf_tooltip.js */
+.tooltip {
+  position: fixed;
+  display: none;
+  background-color: #F2F2F2;
+  border: 1px solid #CCCCCC;
+  padding: 5px;
+  margin: 20px 0 0 10px;
+}
+
+
+/* jquery buttons , icon and text combination */
+
+.ui-button-text-icon-primary .ui-button-text{
+    padding-left:2.1em;
+    padding-right: 5px;
+}
+.ui-button-text-icon-secondary .ui-button-text{
+    padding-left: 6px;
+    padding-right: 2.1em;
+}
+
+.ui-button .ui-button-text{
+    display: inline;
+}
+
+input.ui-button{
+    padding: 0;
+}
+
+
+/* Set the titlebar of boxes smaller than standard */
+.ui-dialog .ui-dialog-titlebar { padding: 0 0.5em 0; position: relative;  }
+
+
+/* error messages */
+.fg-error {
+    padding: 0.7em;
+}
+.fg-error h2{
+    margin-bottom: 5px;
+}
+
+/* progress bar animated */
+/* needs a animated gif 
+.ui-progressbar-value { background-image: url(images/pbar-ani.gif); }
+*/
+
+
+/* history table parts */
+
+#history tbody tr td.highlighted{
+    background-color: #D0D0D0;
+}
+#history{
+    border-collapse:collapse;
+}
+#history_wrapper select{
+    width: 50px;
+}
+
+.DataTables_sort_wrapper .css_right{
+    float: right;
+}
+
+th.ui-state-default, td.ui-state-default{
+    padding-left: 3px;
+}
+
+
+
+/* GLOBAL definitions */
+
+
+.inline{
+    display: inline;
+}
+.inline-block{
+    display: inline-block;
+}
+
+
+/* input fields */
+/* focus used for inputs with jquery ui ui-state-focus, but do not use the background */
+.ui-nconf-input, .no-background{
+    background: transparent none !important;
+    font-weight: normal !important;
+    background-color: white !important;
+}
+
+
+
+
+
+
+/* COLOR definitions */
+
+/* hover on not monitored rows */
+.ui-state-error.highlight:hover{
+    background-image: none;
+    background-color: #FFCFC2;
+}
+
+
+/* UI NCONF header element*/
+.ui-nconf-header{
+    /*padding:4px 4px 4px 5px;*/
+    height: 15px;
+    padding: 5px;
+}
+
+.ui-nconf-header div{
+    float: left;
+}
+
+/* UI NCONF content */
+.ui-nconf-content{
+    padding: 5px;
+    margin-bottom:10px;
+}
+
+/* UI NCONF advanced accordion */
+#advanced_accordion div{
+    /* padding: removes empty space around content */
+    padding: 0;
+    /* margin: shows the accordion-header-item border also on the bottom */
+    margin-top: -1px;
+}
+
+.ui-nconf-accordion-list h3{
+    margin-top: 2px !important;
+}
+
+/* overwrite header in box */
+.ui-widget h2{
+    margin-bottom: 0;
+}
+
+.ui-nconf-link{
+    border: 0px none transparent !important;
+    background: transparent none !important;
+    font-weight: inherit !important;
+}
+
+/* UI NCONF TABLE */
+
+.ui-nconf-table{
+    border-collapse: collapse;
+}
+
+.ui-nconf-table thead{
+    height: 26px;
+}
+
+/* lines between table rows */
+.ui-nconf-table tbody tr{
+    border-top: 1px solid #d0d0d0;
+}
+/* define no top border for first line, otherwise the border from the table header is overwritten */
+.ui-nconf-table tbody tr:first-child:not(.ui-state-error){
+    border-top: 0px none;
+}
+.ui-nconf-table tbody tr, .ui-nconf-table tbody tr a{
+    color: #585858;
+}
+.ui-nconf-table .ui-widget-content{
+     border-color: #c0b1b3;
+}
+
+.ui-nconf-table td, .ui-nconf-table th{
+    padding-left: 3px;
+    height: 21px;
+}
+
+
+
+.ui-nconf-max-width{
+    width: 100%;
+}
+
+
+/* NAVIGATION MENU */
+.ui-state-default.box_content{
+    border-top-width: 0px;
+}
+
+
+
+/*
+ICONs ICON BARs etc
+*/
+
+/*icon bar in box header */
+#ui-nconf-icon-bar{
+    position: absolute;
+    right: 0px;
+}
+.ui-widget-header > #ui-nconf-icon-bar{
+    right: 10px;
+}
+
+.ui-widget-header > #ui-nconf-icon-bar img{
+    margin-left: 4px;
+}
+
+/* multi (assign) vertical and horizontal movers */
+.icon_buttons a{
+    margin-bottom: 2px;
+}
+
+.lighten:hover, .disabled{
+    /* IE compatibility */
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";   /* first! (IE8) */
+    filter: alpha(opacity=50);                                          /* second!(IE5-7) */
+
+    /* Firefox and all other browsers */
+    opacity: .5;
+
+}
+
+
+/* more button like height, but not standard in nconf 
+#detail_navigation a{
+    height: 18px;
+}
+*/
+

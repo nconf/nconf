@@ -1,0 +1,90 @@
+####################################################
+##  Update information for NConf 1.2.5 to 1.2.6   ##
+####################################################
+
+##------------------------------------------------##
+##       Changes to the NConf configuration       ##
+##------------------------------------------------##
+
+The following configuration option(s) have been added:
+- SELECT_VALUE_SEPARATOR
+- OVERVIEW_QUANTITY_STANDARD
+
+Add the following line(s) to your 'config/nconf.php' file:
+
+define('SELECT_VALUE_SEPARATOR', "::");
+
+This new option is mandatory for proper operation of NConf. The default is "::".
+This defines the seperator which splits the values of "select" type attributes.
+
+define('OVERVIEW_QUANTITY_STANDARD', "25");
+
+This new option is optional. If you do not add it to your configuration, NConf will 
+display an unlimited amount of entries in the overview per default. We recommend to set the default to '25'.
+
+##------------------------------------------------##
+##              Additional changes                ##
+##------------------------------------------------##
+
+If you were using the 'service_is_stale' check_command as a 'dummy' check for passive-checked
+services on your nagios-monitor server(s), you must now configure this explicitely under your 
+'nagios-monitor' settings. This is no longer triggered by the 'active_checks_enabled' flag.
+
+CAUTION (read carefully):
+
+In version 1.2.6 the way some attributes are inherited from timeperiods has been changed!
+In the past, the following attributes were written to hosts & services based on the 
+'notification_period' you selected:
+ - max_check_attempts
+ - check_interval (services only)
+ - retry_interval (services only)
+ - notification_interval
+ - notification_options
+
+As of version 1.2.6, both 'check_period' and 'notification_period' are taken into account
+when writing these attributes to hosts & services. 
+
+This is how the mentioned attributes are assigned now:
+
+Inherited from 'check_period':
+ - max_check_attempts
+ - check_interval (services only)
+ - retry_interval (services only)
+
+Inherited from 'notification_period':
+ - notification_interval
+ - notification_options
+
+If this is a problem for you, we have supplied a patch file under 'ADD-ONS/ExportNagios.pm.PATCH'.
+Simply overwrite 'bin/lib/NConf/ExportNagios.pm' with the patch to undo the mentioned changes.
+Please be advised that this is a temporary work-around and will be discontinued in future versions.
+
+Please consider the following:
+
+The following attributes have now also been implemented within the context of 
+host- & services templates, and are therefore DEPRECATED and will be removed 
+in one of the upcoming releases:
+
+Attributes under 'timeperiods':
+
+ - max check attempts
+ - check interval
+ - retry interval
+ - notification interval
+ - host notification options
+ - service notification options
+
+Attributes under 'nagios-collectors / monitors':
+
+ - active checking
+ - passive checking
+ - notification enabled
+ - check freshness
+ - freshness threshold
+
+Please discontinue using these attributes and instead configure these parameters 
+using host- & service-templates.
+
+####################################################
+##           End of update information            ##
+####################################################
