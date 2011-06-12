@@ -120,6 +120,7 @@ define("SHOW_ATTR_PASSWORD",        '<img src="img/password.gif" alt="password">
 define("SHOW_ATTR_SELECT",          '<img width=24 height=24 src="img/icon_select.png" alt="select">');
 define("SHOW_ATTR_ASSIGN_ONE",      '<img width=24 height=24 src="img/icon_assign_one.png" alt="assign one">');
 define("SHOW_ATTR_ASSIGN_MANY",     '<img width=24 height=24 src="img/icon_assign_many.png" alt="assign may">');
+define("SHOW_ATTR_ASSIGN_CUST_ORDER",		'<img width=24 height=24 src="img/icon_assign_cust_order.png" alt="assign cust order">');
 define("SHOW_ATTR_NAMING_ATTR",     '<img width=24 height=24 src="img/icon_naming_attr.png" alt="naming attr">');
 define("SHOW_ATTR_NAMING_ATTR_CONFLICT",    '<img width=24 height=24 src="img/icon_warning.png" alt="warn">');
 

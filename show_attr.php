@@ -213,6 +213,12 @@ if ( isset($_GET["do"]) ){
                 case "assign_many":
                     $ICON_datatype = SHOW_ATTR_ASSIGN_MANY;
                 break;
+				case "assign_cust_order":
+                    $ICON_datatype = SHOW_ATTR_ASSIGN_CUST_ORDER;
+				break;
+				default:
+					$ICON_datatype = '';
+				break;
             }
 
             // Show mandatory icons 
