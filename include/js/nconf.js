@@ -492,8 +492,18 @@ function createMovableOptions(fromBox,toBox,totalWidth,totalHeight,labelLeft,lab
     if (replace_mode){
         var replaceDiv = document.createElement('DIV');
         replaceDiv.className = "replaceDiv";
-        replaceDiv.innerHTML += '<input type="radio" name="replace_mode" value="replace" checked="checked">overwrite existing';
-        replaceDiv.innerHTML += '<input type="radio" name="replace_mode" value="add">add additional';
+        // define which element is checked
+        if (replace_mode === 1){
+        	var replacemode_checked_replace = 'checked="checked"';
+        	var replacemode_checked_add		= '';
+        }else if (replace_mode === 2){
+        	var replacemode_checked_replace = '';
+        	var replacemode_checked_add		= 'checked="checked"';
+        }
+        replaceDiv.innerHTML += '<input type="radio" name="replace_mode" id="replace_mode_replace" value="replace" ' + replacemode_checked_replace + '>';
+        replaceDiv.innerHTML += '<label for="replace_mode_replace">overwrite existing</label>';
+        replaceDiv.innerHTML += '<input type="radio" name="replace_mode" id="replace_mode_add" value="add" ' + replacemode_checked_add + '>';
+        replaceDiv.innerHTML += '<label for="replace_mode_add">add additional</label>';
         subDiv.appendChild( replaceDiv);
         
     }

@@ -98,13 +98,22 @@ if ( ( isset($oncall_check) AND $oncall_check === FALSE )
     $content .= NConf_HTML::back_button($_SESSION["go_back_page"]);
 
     echo NConf_HTML::limit_space($content);
+	
+	// Cache
+    $_SESSION["cache"]["use_cache"] = TRUE;
+    foreach ($_POST as $key => $value) {
+    	$_SESSION["cache"]["handle"][$key] = $value;
+    }
+                
 
     mysql_close($dbh);
     require_once 'include/foot.php';
 
     exit;
 }
-
+			
+# clean existing cache
+if (isset($_SESSION["cache"]["handle"])) unset($_SESSION["cache"]["handle"]);
 
 
 
@@ -215,7 +224,6 @@ foreach ($array_ids as $id){
             ###
 
             if ( NConf_DEBUG::status('ERROR') ) {
-                
                 echo NConf_DEBUG::show_debug('ERROR', TRUE);
                 echo "<br><br>";
                 echo NConf_HTML::back_button($_SESSION["go_back_page"]);
@@ -226,7 +234,7 @@ foreach ($array_ids as $id){
                     $_SESSION["cache"]["handle"][$key] = $value;
                 }
             }else{
-                if (isset($_SESSION["cache"]["handle"])) unset($_SESSION["handle"]["modify"]);
+                if (isset($_SESSION["cache"]["handle"])) unset($_SESSION["cache"]["handle"]);
                 
                 # get inheritance table for this host
                 $preview[$name] = inheritance_HostToService($id, "preview");

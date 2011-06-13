@@ -71,7 +71,8 @@ if ( !empty($_SESSION["go_back_page_ok"]) && (strpos($_SESSION["go_back_page_ok"
     $_SESSION["go_back_page_ok"] = 'modify_item_service.php?item=service&id='.$hostID;
 }
 
-
+# The replace mode is only for multimodify so disable it generally
+$replace_mode = 0;
 
 
 ###
@@ -197,22 +198,44 @@ if ( !empty($_GET["id"]) ){
     # url for select attribute
     $form_action_attr_select = $url;
 
+    # check cache
+    if ( !empty($_SESSION["cache"]["handle"]) ){
+	    if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
+			$_POST["class"] = $_SESSION["cache"]["handle"]["HIDDEN_config_class"];
+		}
+		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
+			$_POST["ids"] = $_SESSION["cache"]["handle"]["HIDDEN_modify_ids"];
+		}
+		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
+			$_POST["ids"] = $_SESSION["cache"]["handle"]["HIDDEN_modify_ids"];
+		}
+		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_selected_attr"]) ){
+			$_POST["attr"] = $_SESSION["cache"]["handle"]["HIDDEN_selected_attr"];
+		}
+	}
 
     # check class
-    //if( empty($_GET["class"]) ){
-    if( empty($_POST["class"]) ){
+    if ( empty($_POST["class"]) ){
         NConf_DEBUG::set("No class set", 'ERROR');
     }else{
         $item_class = $_POST["class"];
     }
 
     # check ids
-    //if ( empty($_GET["ids"]) ) {
     if ( empty($_POST["advanced_items"]) AND empty($_POST["ids"])) {
         message($error, "No items selected to write to");
     }
 
-
+	# replace mode
+	if ( isset($_SESSION["cache"]["handle"]["replace_mode"]) ){
+		if ($_SESSION["cache"]["handle"]["replace_mode"] == "add") {
+			$replace_mode = 2;
+		}elseif ($_SESSION["cache"]["handle"]["replace_mode"] == "replace") {
+			$replace_mode = 1;
+		}
+	}else{
+		$replace_mode = 1;
+	}
 
 
 
@@ -894,7 +917,6 @@ if(
                 
                 # assign_cust_order handling
                 $assign_cust_order = ($entry["datatype"] == "assign_cust_order") ? 1 : 0;
-                $replace_mode = ($handle_action == "multimodify") ? 1 : 0;
                 echo '
                 <script type="text/javascript">
                     createMovableOptions("fromBox_'.$entry["id_attr"].'","toBox_'.$entry["id_attr"].'",500,145,"available items","selected items","livesearch",'.$assign_cust_order.','.$replace_mode.');
@@ -1079,7 +1101,6 @@ if(
                 
                 # assign_cust_order handling
                 $assign_cust_order = ($entry["datatype"] == "assign_cust_order") ? 1 : 0;
-                $replace_mode = ($handle_action == "multimodify") ? 1 : 0;
                 echo '
                 <script type="text/javascript">
                     createMovableOptions("fromBox_'.$entry["id_attr"].'","toBox_'.$entry["id_attr"].'",500,145,"available items","selected items","livesearch",'.$assign_cust_order.','.$replace_mode.');
