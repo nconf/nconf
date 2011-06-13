@@ -284,7 +284,7 @@ if ($handle_action == "multimodify"){
     $result_array = db_templates("get_attributes_with_bidirectional", $item_class);
 
     echo '<fieldset class="inline ui-widget-content">';
-    echo '<legend><b>Select the attribute which you want to modify </b>';
+    echo '<legend><b>Select the attribute which you want to modify </b></legend>';
     echo '<form name="select_attr" action="'.$form_action_attr_select.'" method="post">';
 
     # add selected items and class
