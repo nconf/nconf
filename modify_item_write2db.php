@@ -165,8 +165,11 @@ if ( isset($_POST["modify"]) ){
         NConf_DEBUG::close_group();
 
 
-        # check oncall groups when class is host or service
-        if ($config_class == "host" OR $config_class == "service") {
+        # check oncall groups when class is host, service or advanced-service
+	    if ($config_class    == "host"
+	    	OR $config_class == "service"
+	    	OR $config_class == "advanced-service"
+	    ){
             # if failed do not allow write2db
             if ( oncall_check() == FALSE ){
                 $write2db = 'no';

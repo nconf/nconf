@@ -63,8 +63,13 @@ $ask_vererben = 0;
 
 
 # ONCALL CHECK
-# check oncall groups when try modifying it and class is host or service
-if ( isset($_POST["multimodify"]) AND ( $config_class == "host" OR $config_class == "service") ) {
+# check oncall groups when try modifying it and class is host, service or advanced-service
+if ( isset($_POST["multimodify"])
+	AND ( $config_class    == "host"
+		  OR $config_class == "service"
+		  OR $config_class == "advanced-service"
+	)
+){
     # get id of contact_group attr
     $contact_group_id = db_templates("get_attr_id", $config_class, "contact_groups");
     if ( isset($_POST[$contact_group_id]) ){
