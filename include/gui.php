@@ -62,9 +62,9 @@ define("ICON_EDIT",                 '<img src="img/icon_edit_16.gif" class="jQ_t
 define("ICON_DELETE",               '<img src="img/icon_delete_16.gif" class="jQ_tooltip lighten" title="Delete">');
 define("ICON_SERVICES",             '<img src="img/icon_service.gif" class="jQ_tooltip lighten" title="Show services">');
 # other icons
-define("ICON_HISTORY",              '<img src="img/icon_history.gif" class="jQ_tooltip lighten" title="History">');
+define("ICON_HISTORY",              '<img src="img/icon_history.gif" class="jQ_tooltip lighten" title="Show history">');
 define("ICON_CLONE",                '<img src="img/icon_clone_16.gif" class="jQ_tooltip lighten" title="Clone">');
-define("ICON_DEPENDENCY",           '<img src="img/icon_up.png" class="jQ_tooltip lighten" title="Show host\'s parent / child view">');
+define("ICON_DEPENDENCY",           '<img src="img/icon_up.png" class="jQ_tooltip lighten" title="Show host parent / child view">');
 define("ICON_SERVICE",              '<img src="img/icon_service.gif" class="lighten">');
 define("ICON_SERVICES_DISABLED",    '<img src="img/icon_service_disabled.gif" class="jQ_tooltip lighten" title="one or more services disabled">');
 define("ICON_SERVICE_DISABLED",     '<img src="img/icon_service_disabled.gif" class="jQ_tooltip lighten" title="service is disabled">');
