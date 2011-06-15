@@ -989,7 +989,7 @@ function db_handler($query, $output = "result", $debug_title = "query"){
     $query = trim($query);
 
     if ( (DB_NO_WRITES == 1) AND ( !preg_match("/^SELECT/i", $query) ) ){
-        message ('INFO', "DB_NO_WRITES activated, no deletions or modifications will be performed!");
+        message ('INFO', "DB_NO_WRITES activated, no deletions or modifications will be performed");
     }else{
         $result = mysql_query($query);
         // new DEBUG output
@@ -1739,7 +1739,7 @@ function oncall_check() {
 
         }else{
             # defined oncall groups (in config) not found in database, make no restrictions for group_contacts
-            message('ERROR', "Defined ONCALL GROUPs (in config) not found in database");
+            message('ERROR', "ONCALL GROUPs defined (in config) not found in the database");
             $oncall_check = FALSE;
         }
 
@@ -1747,11 +1747,11 @@ function oncall_check() {
         # give feedback
         if($oncall_check == TRUE){
             # a must have contact group was selected, go ahead
-            message('DEBUG', "ONCALL group selected");
+            message('DEBUG', "ONCALL GROUP selected");
             return TRUE;
         }else{
             # a must have contact group was NOT selected, stop and give info
-            message('ERROR', "Must have at least one ONCALL GROUP!");
+            message('ERROR', "You must assign at least one of the following ONCALL GROUPs:");
             foreach ($ONCALL_GROUPS as $oncall_group_id){
                 message('ERROR', $oncall_group_id, "list");
             }
@@ -1762,7 +1762,7 @@ function oncall_check() {
 
     }else{
         # no must have selected contact group, go ahead
-        message('DEBUG', "No must have ONCALL GROUPS defined");
+        message('DEBUG', "No mandatory ONCALL GROUPs defined");
         return TRUE;
     }
 

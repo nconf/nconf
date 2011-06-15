@@ -264,7 +264,7 @@ if (AUTH_TYPE == "file"){
     } else {
 
         NConf_DEBUG::set("could not connect", 'DEBUG', 'ldap connection');
-        message('ERROR', "Can not connect to ldap server");
+        message('ERROR', "Cannot connect to LDAP server");
 
     }
 
@@ -303,7 +303,7 @@ if (AUTH_TYPE == "file"){
             $userattrs = ldap_search($ldapconnection, $ldap_user_dn, "(objectclass=*)" );
             $userattrs_result = ldap_get_entries($ldapconnection, $userattrs);
             NConf_DEBUG::set($userattrs_result, 'DEBUG', 'user authenticated (limited)' );
-            NConf_DEBUG::set("please have a look at the content in the previouse message to get more information about the user (looko for the memberof attribute to get the groups of the authenticated user)", 'DEBUG', "information for the admin");
+            NConf_DEBUG::set("please have a look at the content in the previous message to get more information about the user (look for the memberof attribute to get the groups of the authenticated user)", 'DEBUG', "information for the admin");
         }else{
             $userattrs = ldap_search($ldapconnection, $ldap_user_dn, '('.AD_GROUP_ATTRIBUTE.'='.$admin_group_dn.')' );
             $userattrs_result = ldap_get_entries($ldapconnection, $userattrs);

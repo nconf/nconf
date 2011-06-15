@@ -8,7 +8,7 @@
 # Each check can be also checked to the contrary with additional option
 ###
 
-# writeable
+# writable
 $check_file_writable        = array('config/', 'output/', 'temp/', 'static_cfg/');
 $check_file_not_writable    = array();
 

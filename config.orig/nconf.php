@@ -19,7 +19,7 @@ define('OS_LOGO_PATH', "img/logos");
 # The path to the Nagios binary. The binary is needed in order to run tests on the generated config.
 # This path should either point to the original binary (if Nagios is installed on the same host), 
 # to a copy of the binary (copy it to the bin/ folder), or to a symbolic link. Make sure the binary 
-# is executable to the webserver user.
+# is executable for the webserver user.
 define('NAGIOS_BIN',   "/var/www/nconf/bin/nagios");
 
 #

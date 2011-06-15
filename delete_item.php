@@ -99,7 +99,7 @@ if(  ( ( isset($_POST["delete"]) ) AND ($_POST["delete"] == "yes") ) AND
             }
                 
         }elseif (DB_NO_WRITES != 1){
-            message($error, 'Error when deleting '.$id.':'.$query);
+            message($error, 'Error deleting '.$id.':'.$query);
         }
     
 
@@ -117,7 +117,7 @@ if(  ( ( isset($_POST["delete"]) ) AND ($_POST["delete"] == "yes") ) AND
 
     if ( !NConf_DEBUG::status('ERROR') ){
         echo '<meta http-equiv="refresh" content="'.(REDIRECTING_DELAY+1).'; url='.$url.'">';
-        NConf_DEBUG::set('<a href="'.$url.'"> page </a>', 'INFO', "<br>redirecting to");
+        NConf_DEBUG::set('<a href="'.$url.'"> [ this page ] </a>', 'INFO', "<br>redirecting to");
     }
 
 

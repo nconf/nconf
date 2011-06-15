@@ -213,7 +213,7 @@ function write_config($file, $replacers, $special = ''){
         $fh = fopen($file, "w");
     }else{
         $fh = fopen($file, "r");
-        message($errer, "read only");
+        message($error, "read only");
     }
     if ($fh === FALSE){
         message($error, "The config file ($file) could not be opened.");
@@ -258,8 +258,8 @@ function write_config($file, $replacers, $special = ''){
         #write to file
         if ( fwrite($fh, $new_config) == FALSE){
             # could not write to file, put out config code on page
-            message($info, "The config directory and all files should be writeable for your webserver (mostly apache)", "overwrite");
-            message($error, "could not write config file($file), please change the <b>bold lines</b> manually or upload the file into the config directory by FTP");
+            message($info, "The config directory and all its content must be writable for your webserver user", "overwrite");
+            message($error, "Could not write config file ($file), please change the <b>bold lines</b> manually or remotely upload the file into the config directory");
             return $log;
         }else{
             # write file success
@@ -544,7 +544,7 @@ if ($step == 0){
             $dbh = @mysql_connect(check_session_value("DBHOST"),check_session_value("DBUSER"),check_session_value("DBPASS"));
             if (!$dbh){
                 # unfortunately mysql_error wont give information about last error here
-                message($error, 'Could not connect:' . mysql_error() );
+                message($error, 'Could not connect: ' . mysql_error());
                 # php >= 5.2.0 provides additional phperror which could give more information about the last mysql error
                 if ( function_exists('error_get_last') ){
                     $php_error = error_get_last();

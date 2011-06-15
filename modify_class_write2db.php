@@ -119,7 +119,7 @@
             // Go to next page without pressing the button
             echo '<meta http-equiv="refresh" content="'.$redirecting_delay.'; url='.$_SESSION["go_back_page_ok"].'">';
 
-            NConf_DEBUG::set('<a href="'.$_SESSION["go_back_page_ok"].'"> page </a>', 'INFO', "<br>redirecting to");
+            NConf_DEBUG::set('<a href="'.$_SESSION["go_back_page_ok"].'"> [ this page ] </a>', 'INFO', "<br>redirecting to");
 
        }else{
           echo "<h2>Failed to $action attribute &quot;$config_class&quot;</h2>";

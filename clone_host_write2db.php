@@ -46,9 +46,9 @@ if (mysql_num_rows($result)){
     $write2db = "yes";
     foreach ($arr_mandatory as $mandatory){
         if ( ( isset($_POST[$mandatory]) ) AND ( $_POST[$mandatory] != "") ){
-            message($debug, "$mandatory: ok!");
+            message($debug, "$mandatory: ok");
         }else{
-            message($error, "$mandatory: mandatory field !");
+            message($error, "$mandatory: mandatory field");
             message($info, SELECT_EMPTY_FIELD, "overwrite");
             $write2db = "no";
 

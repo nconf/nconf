@@ -201,7 +201,7 @@ if ($write2db == "yes"){
             # Go to show_attr page and show the class which the new added attribute belongs to
             $url = 'show_attr.php?class='.$class_name;
             echo '<meta http-equiv="refresh" content="'.REDIRECTING_DELAY.'; url='.$url.'">';
-            NConf_DEBUG::set('<a href="'.$url.'"> page (in '.REDIRECTING_DELAY.' seconds)</a>', 'INFO', "<br>redirecting to");
+            NConf_DEBUG::set('<a href="'.$url.'"> [ this page ] (in '.REDIRECTING_DELAY.' seconds)</a>', 'INFO', "<br>redirecting to");
        }else{
           echo "<h2>Failed to add attribute &quot;$attr_name&quot;</h2>";
        }
@@ -326,7 +326,7 @@ if ($write2db == "yes"){
            $_SESSION["go_back_page"] = 'show_attr.php?class='.$class_name;
 
            echo '<meta http-equiv="refresh" content="'.$redirecting_delay.'; url='.$_SESSION["go_back_page"].$naming_attr_message.'">';
-           NConf_DEBUG::set('<a href="'.$_SESSION["go_back_page"].$naming_attr_message.'"> page (in '.REDIRECTING_DELAY.' seconds)</a>', 'INFO', "<br>redirecting to");
+           NConf_DEBUG::set('<a href="'.$_SESSION["go_back_page"].$naming_attr_message.'"> [ this page ] (in '.REDIRECTING_DELAY.' seconds)</a>', 'INFO', "<br>redirecting to");
 
        }else{
           echo "<h2>Failed to modify attribute &quot;$attr_name&quot;</h2>";

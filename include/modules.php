@@ -9,7 +9,7 @@ foreach($modules_dir as $module){
         require_once($module_config);
         message($debug, "Initialized module: $module_config");
     }else{
-        message($error, "FAILED initialize module: $module_config");
+        message($error, "FAILED to initialize module: $module_config");
     }
 }
 ?>

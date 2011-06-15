@@ -42,7 +42,7 @@ if ($mandatory_check == "yes"){
             $url = $dest_url.'?id='.$id;
             # Redirect to dest_url page
             echo '<meta http-equiv="refresh" content="0; url='.$url.'">';
-            message($info, '...redirecting to :<a href="'.$url.'">'.$url.'</a>');
+            message($info, '<b>redirecting to:</b> <a href="'.$url.'">'.$url.'</a>');
         }
     }
 }

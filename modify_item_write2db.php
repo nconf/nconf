@@ -269,7 +269,7 @@ if ( isset($_POST["modify"]) ){
 
 
             }else{
-                message ($info, 'Modify '.$config_class.' should work fine...');
+                message ($info, 'Modify '.$config_class.' should work fine.');
             }
             
             # Delete session
@@ -278,8 +278,7 @@ if ( isset($_POST["modify"]) ){
             if ( isset($_SESSION["go_back_page_ok"]) AND !isset($update_button) ){
                 // Go to next page without pressing the button
                 echo '<meta http-equiv="refresh" content="'.REDIRECTING_DELAY.'; url='.$_SESSION["go_back_page_ok"].'">';
-                //message($info, '...redirecting to <a href="'.$_SESSION["go_back_page_ok"].'">page</a> in '.REDIRECTING_DELAY.' seconds...');
-                NConf_DEBUG::set('<a href="'.$_SESSION["go_back_page_ok"].'"> -> page (in '.REDIRECTING_DELAY.' seconds)</a>', 'INFO', "<br>redirecting to");
+                NConf_DEBUG::set('<a href="'.$_SESSION["go_back_page_ok"].'"> [ this page ] (in '.REDIRECTING_DELAY.' seconds)</a>', 'INFO', "<br>redirecting to");
             }
         }
         # end of write2db
@@ -318,7 +317,7 @@ if ( isset($_POST["modify"]) ){
     if ( isset($_SESSION["go_back_page"]) ){
         // Go to next page without pressing the button
         echo '<meta http-equiv="refresh" content="'.REDIRECTING_DELAY.'; url='.$_SESSION["go_back_page_ok"].'">';
-        NConf_DEBUG::set('<a href="'.$_SESSION["go_back_page_ok"].'">page</a>', 'INFO', "<br>redirecting to");
+        NConf_DEBUG::set('<a href="'.$_SESSION["go_back_page_ok"].'"> [ this page ] </a>', 'INFO', "<br>redirecting to");
     }
 
 

@@ -85,8 +85,8 @@ if ( ($action == "Save") AND (isset($content) AND isset($full_path) ) ){
         #write to file
         if ( fwrite($fh, $content) == FALSE){
             # could not write to file
-            message($info, "The config directory and all contents must be writeable to your webserver user.", "overwrite");
-            message($error, "Could not write config file($full_path). Make sure the directory and all contents are writable to your webserver user.");
+            message($info, "The config directory and all its content must be writable for your webserver user.", "overwrite");
+            message($error, "Could not write config file ($full_path). Make sure the directory and all its content is writable for your webserver user.");
             $saved = FALSE;
         }else{
             # write file success
@@ -129,7 +129,7 @@ echo '<div class="editor_info">';
         if ( NConf_DEBUG::status('ERROR') ){
             $title = 'WARNING';
             $content = NConf_DEBUG::show_debug('ERROR', TRUE);
-            $content .= '<br>The webserver user must have write permissions to your config directory, <br>otherwise NConf cannot save your changes.';
+            $content .= '<br>The webserver user must have write permissions for your config directory, <br>otherwise NConf cannot save your changes.';
             echo NConf_HTML::show_error($title, $content);
         }elseif( NConf_DEBUG::status('INFO') AND !empty($saved) ){
             $title = 'Successfully saved file';

@@ -21,9 +21,9 @@ if(  ( ( isset($_POST["delete"]) ) AND ($_POST["delete"] == "yes") ) AND
         $url = $_SESSION["go_back_page"];
             
         echo '<meta http-equiv="refresh" content="'.REDIRECTING_DELAY.'; url='.$url.'">';
-        message($info, '...redirecting to <a href="'.$url.'">page</a> in '.REDIRECTING_DELAY.' seconds...');
+        message($info, '<b>redirecting to:</b> <a href="'.$url.'"> [ this page ] (in '.REDIRECTING_DELAY.' seconds)</a>');
     }else{
-        message ($error, 'Error when deleting class '.$_POST["id"].':'.$query);
+        message ($error, 'Error deleting class '.$_POST["id"].':'.$query);
     }
 
 }else{

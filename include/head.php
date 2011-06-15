@@ -275,7 +275,7 @@ $page_access_sub = array();
         $url = 'index.php?goto='.urlencode($_SERVER['REQUEST_URI']);
         # Redirect to login page with url as goto
         echo '<meta http-equiv="refresh" content="0; url='.$url.'">';
-        message($info, '...redirecting to <a href="'.$url.'">page</a>');
+        message($info, '<b>redirecting to:</b> <a href="'.$url.'"> [ this page ] </a>');
         require_once(NCONFDIR.'/include/foot.php');
         exit;
         

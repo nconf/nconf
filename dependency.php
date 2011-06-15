@@ -204,7 +204,7 @@ if ($xmode == "nagiosview"){
 
         if (!isset($classes)){
             $classes = array();
-            message('ERROR', "You do not have selected a class");
+            message('ERROR', "You didn't select a class");
         }else{
             # Class
             if ( !empty($_GET["class"]) ) {
