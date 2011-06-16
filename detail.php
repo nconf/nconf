@@ -71,17 +71,25 @@ echo '<div style="width: 500px;" class="relative">';
 
         echo '<div><h2>Details of '.$item_class.': '.$item_name.'</h2></div>';
         echo '<div id="ui-nconf-icon-bar">';
-            if(!isset($_GET["xmode"])){
-                echo '<a href="handle_item.php?item='.$item_class.'&amp;id='.$_GET["id"].'">'.ICON_EDIT.'</a>';
-                echo '<a href="delete_item.php?item='.$item_class.'&amp;ids='.$_GET["id"].'&amp;from='.$from_url.'">'.ICON_DELETE.'</a>';
-            }
-            echo '<a href="history.php?item='.$item_class.'&amp;id='.$_GET["id"].'&amp;from='.$from_url.'">'.ICON_HISTORY.'</a>';
-            // special links for hosts (clone, service and dependency)
-            if ($item_class == "host"){
-                echo '<a href="clone_host.php?class='.$item_class.'&amp;id='.$_GET["id"].'">'.ICON_CLONE.'</a>';
-                echo '<a href="modify_item_service.php?id='.$_GET["id"].'">'.ICON_SERVICES.'</a>';
-                echo '<a href="dependency.php?id='.$_GET["id"].'">'.ICON_PARENT_CHILD.'</a>';
-            }
+		
+			// tool bar of details view
+			$output = '';
+			
+			// Edit
+			$output .= ( !isset($_GET["xmode"]) ) ?  '<a href="handle_item.php?item='.$item_class.'&amp;id='.$_GET["id"].'">'.ICON_EDIT.'</a>' : '';
+			// Clone
+			$output .= ( $item_class == "host" ) ? '<a href="clone_host.php?class='.$item_class.'&amp;id='.$_GET["id"].'">'.ICON_CLONE.'</a>' : '';
+			// Delete
+			$output .= ( !isset($_GET["xmode"]) ) ?  '<a href="delete_item.php?item='.$item_class.'&amp;ids='.$_GET["id"].'&amp;from='.$from_url.'">'.ICON_DELETE.'</a>' : '';
+			// Services
+			$output .= ( $item_class == "host" ) ? '<a href="modify_item_service.php?id='.$_GET["id"].'">'.ICON_SERVICES.'</a>' : '';
+			// History
+			$output .= '<a href="history.php?item='.$item_class.'&amp;id='.$_GET["id"].'&amp;from='.$from_url.'">'.ICON_HISTORY.'</a>';
+			// Parent child
+			$output .= ( $item_class == "host" ) ? '<a href="dependency.php?id='.$_GET["id"].'">'.ICON_PARENT_CHILD.'</a>' : '';
+			
+			echo $output;
+			
         echo '</div>';
     echo '</div>';
     echo '<div class="ui-nconf-content ui-widget-content ui-corner-bottom">';
