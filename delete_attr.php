@@ -26,9 +26,9 @@ if(  ( ( isset($_POST["delete"]) ) AND ($_POST["delete"] == "yes") ) AND
         $url = $_SESSION["go_back_page"];
             
         echo '<meta http-equiv="refresh" content="'.REDIRECTING_DELAY.'; url='.$url.'">';
-        NConf_DEBUG::set('<a href="'.$url.'"> page (in '.REDIRECTING_DELAY.' seconds)</a>', 'INFO', "<br>redirecting to");
+        NConf_DEBUG::set('<a href="'.$url.'"> [ this page ] (in '.REDIRECTING_DELAY.' seconds)</a>', 'INFO', "<br>redirecting to");
     }else{
-        message ($error, 'Error when deleting id_attr '.$_POST["id"].':'.$query);
+        message ($error, 'Error deleting id_attr '.$_POST["id"].':'.$query);
     }
     
 

@@ -300,7 +300,7 @@ if ( NConf_DEBUG::status('ERROR') ) {
 if ($handle_action == "multimodify"){
     # naming attr
     if ($item_class != "service"){
-        message($info, "the naming attribute is not listed, because its not allowed to have multiple identical naming attributes");
+        message($info, "the naming attribute is not listed, because it's not allowed to have multiple identical naming attributes");
     }
 
     # output for select attribute
@@ -440,7 +440,7 @@ if(
                 ( $entry["link_bidirectional"] == "yes" AND $entry["datatype"] == "assign_one" )
                 ){
                 $entry["datatype"] = "assign_many";
-                message($debug, '<b>Bidirectional</b> Changed output of bidirectional item from assign_one to assign_many!');
+                message($debug, '<b>Bidirectional</b> Changed output of bidirectional item from assign_one to assign_many');
             }
 
 

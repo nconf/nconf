@@ -54,7 +54,7 @@ Download and unpack the NConf archive to your webserver's document root folder.
 
 
 2. Set permissions
-Make sure the following directories are writable to your webserver user: 
+Make sure the following directories are writable for your webserver user: 
 
    ./config
    ./output
@@ -142,7 +142,7 @@ This step cannot be undone! Make sure you have made a backup of your 'nconf/' fo
 
 
 4. Check permissions
-Make sure the following directories are still writable to your webserver user:
+Make sure the following directories are still writable for your webserver user:
 
    ./config 
    ./output 
