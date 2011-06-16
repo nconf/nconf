@@ -19,10 +19,34 @@ class NConf_PERMISSIONS{
         }else{
             $this->group = GROUP_NOBODY;
         }
+		
+		# Helpers for debbuging
+		$this->debug .= NConf_HTML::swap_content(NCONFDIR, "NCONFDIR");
+		$this->debug .= NConf_HTML::swap_content($_SERVER["DOCUMENT_ROOT"], "DOCUMENT_ROOT");
 
-        # define current script name
-        $this->current_script = preg_replace('/^\//', '', $_SERVER['SCRIPT_NAME']);
-        $this->debug .= NConf_HTML::text("current script name: ".$this->current_script);
+        # define current script name ( includes path from webroot )
+        $script_name = $_SERVER['SCRIPT_NAME'];
+		
+		# handle directory if not running directly on document root path
+		$nconf_webroot_explode = explode($_SERVER["DOCUMENT_ROOT"], NCONFDIR);
+		$this->debug .= NConf_HTML::swap_content($nconf_webroot_explode, "nconf_webroot_explode");
+		$this->debug .= NConf_HTML::swap_content($_SERVER['SCRIPT_NAME'], "SERVER script_name");
+		// TODO: check with different setups if now everything works as expected
+		if ( !empty($nconf_webroot_explode[1]) ){
+			# NConf does not run in webroot
+			$nconf_webroot_path = $nconf_webroot_explode[1];
+			
+			# remove path from script name variable
+			$script_name_explode = explode($nconf_webroot_path, $script_name);
+			$this->debug .= NConf_HTML::swap_content($script_name_explode, "script_name_explode");
+			
+			$script_name = $script_name_explode[1];
+		}
+		
+		# remove beginning slash and set to current_script
+		$this->current_script = preg_replace('/^\//', '', $script_name);
+		# This will be the script name which the permission system will check against.
+        $this->debug .= NConf_HTML::text("<b>Current script name: </b>".$this->current_script);
     }
 
 
@@ -39,6 +63,12 @@ class NConf_PERMISSIONS{
         # check URL for passed attributes (should only be the scriptname)
         # the navigation links will need this handler
         # search for query part in URL
+        # TODO: check if ampersand can be optimized on xmode views:
+        # Array(
+    	#	[class] => contact
+    	#	[amp;xmode] => pikett
+		# )
+        # perhaps using $_SERVER['QUERY_STRING'] ?
         if ( strpos($URL, "?") !== FALSE ){
             $url_parsed = parse_url($URL);
             $this->debug .= NConf_HTML::swap_content($url_parsed, "ACL - Found query in URL : Parsing URL", FALSE, TRUE);

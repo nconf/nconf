@@ -45,6 +45,9 @@
 
     # general pages
 
+	/*
+	 * TODO: Check these settings, seems that all coming already from the navigation...
+	 * 
     # overview
     $NConf_PERMISSIONS->setURL('overview.php',           FALSE, array('user'),   array('item'=>'host') );
     $NConf_PERMISSIONS->setURL('overview.php',           FALSE, array('user'),   array('item'=>'hostgroup') );
@@ -68,7 +71,8 @@
     $NConf_PERMISSIONS->setURL('handle_item.php',           FALSE, array('user'),   array('xmode'=>'oncall') );
     $NConf_PERMISSIONS->setURL('handle_item.php',           FALSE, array('user'),   array('xmode'=>'on-call') );
     $NConf_PERMISSIONS->setURL('handle_item.php',           FALSE, array('user'),   array('xmode'=>'on_call') );
-
+	*/
+	
     # write add items
     $NConf_PERMISSIONS->setURL('add_item_step2.php', FALSE, array('user') );
 
