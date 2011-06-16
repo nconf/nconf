@@ -125,11 +125,11 @@ echo '<div style="position: absolute; min-width: 350px;">';
 
             if(!isset($_GET["xmode"])){
                 if ($type == "attr"){
-                    echo '<a href="delete_attr.php?id='.$_GET["id"].'">'.DETAIL_DELETE.'</a>';
-                    echo '<a href="modify_attr.php?id='.$_GET["id"].'">'.DETAIL_EDIT.'</a>';
+                    echo '<a href="modify_attr.php?id='.$_GET["id"].'">'.ICON_EDIT.'</a>';
+                    echo '<a href="delete_attr.php?id='.$_GET["id"].'">'.ICON_DELETE.'</a>';
                 }elseif($type == "class"){
-                    echo '<a href="delete_class.php?id='.$_GET["id"].'">'.DETAIL_DELETE.'</a>';
-                    echo '<a href="modify_class.php?id='.$_GET["id"].'">'.DETAIL_EDIT.'</a>';
+                    echo '<a href="modify_class.php?id='.$_GET["id"].'">'.ICON_EDIT.'</a>';
+                    echo '<a href="delete_class.php?id='.$_GET["id"].'">'.ICON_DELETE.'</a>';
                 }
             }
         echo '</div>';

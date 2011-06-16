@@ -58,13 +58,13 @@ define("FRIENDLY_NAME_OS_LOGO", "");    // Title above icons in overvuew
 #
 
 # generell icons
-define("ICON_EDIT",                 '<img src="img/icon_edit_16.gif" class="jQ_tooltip lighten" title="Modify">');
+define("ICON_EDIT",                 '<img src="img/icon_edit_16.png" class="jQ_tooltip lighten" title="Modify">');
 define("ICON_DELETE",               '<img src="img/icon_delete_16.gif" class="jQ_tooltip lighten" title="Delete">');
 define("ICON_SERVICES",             '<img src="img/icon_service.gif" class="jQ_tooltip lighten" title="Show services">');
 # other icons
 define("ICON_HISTORY",              '<img src="img/icon_history.gif" class="jQ_tooltip lighten" title="History">');
 define("ICON_CLONE",                '<img src="img/icon_clone_16.gif" class="jQ_tooltip lighten" title="Clone">');
-define("ICON_DEPENDENCY",           '<img src="img/icon_up.png" class="jQ_tooltip lighten" title="Show host\'s parent / child view">');
+define("ICON_PARENT_CHILD",         '<img src="img/icon_parent_child_16.png" class="jQ_tooltip lighten" title="Show host\'s parent / child view">');
 define("ICON_SERVICE",              '<img src="img/icon_service.gif" class="lighten">');
 define("ICON_SERVICES_DISABLED",    '<img src="img/icon_service_disabled.gif" class="jQ_tooltip lighten" title="one or more services disabled">');
 define("ICON_SERVICE_DISABLED",     '<img src="img/icon_service_disabled.gif" class="jQ_tooltip lighten" title="service is disabled">');
@@ -97,6 +97,16 @@ define("ADVANCED_ICON_MULTIMODIFY", 'img/icon_multi_modify.gif');
 define("ADVANCED_ICON_DELETE",      'img/icon_delete_16.gif');
 define("ADVANCED_ICON_SELECT",      'img/icon_check_box.gif');
 
+# status icons
+define("ICON_TRUE",             	'<img width=24 height=24 src="img/icon_true.png">');
+define("ICON_FALSE",              	'<img width=24 height=24 src="img/icon_false.png">');
+define("ICON_TRUE_SMALL",           '<img width=24 height=24 src="img/icon_true_16.png">');
+define("ICON_FALSE_SMALL",          '<img width=16 height=16 src="img/icon_false_16.png">');
+define("ICON_TRUE_RED",             '<img width=24 height=24 src="img/icon_true_red.png">');
+
+# move icons
+define("ICON_UP_BOX_BLUE",          '<img src="img/icon_up.png">');
+define("ICON_DOWN_BOX_BLUE",        '<img src="img/icon_down.png">');
 
 #
 # overview list
@@ -110,12 +120,8 @@ define('QUANTITY_LARGE',  '100');
 #
 # show attribute icons
 #
-define("SHOW_ATTR_YES",             '<img width=24 height=24 src="img/icon_yes.png">');
-define("SHOW_ATTR_NO",              '<img width=24 height=24 src="img/icon_minus_24.gif">');
-define("SHOW_ATTR_UP",              '<img src="img/icon_up.png">');
-define("SHOW_ATTR_DOWN",            '<img src="img/icon_down.png">');
 
-define("SHOW_ATTR_TEXT",            '<img src="img/text.gif" alt="text">');
+define("SHOW_ATTR_TEXT",            '<img src="img/icon_text.png" alt="text">');
 define("SHOW_ATTR_PASSWORD",        '<img src="img/password.gif" alt="password">');
 define("SHOW_ATTR_SELECT",          '<img width=24 height=24 src="img/icon_select.png" alt="select">');
 define("SHOW_ATTR_ASSIGN_ONE",      '<img width=24 height=24 src="img/icon_assign_one.png" alt="assign one">');
@@ -123,14 +129,6 @@ define("SHOW_ATTR_ASSIGN_MANY",     '<img width=24 height=24 src="img/icon_assig
 define("SHOW_ATTR_ASSIGN_CUST_ORDER",		'<img width=24 height=24 src="img/icon_assign_cust_order.png" alt="assign cust order">');
 define("SHOW_ATTR_NAMING_ATTR",     '<img width=24 height=24 src="img/icon_naming_attr.png" alt="naming attr">');
 define("SHOW_ATTR_NAMING_ATTR_CONFLICT",    '<img width=24 height=24 src="img/icon_warning.png" alt="warn">');
-
-
-# icons in detail view
-define("DETAIL_EDIT",               '<img align="right" src="img/icon_edit_16.gif">');
-define("DETAIL_DELETE",             '<img align="right" src="img/icon_delete_16.gif">');
-define("DETAIL_HISTORY",            '<img align="right" src="img/icon_history.gif">');
-define("DETAIL_CLONE",              '<img align="right" src="img/icon_clone_16.gif">');
-define("DETAIL_SERVICES",           '<img align="right" src="img/icon_service.gif">');
 
 
 # size of multi-select box

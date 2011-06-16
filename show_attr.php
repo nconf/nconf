@@ -130,7 +130,7 @@ echo '<div class="clearer"></div>
 
 
 // Attr manipulation
-if ( isset($_GET["do"]) ){
+if ( !empty($_GET["do"]) AND !empty($_GET["id"]) ){
     if ($_GET["do"] == "up"){
         attr_order($_GET["id"], "up");
     }elseif($_GET["do"] == "down"){
@@ -161,14 +161,14 @@ if ( isset($_GET["do"]) ){
         $table .= '<thead class="ui-widget-header">';
         $table .= '<tr>';
             $table .= '<th width=30>&nbsp;</th>';
-            $table .= '<th width=170><b>Attribute Name</b></th>';
-            $table .= '<th width=170><b>Friendly Name</b></th>';
-            $table .= '<th width=100><b>Datatype</b></th>';
-            $table .= '<th width=70 class="center"><b>Mandatory</b></th>';
-            $table .= '<th width=60 class="center"><b>Ordering</b></th>';
-            $table .= '<th width=40 class="center"><b>PK</b></th>';
-            $table .= '<th width=40 class="center"><b>Edit</b></th>';
-            $table .= '<th width=40 class="center"><b>Delete</b></th>';
+            $table .= '<th width=170>Attribute Name</th>';
+            $table .= '<th width=170>Friendly Name</th>';
+            $table .= '<th width=100>Datatype</th>';
+            $table .= '<th width=70 class="center">Mandatory</th>';
+            $table .= '<th width=60 class="center">Ordering</th>';
+            $table .= '<th width=40 class="center">PK</th>';
+            $table .= '<th width=40 class="center">Edit</th>';
+            $table .= '<th width=40 class="center">Delete</th>';
 
         $table .= "</tr>";
         $table .= '</thead>';
@@ -190,10 +190,12 @@ if ( isset($_GET["do"]) ){
                     message($info, TXT_NAMING_ATTR_CONFLICT);
                     $naming_attr_cell .= SHOW_ATTR_NAMING_ATTR_CONFLICT;
                 }
+				$additional_class = " color_nomon";
             }else{
                 $pre = "";
                 $fin = "";
                 $naming_attr_cell = "";
+				$additional_class = "";
             }
 
             // Show datatype icons 
@@ -224,22 +226,29 @@ if ( isset($_GET["do"]) ){
             // Show mandatory icons 
             switch ($entry["mandatory"]){
                 case "yes":
-                    $ICON_mandatory = SHOW_ATTR_YES;
+                    $ICON_mandatory = ICON_TRUE_RED;
                 break;
                 case "no":
                 default:
-                    $ICON_mandatory = SHOW_ATTR_NO;
+                    $ICON_mandatory = ICON_FALSE_SMALL;
                 break;
             }
+			
+			// highlight moved row
+			if ( !empty($_GET["do"]) AND !empty($_GET["id"]) ){
+				if ( $entry["id_attr"] == $_GET["id"]){
+					$additional_class .= " ui-state-highlight";
+				}
+			}
 
 
             // set list color
             if ($row_warn == 1){
                 $table .= '<tr class="color_warning highlight">';
             }elseif((1 & $count) == 1){
-                $table .= '<tr class="color_list1 highlight">';
+                $table .= '<tr class="color_list1 highlight '.$additional_class.'">';
             }else{
-                $table .= '<tr class="color_list2 highlight">';
+                $table .= '<tr class="color_list2 highlight '.$additional_class.'">';
             }
 
 
@@ -250,17 +259,14 @@ if ( isset($_GET["do"]) ){
             $table .= '<td>'.$pre.$entry["friendly_name"].$fin.'</td>';
             $table .= '<td>'.$pre.$entry["datatype"].$fin.'</td>';
             $table .= '<td align="center"><div align=center>'.$ICON_mandatory.'</div></td>';
-            //$table .= '<td>'.$pre.$entry["mandatory"].$fin.'</td>';
             // Ordering is good for debbuging
             //$table .= '<td>'.$pre.$entry["ordering"].$fin.'</td>';
             $table .= '<td class="center">'.$pre;
-                $table .= '<a href="show_attr.php?class='.$class.'&id='.$entry["id_attr"].'&do=up">'.SHOW_ATTR_UP.'</a>';
+                $table .= '<a href="show_attr.php?class='.$class.'&id='.$entry["id_attr"].'&do=up">'.ICON_UP_BOX_BLUE.'</a>';
                 $table .= '&nbsp;';
-                $table .= '<a href="show_attr.php?class='.$class.'&id='.$entry["id_attr"].'&do=down">'.SHOW_ATTR_DOWN.'</a>';
+                $table .= '<a href="show_attr.php?class='.$class.'&id='.$entry["id_attr"].'&do=down">'.ICON_DOWN_BOX_BLUE.'</a>';
             $table .= $fin.'</td>';
             $table .= '</td>';
-            //$table .= '<td>'.$pre.'<a href="show_attr.php?class='.$class.'&id='.$entry["id_attr"].'&do=up">'.SHOW_ATTR_UP.'</a>'.$fin.'</td>';
-            //$table .= '<td>'.$pre.'<a href="show_attr.php?class='.$class.'&id='.$entry["id_attr"].'&do=down">'.SHOW_ATTR_DOWN.'</a>'.$fin.'</td>';
             $table .= '<td align="center"><div align=center>'.$naming_attr_cell.'</div></td>';
             $table .= '<td style="text-align:center"><a href="modify_attr.php?id='.$entry["id_attr"].'">'.ICON_EDIT.'</a></td>';
             $table .= '<td style="text-align:center"><a href="delete_attr.php?id='.$entry["id_attr"].'">'.ICON_DELETE.'</a></td>';

@@ -95,10 +95,10 @@ foreach ($nav_tree as $nav_priv) {
             // Show visible icons 
             switch ($entry["nav_visible"]){
                 case "yes":
-                    $ICON_mandatory = SHOW_ATTR_YES;
+                    $ICON_mandatory = ICON_TRUE;
                 break;
                 case "no":
-                    $ICON_mandatory = SHOW_ATTR_NO;
+                    $ICON_mandatory = ICON_FALSE_SMALL;
                 break;
             }
 
@@ -136,13 +136,21 @@ foreach ($nav_tree as $nav_priv) {
 
             $group_bevore = $entry["grouping"];
 
+			// highlight moved row
+			$additional_class = "";
+			if ( !empty($_GET["do"]) AND !empty($_GET["id"]) ){
+				if ( $entry["id_class"] == $_GET["id"]){
+					$additional_class = " ui-state-highlight";
+				}
+			}
+
             // set list color
             if ($row_warn == 1){
                 $box_content .= '<tr class="color_warning highlight">';
             }elseif((1 & $count) == 1){
-                $box_content .= '<tr class="odd highlight">';
+                $box_content .= '<tr class="odd highlight '.$additional_class.'">';
             }else{
-                $box_content .= '<tr class="even highlight">';
+                $box_content .= '<tr class="even highlight '.$additional_class.'">';
             }
 
             $detail_link = '<a href="detail_admin_items.php?type=class&id='.$entry["id_class"].'">'.$entry["config_class"].'</a>';
@@ -153,9 +161,9 @@ foreach ($nav_tree as $nav_priv) {
             $box_content .= '</td>';
             $box_content .= '<td>'.$detail_link_friendly_name.'</td>';
             $box_content .= '<td class="center">'.$ICON_mandatory.'</td>';
-            $box_content .= '<td class="center">'.'<a href="show_class.php?id='.$entry["id_class"].'&do=up">'.SHOW_ATTR_UP.'</a></td>';
+            $box_content .= '<td class="center">'.'<a href="show_class.php?id='.$entry["id_class"].'&do=up">'.ICON_UP_BOX_BLUE.'</a></td>';
             $box_content .= '<td class="center">'
-                    .'<a href="show_class.php?id='.$entry["id_class"].'&do=down">'.SHOW_ATTR_DOWN.'</a>'.
+                    .'<a href="show_class.php?id='.$entry["id_class"].'&do=down">'.ICON_DOWN_BOX_BLUE.'</a>'.
                  '</td>';
             $box_content .= '<td class="center"><a href="modify_class.php?id='.$entry["id_class"].'">'.ICON_EDIT.'</a></td>';
             $box_content .= '<td class="center"><a href="delete_class.php?id='.$entry["id_class"].'">'.ICON_DELETE.'</a></td>';

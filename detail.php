@@ -80,7 +80,7 @@ echo '<div style="width: 500px;" class="relative">';
             if ($item_class == "host"){
                 echo '<a href="clone_host.php?class='.$item_class.'&amp;id='.$_GET["id"].'">'.ICON_CLONE.'</a>';
                 echo '<a href="modify_item_service.php?id='.$_GET["id"].'">'.ICON_SERVICES.'</a>';
-                echo '<a href="dependency.php?id='.$_GET["id"].'">'.ICON_DEPENDENCY.'</a>';
+                echo '<a href="dependency.php?id='.$_GET["id"].'">'.ICON_PARENT_CHILD.'</a>';
             }
         echo '</div>';
     echo '</div>';

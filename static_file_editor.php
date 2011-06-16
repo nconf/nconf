@@ -133,7 +133,7 @@ echo '<div class="editor_info">';
             echo NConf_HTML::show_error($title, $content);
         }elseif( NConf_DEBUG::status('INFO') AND !empty($saved) ){
             $title = 'Successfully saved file';
-            $content = SHOW_ATTR_YES.NConf_DEBUG::show_debug('INFO', TRUE);
+            $content = ICON_TRUE.NConf_DEBUG::show_debug('INFO', TRUE);
             echo NConf_HTML::show_highlight($title, $content);
         }else{
             $title = 'Info';
