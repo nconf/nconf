@@ -273,21 +273,26 @@ function write_config($file, $replacers, $special = ''){
 
 # For creating/importing the database
 function parse_mysql_dump($url){
+	$result = FALSE;
     $file_content = file($url);
     $query = "";
     foreach($file_content as $sql_line){
       if(trim($sql_line) != "" && strpos($sql_line, "--") === false){
         $query .= $sql_line;
-        if(preg_match("/;[\040]*\$/", $sql_line)){
-          $result = mysql_query($query);   //or die(mysql_error());
+		// TODO: check compatibility of regex
+		// This regex does not work on xampp:
+		//   if(preg_match("/;[\040]*\$/", $sql_line)){
+		//   - why is there a backslash bevore $
+		//   - [\040] seems not work on xampp (windows) installation
+        if(preg_match('/;[\s]*$/', $sql_line)){
+          $result = mysql_query($query);
           if (!$result) return $result;
 
           $query = "";
         }
       }
     }
-
-    return TRUE;
+    return $result;
 }
 
 
@@ -641,7 +646,6 @@ if ($step == 0){
 
                         # update DB with sql files
                         $success = upgrade_files($installed_version, 'UPDATE', '/\.sql$/', 'upgrade_mysql');
-
                         if ($success){
                             # say that db is done, go to next step
                             echo table_row_description('', '<input type=hidden name="db_status" value="ok">');
