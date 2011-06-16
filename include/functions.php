@@ -1677,7 +1677,7 @@ function create_menu($result){
 
             echo '<tr>
                 <td colspan="'.$td1_colspan.'" style="vertical-align:top">
-                    <div class="link_with_tag"><b>'.$nav_class["friendly_name"].'</b>
+                    <div class="link_with_tag">'.$nav_class["friendly_name"].'
                     </div>
                 </td>
                 <td colspan="'.$td2_colspan.'" align="right">
