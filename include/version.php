@@ -29,7 +29,7 @@ define("DISCLAIMER_STRING", '<b>Developed by:</b>
                           <br>Nagios and the Nagios logo are trademarks, servicemarks, registered trademarks
                           <br>or registered servicemarks owned by Nagios Enterprises, LLC.
                           <br><br><b>Additional copyrights:</b>
-                          <br><i>Sweetie BasePack</i> icons by <a href="http://sweetie.sublink.ca" target="_blank">Joseph North</a>.
+                          <br><i>Sweetie</i> icons by <a href="http://sweetie.sublink.ca" target="_blank">Joseph North</a>.
                           <br><br>All other trademarks, servicemarks, registered trademarks, and
                           <br>registered servicemarks are the property of their respective owner(s).');
 

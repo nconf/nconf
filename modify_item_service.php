@@ -465,38 +465,27 @@ echo '</div>';
 
 <!-- Help text content -->
 <div id="help_text" style="display: none">
-    <div id="help_services" title="services">
-        <p>Some text about normal services</p>
+    <div id="help_services" title="Services (directly linked)">
+        <p>These are services which are directly linked to a host.<br><br>
+        Ordinary services can only be linked to one host at a time and remain bound to that host.</p>
     </div>
 
-    <div id="help_advanced_services" title="Advanced Services">
+    <div id="help_advanced_services" title="Advanced services (directly linked)">
         <div>
         <p>
-        Angelo should update this , instead of counting pixels....
-        so this text looks nice, but is just spam :D
-        </p>
-
-        <p>
-        <strong>text</strong><br>
-        This datatype is used for simple text attributes. A maximum length may be specified.
-        </p>
-        <p>
-        <strong>password</strong><br>
-        This datatype is used for password attributes. Several encryption methods are available. Passwords will not be displayed in the GUI.
-        </p>
-        <p>
-        <strong>select</strong><br>
-        This datatype creates a drop-down menu. A list of possible values must be specified.
-        </p>
-        <p>
-        <strong>assign_one</strong><br>
-        This datatype creates a drop-down menu that allows an item of any class to be assigned to another one (the selected item will be linked as &quot;parent item&quot; by default).
+        These are advanced services which are directly linked to one or more hosts. <br><br>
+        The difference between ordinary services and advanced services is that advanced services can be linked to more than one host and / or hostgroup simultaneously.<br><br>
+        Should one or more services and advanced services with the same name be linked to the same host, then Nagios will give precedence to the item it processes last, depending on which order the configuration files are loaded within your nagios.cfg file.
         </p>
         </div>
     </div>
 
-    <div id="help_hostgroup_services" title="Hostgroup services">
-        <p>Some text about Hostgroup services</p>
+    <div id="help_hostgroup_services" title="Advanced services (inherited over hostgroups)">
+        <p>
+        These are advanced services which are inherited over hostgroups. Hosts can inherit service definitions from the hostgroups they are part of. This allows you to predefine a host's services globally.<br><br>
+        The difference between ordinary services and advanced services is that advanced services can be linked to more than one host and / or hostgroup simultaneously.<br><br>
+        Should one or more services and advanced services with the same name be linked to the same host, then Nagios will give precedence to the item it processes last, depending on which order the configuration files are loaded within your nagios.cfg file.
+        </p>
     </div>
 
 </div>
