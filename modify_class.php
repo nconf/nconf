@@ -66,6 +66,7 @@ if ( isset($_SESSION["cache"]["modify_class"][$id]) ){
             case "hostgroup":
             case "service":
             case "servicegroup":
+            case "advanced-service":
             case "host-preset":
             case "nagios-monitor":
             case "nagios-collector":
