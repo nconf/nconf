@@ -134,8 +134,8 @@
                             $add_items = $attr["value"];
                         }
 						
-						# old value was removed but we do not have to set a new one ( user selected empty field )
-						# mark current item as ok
+                        # old value was removed but we do not have to set a new one ( user selected empty field )
+                        # mark current item as ok
                         if ( $handle_action == "multimodify" AND empty($add_items) ) $info_summary["ok"][] = $name;
 						
                         while ( $many_attr = each($add_items) ){
