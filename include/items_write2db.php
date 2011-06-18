@@ -133,11 +133,14 @@
                             # take send data for replace/overrides and normal add's
                             $add_items = $attr["value"];
                         }
-                        //while ( $many_attr = each($attr["value"]) ){
+						
+						# old value was removed but we do not have to set a new one ( user selected empty field )
+						# mark current item as ok
+                        if ( $handle_action == "multimodify" AND empty($add_items) ) $info_summary["ok"][] = $name;
+						
                         while ( $many_attr = each($add_items) ){
                             # if value is empty go to next one
                             if (!$many_attr["value"]){
-                                if ($handle_action == "multimodify") $info_summary["ok"][] = $name;
                                 continue;
                             }else{
                                 # if the circumstances are correct, link as child / bidirectional (change values)
