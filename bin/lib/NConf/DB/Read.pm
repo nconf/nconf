@@ -856,7 +856,7 @@ sub checkItemExistsOnServer {
     }
     elsif(&getItemClass($item2check4) eq "hostgroup" || &getItemClass($item2check4) eq "servicegroup"){
     # the logic here is used by items that refer to host- or servicegroups, such as host- & service dependencies,
-    # recursive hostgroup to hostgroup assignments etc., as well as services linked to hostgroups (planned);
+    # recursive hostgroup to hostgroup assignments etc., as well as advanced-services;
 
         # fetch all items linked
         my @item_links = &getItemsLinked($item2check4);

@@ -77,13 +77,13 @@ INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_le
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
 ('check_command','check command','','assign_one',0,'','','yes',2,'yes','yes','no','no','no',(SELECT id_class FROM ConfigClasses WHERE config_class='checkcommand'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('host_name','assign advanced-service to host','','assign_many',0,'','','no',3,'yes','yes','no','no','no',(SELECT id_class FROM ConfigClasses WHERE config_class='host'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('check_period','check period','time period to run checks','assign_one',0,'','','no',3,'yes','yes','no','no','no',(SELECT id_class FROM ConfigClasses WHERE config_class='timeperiod'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('hostgroup_name','assign advanced-service to hostgroup','','assign_many',0,'','','no',4,'yes','yes','no','no','yes',(SELECT id_class FROM ConfigClasses WHERE config_class='hostgroup'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('notification_period','notification period','time period to alarm','assign_one',0,'','','no',4,'yes','yes','no','no','no',(SELECT id_class FROM ConfigClasses WHERE config_class='timeperiod'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('check_period','check period','time period to run checks','assign_one',0,'','','no',5,'yes','yes','no','no','no',(SELECT id_class FROM ConfigClasses WHERE config_class='timeperiod'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('host_name','assign advanced-service to host','','assign_many',0,'','','no',5,'yes','yes','no','no','no',(SELECT id_class FROM ConfigClasses WHERE config_class='host'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notification_period','notification period','time period to alarm','assign_one',0,'','','no',6,'yes','yes','no','no','no',(SELECT id_class FROM ConfigClasses WHERE config_class='timeperiod'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('hostgroup_name','assign advanced-service to hostgroup','','assign_many',0,'','','no',6,'yes','yes','no','no','yes',(SELECT id_class FROM ConfigClasses WHERE config_class='hostgroup'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
 ('use','service template(s)','parent template(s) to inherit from','assign_cust_order',0,'','','no',7,'yes','yes','no','no','no',(SELECT id_class FROM ConfigClasses WHERE config_class='service-template'),(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
@@ -146,15 +146,28 @@ UPDATE ConfigClasses SET ordering="2" WHERE config_class="nagios-collector";
 UPDATE ConfigClasses SET friendly_name="Central monitors" WHERE config_class ="nagios-monitor";
 UPDATE ConfigClasses SET friendly_name="Distrib. collectors" WHERE config_class="nagios-collector";
 
+# -- update some descriptions --
+UPDATE ConfigAttrs SET description='value is applied to all services on collector hosts' WHERE attr_name='collector_check_freshness' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='nagios-monitor');
+UPDATE ConfigAttrs SET description='value is applied to "check_ssh" service on collector hosts; sets time until service becomes "stale" (useful to check connection between collectors and monitors)' WHERE attr_name='collector_freshness_threshold' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='nagios-monitor');
+
 # -- set timeperiod alias to "mandatory" --
 UPDATE ConfigAttrs SET mandatory="yes" WHERE attr_name="alias" AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class="timeperiod");
 
-# -- set host-preset command link to "not mandatory" --
-UPDATE ConfigAttrs SET mandatory="no" WHERE attr_name="command_name" AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class="host-preset");
+# -- set host-preset command link to "not mandatory" and update description --
+UPDATE ConfigAttrs SET mandatory="no", description="auto-create services for a new host based on these checkcommands" WHERE attr_name="command_name" AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class="host-preset");
 
 # -- correct some contact parameters --
 UPDATE ConfigAttrs SET max_length=20 WHERE attr_name='host_notification_options' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='contact');
 UPDATE ConfigAttrs SET max_length=20 WHERE attr_name='service_notification_options' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='contact');
+
+# -- change the ordering of some attributes --
+UPDATE ConfigAttrs SET ordering=ordering+2 WHERE ordering>6 AND ordering<11 AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='contact');
+UPDATE ConfigAttrs SET ordering=7 WHERE attr_name='email' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='contact');
+UPDATE ConfigAttrs SET ordering=8, friendly_name='pager / phone nr.' WHERE attr_name='pager' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='contact');
+UPDATE ConfigAttrs SET ordering=ordering-1 WHERE ordering>8 AND ordering<11 AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='host');
+UPDATE ConfigAttrs SET ordering=10 WHERE attr_name='use' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='host');
+UPDATE ConfigAttrs SET ordering=ordering-1 WHERE ordering>5 AND ordering<8 AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service');
+UPDATE ConfigAttrs SET ordering=7 WHERE attr_name='use' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service');
 
 # -- replace the friendly_name "IP-address" with "address" to call it like Nagios does --
 UPDATE ConfigAttrs SET friendly_name = 'address', description = 'IP-address / DNS name' WHERE attr_name='address' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class="host");
