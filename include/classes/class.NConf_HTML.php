@@ -8,7 +8,7 @@ class NConf_HTML{
     private static $cache   = array();
     private static $swap_name;
 
-    private function counter(){
+    private static function counter(){
         self::$counter++;
         return self::$counter;
     }
