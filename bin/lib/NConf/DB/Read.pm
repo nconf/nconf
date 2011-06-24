@@ -30,7 +30,7 @@ BEGIN {
     use vars qw(@ISA @EXPORT @EXPORT_OK);
 
     @ISA         = qw(NConf::DB);
-    @EXPORT      = qw(@NConf::DB::EXPORT getItemId getItemName getServiceId getServiceHostname getAttrId getItemClass getConfigAttrs getNamingAttr getConfigClasses getItemData getItems getItemsLinked getImportCounter checkLinkAsChild checkItemsLinked checkItemExistsOnServer queryExecRead);
+    @EXPORT      = qw(@NConf::DB::EXPORT getItemId getItemName getServiceId getServiceHostname getAttrId getItemClass getConfigAttrs getNamingAttr getConfigClasses getItemData getItems getItemsLinked getChildItemsLinked getImportCounter checkLinkAsChild checkItemsLinked checkItemExistsOnServer queryExecRead);
     @EXPORT_OK   = qw(@NConf::DB::EXPORT_OK);
 }
 
@@ -588,6 +588,55 @@ sub getItemsLinked {
 
 ##############################################################################
 
+sub getChildItemsLinked {
+    &logger(5,"Entered getChildItemsLinked()");
+
+    # SUB use: fetch all child items linked to another item (the items it is being used by, e.g fetch all items that use a certain timeperiod).
+
+    # SUB specs: ###################
+
+    # Expected arguments:
+    # 0: the item ID of the parent item
+
+    # Return values:
+    # 0: an array containing references to arrays that contain the following data structure:
+    #    [0] the item ID of the linked child item
+    #    [1] the name of the child item
+    #    [2] the class of the child item
+
+    ################################
+
+    # read arguments passed
+    my $id_item = shift;
+
+    unless($id_item){&logger(1,"getChildItemsLinked(): Missing argument(s). Aborting.")}
+
+    my $sql = "SELECT ItemLinks.fk_id_item AS item_id, attr_value AS item_name, config_class
+                    FROM ConfigValues,ItemLinks,ConfigAttrs,ConfigClasses
+                    WHERE ItemLinks.fk_id_item=ConfigValues.fk_id_item
+                        AND id_attr=ItemLinks.fk_id_attr
+                        AND ConfigAttrs.fk_id_class=id_class
+                        AND (SELECT naming_attr FROM ConfigAttrs WHERE id_attr=ConfigValues.fk_id_attr)='yes'
+                        AND (link_as_child <> 'yes' OR link_as_child IS NULL)
+                        AND ItemLinks.fk_item_linked2=$id_item
+                UNION
+                SELECT ItemLinks.fk_item_linked2 AS item_id, attr_value AS item_name, config_class
+                     FROM ConfigValues,ItemLinks,ConfigAttrs,ConfigClasses
+                     WHERE ItemLinks.fk_item_linked2=ConfigValues.fk_id_item
+                        AND id_attr=ItemLinks.fk_id_attr
+                        AND ConfigAttrs.fk_id_class=id_class
+                        AND (SELECT naming_attr FROM ConfigAttrs WHERE id_attr=ConfigValues.fk_id_attr)='yes'
+                        AND link_as_child = 'yes'
+                        AND ItemLinks.fk_id_item=$id_item
+                        ORDER BY item_id";
+
+    my @attrs = &queryExecRead($sql, "Fetching all child items that use item '$id_item'", "all");
+
+    return(@attrs);
+}
+
+##############################################################################
+
 sub getImportCounter {
     &logger(5,"Entered getImportCounter()");
 
@@ -879,15 +928,32 @@ sub checkItemExistsOnServer {
             if(defined($attr->[0]) && $attr->[1] eq ""){
                 $check_item_on_collector = 0;
             }
-
             if($attr->[0] eq "members"){$has_members = 1}
         }
 
-        # if no host / services are left within the group, consider the group as inexistent on the current server
-        unless($check_item_on_collector == 1 && $has_members == 1){$qres = undef}
-        else{$qres = "true"}
+        # process servicegroups
+        if(&getItemClass($item2check4) eq "servicegroup"){
 
-    }else{$qres = "true"}
+            # check if any advanced-services are assigned to the servicegroup
+            my $sg_used_by_as = 0;
+            my @items_using = &getChildItemsLinked($item2check4);
+            foreach my $child (@items_using){
+                unless($child->[0]){next}
+                if($child->[2] eq "advanced-service"){$sg_used_by_as=1}
+            }
+
+            # if no host / services are left within the group, and the servicegroup is not used by advanced-services, consider the servicegroup as inexistent on the current server
+            unless(($check_item_on_collector == 1 && $has_members == 1 && $sg_used_by_as == 0) || $sg_used_by_as == 1){$qres = undef}
+            else{$qres = "true"}
+        }
+        # process hostgroups
+        elsif(&getItemClass($item2check4) eq "hostgroup"){
+            # if no host / services are left within the group, consider the hostgroup as inexistent on the current server
+            unless($check_item_on_collector == 1 && $has_members == 1){$qres = undef}
+            else{$qres = "true"}
+        }
+
+    }else{$qres = "true"} # always return 'true' if the item being checked is NOT a host, service, hostgroup or servicegroup
 
     if(defined($qres)){return 'true'}
     else{return 'false'}

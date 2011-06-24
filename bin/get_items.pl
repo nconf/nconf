@@ -151,6 +151,7 @@ foreach my $item (@items) {
     if($opt_c =~ /^.+command$/){$nagios_item="command"}
     elsif($opt_c eq "host-template"){$nagios_item="host"}
     elsif($opt_c eq "service-template"){$nagios_item="service"}
+    elsif($opt_c eq "advanced-service"){$nagios_item="service"}
     else{$nagios_item=$opt_c;$nagios_item=~s/-//g}
 
     if($opt_f){print "define $nagios_item {\n"}

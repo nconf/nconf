@@ -1085,7 +1085,7 @@ $fattr,$fval
                     if(defined($attr->[0]) && $attr->[1] eq "" && $class ne "hostgroup" && $class ne "servicegroup"){
 
                         # remove the whole item from the configuration, unless it's an advanced-service (special rule applies there)
-                        unless($class eq "advanced-service" && ($attr->[0] eq "host_name" || $attr->[0] eq "hostgroup_name")){
+                        unless($class eq "advanced-service" && ($attr->[0] eq "host_name" || $attr->[0] eq "hostgroup_name" || $attr->[0] eq "servicegroups")){
                             &logger(4,"Removing $class '$id_item->[0]' from config because the attribute '$attr->[0]' was empty");
                             $has_empty_linking_attrs = 1;
                         }
@@ -1151,8 +1151,17 @@ $fattr,$fval
                     }
                 }
                 if($class eq "servicegroup"){
-                    if($has_members != 1 && $has_sg_members != 1){
-                        &logger(4,"Removing $class '$id_item->[0]' from config because the attributes 'members' and 'servicegroup_members' were empty");
+
+                    # check if any advanced-services are assigned to the servicegroup
+                    my $is_used_by_as = 0;
+                    my @items_using = &getChildItemsLinked($id_item->[0]);
+                    foreach my $child (@items_using){
+                        unless($child->[0]){next}
+                        if($child->[2] eq "advanced-service"){$is_used_by_as=1}
+                    }
+
+                    if($has_members != 1 && $has_sg_members != 1 && $is_used_by_as != 1){
+                        &logger(4,"Removing $class '$id_item->[0]' from config because the attributes 'members' and 'servicegroup_members' were empty and no advanced-service was linked");
                         $has_empty_linking_attrs = 1;
                     }
                 }
