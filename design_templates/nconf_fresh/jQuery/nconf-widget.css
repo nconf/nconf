@@ -192,17 +192,21 @@ th.ui-state-default, td.ui-state-default{
 ICONs ICON BARs etc
 */
 
-/*icon bar in box header */
+/* all icon bars, like back on modify attr */
 #ui-nconf-icon-bar{
     position: absolute;
     right: 0px;
 }
+
+/* icon bar in box header, like detail view */
 .ui-widget-header > #ui-nconf-icon-bar{
     right: 10px;
+    top: 3px;
 }
 
 .ui-widget-header > #ui-nconf-icon-bar img{
-    margin-left: 4px;
+    margin-left: 2px;
+    padding: 2px;
 }
 
 /* multi (assign) vertical and horizontal movers */

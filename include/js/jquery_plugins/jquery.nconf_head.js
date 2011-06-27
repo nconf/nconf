@@ -6,7 +6,10 @@ $(document).ready(function(){
     $('#footer fieldset').not( $('fieldset fieldset') ).addClass('ui-state-highlight');
 
     // button style
-    $( "#buttons > input, input:submit, input:button, :button" ).button();
+    $( "#buttons > input, input:submit, input:button, :button" )
+        .add('a > img', '#ui-nconf-icon-bar')
+        .button();
+        
     // buttons for images
     //$('.icon_buttons > a').button().children("span").removeClass("ui-button-text");
 
