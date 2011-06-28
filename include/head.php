@@ -63,13 +63,6 @@ $page_access_sub = array();
         echo '<link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/new.css">';
         echo '<link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/main.css">';
         echo '<link rel="shortcut icon" href="design_templates/'.TEMPLATE_DIR.'/favicon.ico">';
-
-        # IE 8 special CSS
-        echo '
-            <!--[if IE 8]>
-            <link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/style_ie8.css">
-            <![endif]-->
-        ';
     }
     ?>
 
