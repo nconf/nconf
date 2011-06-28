@@ -36,8 +36,12 @@ $(document).ready(function(){
         $(this).not(".ui-button").not("[role=button]").toggleClass("ui-state-hover ui-nconf-link");
     });
 
-    // all image links should contain lighten class, for mouseover effect
-    $( "a > img").addClass("lighten");
+    // all image links should contain lighten class, for mouseover effect, expect the new toolbar icons
+    $( "a > img").not('a > img', '#ui-nconf-icon-bar').addClass("lighten");
+    
+    // remove the current lighten class, which we do not want on our new buttons (which is still configured in image definitions)
+    $('a > img', '#ui-nconf-icon-bar').removeClass("lighten");
+        
 
     // give input fields a focus effect
     $("input[type=text],input[type=password], textarea, select")
