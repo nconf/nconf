@@ -165,7 +165,7 @@ echo '<div style="width: '.$width.'px;">';
                 <td width=20 class="attention center">*</td>
             </tr>
             <tr>
-                <td>show in 'user' or 'admin' section</td>
+                <td>class permissions</td>
                 <td width="20"></td>
                 <td>
                     <select name="nav_privs" class="small_input" onchange="check_input()">
@@ -362,6 +362,16 @@ echo '<div style="width: '.$width.'px;">';
         Example: <pre>definine host {</pre>
 
         <br>This is useful when you want to define mutliple classes in NConf that end up being the same thing in Nagios (e.g. "checkcommands" and "misccommands").
+        </p>
+    </div>
+
+    <div id="nav_privs" title="class permissions">
+        <p>
+        This flag was originally implemented to influence the positioning of the class within the navigation.<br><br>
+    
+        This flag is now also used to select which permissions are required to access items of a certain class.<br><br>
+        INFO:<br>
+        Access rights for accounts of type 'user' might not be fully implemented yet throughout the GUI.
         </p>
     </div>
 
