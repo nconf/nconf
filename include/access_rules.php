@@ -82,12 +82,15 @@
     # write multimodifications
     $NConf_PERMISSIONS->setURL('multimodify_attr_write2db.php', FALSE, array('user') );
     
-    # delete items
-    $NConf_PERMISSIONS->setURL('delete_item.php',           FALSE, array('user'),   array('item'=>'host') );
-    $NConf_PERMISSIONS->setURL('delete_item.php',           FALSE, array('user'),   array('item'=>'hostgroup') );
-    $NConf_PERMISSIONS->setURL('delete_item.php',           FALSE, array('user'),   array('item'=>'service') );
-    $NConf_PERMISSIONS->setURL('delete_item.php',           FALSE, array('user'),   array('item'=>'advanced-service') );
-    $NConf_PERMISSIONS->setURL('delete_item.php',           FALSE, array('user'),   array('item'=>'servicegroup') );
+    
+    # automated delete items permission
+    $query = 'SELECT config_class FROM ConfigClasses WHERE nav_privs = "user"';
+    $user_class_permissions = db_handler($query, "array_direct", "Select all classes where user has permission");
+    
+    foreach ($user_class_permissions AS $class){
+        $NConf_PERMISSIONS->setURL('delete_item.php',       FALSE, array('user'),   array('item' => $class) );
+    }    
+
 
     # Hosts Service view
     $NConf_PERMISSIONS->setURL('modify_item_service.php', FALSE, array('user') );
