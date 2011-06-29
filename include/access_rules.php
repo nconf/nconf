@@ -30,7 +30,7 @@
 ###
 
 
-    $NConf_PERMISSIONS->setURL('detail.php');
+    $NConf_PERMISSIONS->setURL('detail.php', FALSE, array('user'));
 
     // set in module ?
     //main.php ?  call_file ?

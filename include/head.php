@@ -255,11 +255,10 @@ $page_access_sub = array();
     ## Page authorisation check
     ###
     require_once(NCONFDIR.'/include/access_rules.php');
-    $url_regex_check = $NConf_PERMISSIONS->checkPageAccess();
 
     # Show page or EXIT the script ? (based on above auth-checks)
-    if ( $url_regex_check === TRUE ){
-        NConf_DEBUG::set("URL access granted", 'DEBUG', "ACL");
+    if ( $NConf_PERMISSIONS->checkPageAccess() === TRUE AND $NConf_PERMISSIONS->checkIdAuthorization() !== FALSE){
+        NConf_DEBUG::set("Access granted", 'DEBUG', "ACL");
         # go ahead in file
 
     }elseif ( !isset($_SESSION["group"]) AND ( empty($_GET["goto"]) ) ){
@@ -277,9 +276,9 @@ $page_access_sub = array();
          message($debug, "display login page");
 
     }else{
-        $message = "You don't have permission to access this page!";
+        $message = $NConf_PERMISSIONS->message;
         NConf_DEBUG::set($message, 'INFO');
-        NConf_DEBUG::set("URL access denied", 'DEBUG', "ACL");
+        NConf_DEBUG::set("Access denied", 'DEBUG', "ACL");
 
         //echo $message;
         echo NConf_HTML::limit_space( NConf_HTML::show_error('Error', $message) );

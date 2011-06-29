@@ -5,8 +5,11 @@
 class NConf_PERMISSIONS{
     protected $group;
     protected $current_script;
-    protected $page_check_status = FALSE;
+    protected $url_check_status = FALSE;
     protected $debug = '';
+    
+    protected $requested_id_authorized = 'NOT TESTED';
+    public $message = '';
 
     function __construct(){
         if ( isset($_SESSION["group"]) ){
@@ -14,7 +17,7 @@ class NConf_PERMISSIONS{
             
             # admin group has no limitations
             if ($_SESSION["group"] == GROUP_ADMIN){
-                $this->page_check_status = TRUE;
+                $this->url_check_status = TRUE;
             }
         }else{
             $this->group = GROUP_NOBODY;
@@ -47,18 +50,65 @@ class NConf_PERMISSIONS{
 		$this->current_script = preg_replace('/^\//', '', $script_name);
 		# This will be the script name which the permission system will check against.
         $this->debug .= NConf_HTML::text("<b>Current script name: </b>".$this->current_script);
+        
+        # if user is not in admin group, check if requested item is accessible for him
+        if ( $this->group != GROUP_ADMIN AND !empty($_REQUEST["id"]) ) {
+            $this->checkIdPermission($_REQUEST["id"]);
+            if ($this->requested_id_authorized === FALSE){
+                $this->message = "You are not authorized to access this item";
+            }
+        }
+        # also apply check for multiple ids
+        if ( $this->group != GROUP_ADMIN AND !empty($_REQUEST["ids"]) ) {
+            $array_ids = explode(",", $_REQUEST["ids"]);
+            foreach ($array_ids as $item_ID){
+                $this->checkIdPermission($item_ID);
+            }
+            if ($this->requested_id_authorized === FALSE){
+                $this->message = "You are not authorized to access one ore multiple items of your selection";
+            }
+        }
+        # Item ID authorization check
+        NConf_DEBUG::set('Checks if you are allowed to access the item', 'DEBUG', NConf_HTML::status_text("Item authorization", $this->requested_id_authorized) );
     }
 
+    protected function checkIdPermission($ID) {
+        # checks the requested id, its class should be accessible for the user, otherwise access will be denied.
+        $class_id = db_templates("get_classid_of_item", $ID);
+        $query = 'SELECT id_class
+                    FROM ConfigClasses
+                    WHERE nav_privs = "'.$this->group.'"
+                        AND id_class = "'.$class_id.'"';
+        $user_class_permissions = db_handler($query, "getOne", "Check if user has access to the class of the requested item");
+        # set authorization
+        # special behaviour for multiple ids (then its not allowed to set to true if already FALSE state was set)
+        if ( !empty($user_class_permissions) AND $this->requested_id_authorized !== FALSE ){
+            $this->requested_id_authorized = TRUE;
+        }else{
+            $this->requested_id_authorized = FALSE;
+        }
+    }
 
     public function checkPageAccess(){
-        $debug = NConf_HTML::swap_content($this->debug, "ACL feedback", FALSE, TRUE);
-        NConf_DEBUG::set($debug, 'DEBUG', NConf_HTML::status_text("ACL status", $this->page_check_status) );
-        return $this->page_check_status;
+        # URL check
+        $debug = NConf_HTML::swap_content($this->debug, "URL ACL feedback", FALSE, TRUE);
+        NConf_DEBUG::set($debug, 'DEBUG', NConf_HTML::status_text("URL ACL status", $this->url_check_status) );
+        
+        if ($this->url_check_status === FALSE){
+            $this->message = "You don't have permission to access this page!";
+        }
+        
+        return $this->url_check_status;
     }
+    
+    public function checkIdAuthorization(){
+        return $this->requested_id_authorized;
+    }
+        
 
     public function setURL($URL, $REGEX_OPEN_END = TRUE, $GROUPS = array(), $REQUEST = array() ){
         # do not check if already allowed
-        if ($this->page_check_status == TRUE) return;
+        if ($this->url_check_status == TRUE) return;
 
         # check URL for passed attributes (should only be the scriptname)
         # the navigation links will need this handler
@@ -109,7 +159,7 @@ class NConf_PERMISSIONS{
             }
 
             # all checks passed, URL is fine
-            $this->page_check_status = TRUE;
+            $this->url_check_status = TRUE;
             return;
         }
 
