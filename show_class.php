@@ -127,11 +127,8 @@ foreach ($nav_tree as $nav_priv) {
             if ($count == 1){
                 # Make titlebox
                 $box_content .= '<tr>';
-                $box_content .= '
-                    <td class="ui-state-default" colspan='.$colspan.'>
-                        <b>'.$Group.'</b>
-                    </td>
-                  </tr>';
+                    $box_content .= '<td class="ui-widget-header" colspan='.$colspan.'>'.$Group.'</td>';
+                $box_content .= '</tr>';
             }
 
             $group_bevore = $entry["grouping"];
