@@ -365,18 +365,6 @@ fieldset{
     cursor: pointer;
 }
 
-/*
-ul{
-    padding-left: 15px;
-    list-style-position: outside;
-}
-
-ul ul{
-    padding-left: 13px;
-}
-*/
-
-
 .bold{
     font-weight: bold;
 }
@@ -401,4 +389,14 @@ ul ul{
 .accordion_header_right{
     position: absolute;
     right: 10px;
+}
+
+/* gray out disabled input fields
+ * same as jquery style definition ".ui-state-disabled"
+ * this is needed because the browsers one will not work with our overrides on the jquery UI styles
+ */
+input[disabled], select[disabled], textarea[disabled] {
+    opacity: .35;
+    filter:Alpha(Opacity=35);
+    background-image: none;
 }
