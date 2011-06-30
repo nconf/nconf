@@ -87,8 +87,8 @@
     $query = 'SELECT config_class FROM ConfigClasses WHERE nav_privs = "user"';
     $user_class_permissions = db_handler($query, "array_direct", "Select all classes where user has permission");
     
-    foreach ($user_class_permissions AS $class){
-        $NConf_PERMISSIONS->setURL('delete_item.php',       FALSE, array('user'),   array('item' => $class) );
+    foreach ($user_class_permissions AS $permit_class){
+        $NConf_PERMISSIONS->setURL('delete_item.php',       FALSE, array('user'),   array('item' => $permit_class) );
     }    
 
 

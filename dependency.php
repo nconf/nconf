@@ -143,7 +143,6 @@ if ($xmode == "nagiosview"){
     if ( defined('TEMPLATE_DIR') ){
         # ownstyle and new.css will be removed in a future release
         echo '<link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/new.css">';
-        echo '<link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/ownstyle.css">';
 
         # This is the main CSS and will be the only on in later releases
         echo '<link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/main.css">';
