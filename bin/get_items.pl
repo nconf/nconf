@@ -9,7 +9,7 @@
 # Supported export formats are CSV and Nagios config file format (note that this script 
 # is not a replacement for generating the actual config!)
 ########################################################################################
-# Version 1.3
+# Version 1.3.1
 # Angelo Gargiulo
 ########################################################################################
 # Revision history:
@@ -21,6 +21,7 @@
 # 2011-03-08  v1.2    A. Gargiulo   Renamed -s argument to -d (for "delimiter")
 # 2011-03-08  v1.3    A. Gargiulo   Added special processing for services that might 
 #                                   be linked to other items (add hostname to the list)
+# 2011-06-16  v1.3.1  Y. Charton    Added verbosity 
 #
 ########################################################################################
 
@@ -31,13 +32,14 @@ use lib "$FindBin::Bin/lib";
 use NConf;
 use NConf::DB;
 use NConf::DB::Read;
+use NConf::Logger;
 use NConf::Helpers;
 use Getopt::Std;
 use Tie::IxHash;    # preserve hash order
 
 # read commandline arguments
-use vars qw($opt_c $opt_i $opt_r $opt_a $opt_f $opt_e $opt_d $opt_h);
-getopts('c:i:r:a:s:feh');
+use vars qw($opt_c $opt_i $opt_r $opt_a $opt_f $opt_e $opt_d $opt_h $opt_x);
+getopts('c:i:r:a:d:x:feh');
 
 if($opt_h){&usage}
 
@@ -46,11 +48,14 @@ unless($opt_c){
     exit;
 }
 
+if($opt_x){&setLoglevel($opt_x)}
+
 #set csv separator
 my $csv_separator = ";";
 if ($opt_d){$csv_separator = "$opt_d";}
 
 # build the list of items to display
+&logger(4,"Build the list of items to display");
 my %restrict;
 if($opt_i){
     my @restrict = split(/,/, $opt_i);
@@ -62,10 +67,13 @@ if($opt_i){
 }
 
 # build the list of attributes to display
+&logger(4,"Build the list of attributes to display");
 my %attr_restrict;
 if($opt_a){
+    &logger(5,"Reading attribute(s) selection");
     my @attr_restrict = ();
     if($opt_a eq "VISIBLE") {
+        &logger(5,"Keyword 'VISIBLE' found");
         my %conf_attrs = getConfigAttrs();
         foreach my $attr (keys(%{%conf_attrs->{$opt_c}})){
             unless($attr){next}
@@ -74,6 +82,7 @@ if($opt_a){
             }
         }
     }elsif($opt_a eq "NAGIOS") {
+        &logger(5,"Keyword 'NAGIOS' found");
         my %conf_attrs = getConfigAttrs();
         foreach my $attr (keys(%{%conf_attrs->{$opt_c}})){
             unless($attr){next}
@@ -151,7 +160,6 @@ foreach my $item (@items) {
     if($opt_c =~ /^.+command$/){$nagios_item="command"}
     elsif($opt_c eq "host-template"){$nagios_item="host"}
     elsif($opt_c eq "service-template"){$nagios_item="service"}
-    elsif($opt_c eq "advanced-service"){$nagios_item="service"}
     else{$nagios_item=$opt_c;$nagios_item=~s/-//g}
 
     if($opt_f){print "define $nagios_item {\n"}
@@ -231,7 +239,7 @@ Specify the type of items you wish to see, as well as several filtering options.
 The output will be printed to the command-line in the specified format.
 
 Usage:
-$0 -c class [-i item name,item name,...] [-r "Perl regex"] [-a attribute1,attribute2,...] [-f] [-e] [-d "CSV delimiter"]
+$0 -c class [-i item name,item name,...] [-r "Perl regex"] [-a attribute1,attribute2,...] [-f] [-e] [-d "CSV delimiter"] [-x (1-5)] 
 
 Help:
 
@@ -259,6 +267,8 @@ Help:
 
   -d  Define delimiter for CSV formated output (default is ';')
 
+  -x  Set a custom loglevel (1 = lowest, 5 = most verbose)
+   
 EOT
 exit;
 
