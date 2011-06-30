@@ -47,7 +47,7 @@ if ( !empty($_GET["id"]) ){
     $show_item_links = FALSE;
 
     # Set title
-    $title = '<b>History of '.$item_class.': '.$item_name.'</b>';
+    $title = 'History of '.$item_class.': '.$item_name;
     if ( !empty($_SESSION["go_back_page"]) ){
         $detail_navigation = '<a class="button_back jQ_tooltip" title="back" href="'.$_SESSION["go_back_page"].'"></a>';
     }

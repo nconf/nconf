@@ -700,7 +700,7 @@ if( ( isset($class) ) AND ($class != "") ){
     echo '<thead class="ui-widget-header">';
     echo '<tr>';
         if ($class == "host") {
-            echo '<td width="30"><b>'.FRIENDLY_NAME_OS_LOGO.'</b></td>';
+            echo '<td width="30">'.FRIENDLY_NAME_OS_LOGO.'</td>';
         }
         while($entry = mysql_fetch_assoc($title_result)){
             if ($class == "host"){
@@ -733,35 +733,35 @@ if( ( isset($class) ) AND ($class != "") ){
             }else{
                 $order_value = (!empty($order) AND $order ==  "entryname ASC") ? 'entryname DESC' : 'entryname ASC';
             }
-            echo '<td><b>
+            echo '<td>
                 <a href="'.$request_url4ordering.'&order='.$order_value.'">'
                 .$entry["friendly_name"].
-                '</a></b></td>';
+                '</a></td>';
         }
         if ($class == "host") {
             $order_value = ($order ==  "BIN_IP ASC") ? 'BIN_IP DESC' : 'BIN_IP ASC';
-            echo '<td width=100><b>
+            echo '<td width=100>
                 <a href="'.$request_url4ordering.'&order='.$order_value.'">'
                 .FRIENDLY_NAME_IPADDRESS.
-                '</a></b></td>';
+                '</a></td>';
             $order_value = ($order ==  "collector ASC") ? 'collector DESC' : 'collector ASC';
-            echo '<td width=100><b>
+            echo '<td width=100>
                 <a href="'.$request_url4ordering.'&order='.$order_value.'">'
                 .FRIENDLY_NAME_NAGIOSSERVER.
-                '</a></b></td>';
+                '</a></td>';
             $order_value = ($order ==  "os ASC") ? 'os DESC' : 'os ASC';
-            echo '<td width=100><b>
+            echo '<td width=100>
                 <a href="'.$request_url4ordering.'&order='.$order_value.'">'
                 .FRIENDLY_NAME_OS.
-                '</a></b></td>';
+                '</a></td>';
         }
 
         if ($class == "host") {
-            echo '<td colspan="3" class="center"><b>'.FRIENDLY_NAME_ACTIONS.'</b></td>';
+            echo '<td colspan="3" class="center">'.FRIENDLY_NAME_ACTIONS.'</td>';
         }elseif(!isset($_GET["xmode"])){
-            echo '<td colspan="2" class="center"><b>'.FRIENDLY_NAME_ACTIONS.'</b></td>';
+            echo '<td colspan="2" class="center">'.FRIENDLY_NAME_ACTIONS.'</td>';
         }else{
-            echo '<td colspan="1" class="center"><b>'.FRIENDLY_NAME_ACTIONS.'</b></td>';
+            echo '<td colspan="1" class="center">'.FRIENDLY_NAME_ACTIONS.'</td>';
         }
 
         if ( !isset($_GET["xmode"]) ){
@@ -771,7 +771,7 @@ if( ( isset($class) ) AND ($class != "") ){
                 }else{
                     echo ' display: none;';
                 }
-            echo '"><b>select</b></td>';
+            echo '">select</td>';
         }
 
     echo "</tr>";
