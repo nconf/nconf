@@ -51,7 +51,7 @@ define('REDIRECTING_DELAY', "1");
 #
 # Config deployment
 #
-define('ALLOW_DEPLOYMENT', 0);
+define('ALLOW_DEPLOYMENT', 1);
 
 #
 # Static Nagios configuration files
