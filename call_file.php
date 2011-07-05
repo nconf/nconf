@@ -43,6 +43,9 @@ if ( !empty($_REQUEST["module_file"]) AND !empty($_REQUEST["ajax_file"]) ){
             if ( !empty($_POST["username"]) ) $_SESSION["userinfos"]["username"] = $_POST["username"];
         }
     }
+    # debug variables
+    NConf_DEBUG::set($debug, 'DEBUG', 'call '.$type.'-variable: $debug');
+    NConf_DEBUG::set($ajax, 'DEBUG', 'call '.$type.'-variable: $ajax');
 
     # file validation
     $path_parts = pathinfo($file_path);
