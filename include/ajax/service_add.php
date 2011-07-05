@@ -307,7 +307,7 @@ if (  ( is_array($checkcommand) ) AND !empty($checkcommand)  ){
 
 }else{
     // give feedback for jQuery
-    //echo "failed";
+    echo "No service to add";
 } // END is_array($_POST["checkcommands"])
 
 
