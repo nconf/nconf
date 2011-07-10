@@ -579,10 +579,11 @@ if(
                         echo '<table class="ui-nconf-max-width">';
                         for ($i = 1; $i <= $command_param_count; $i++){
                             # If not set make empty because of php offset failure
-                            if ( isset($commands_array[$i]) ){
-
-                            }else{
+                            if ( !isset($commands_array[$i]) ){
                                 $commands_array[$i] = '';
+                            }
+                            if ( !isset($cmd_syntax[$i]) ){
+                                $cmd_syntax[$i] = $i;
                             }
                             echo '<tr>';
                                 echo '<td align=right>ARG'.$i.': </td>
