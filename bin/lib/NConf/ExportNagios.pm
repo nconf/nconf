@@ -1029,7 +1029,7 @@ $fattr,$fval
             my (@service_templates1, @service_templates2, @service_templates3);
 
             if($class eq "advanced-service"){
-                # don't write "TRAP" services to collector config, if a monitor server is present
+                # don't write adv. services that contain the string "TRAP" in "advanced service name" to collector config, if a monitor server is present
                 my $srvname = &getItemName($id_item->[0]);
                 if($srvname =~ /trap/i && defined($id_item->[1]) && $mon_count > 0){next}
             }

@@ -59,7 +59,7 @@ require_once 'include/head.php';
             // first reset all alert stuff
             $("#hostgroup_service_list").add("#service_list").find(".ui-state-error").removeClass("ui-state-error").find(".alert_icons").remove();
 
-            var warn_image = '<img src="img/icon_service_alert.gif" alt="warn" title="Warning: advanced service with the same name exists" class="alert_icons jQ_tooltip">';
+            var warn_image = '<img src="img/icon_service_alert.gif" alt="warn" title="Warning: multiple services with same name exist on the same host" class="alert_icons jQ_tooltip">';
 
             // create search_base from the list of "advanced service direct"
             var search_base = $("select#toBox_advanced_services").children();
@@ -468,7 +468,7 @@ echo '</div>';
     <div id="help_services" title="Services (directly linked)">
         <p>These are services which are directly linked to a host.<br><br>
         Ordinary services can only be linked to one host at a time and remain bound to that host.<br><br>
-        Should one or more services and advanced services with the same name be linked to the same host, then Nagios will give precedence to the item it processes last, depending on which order the configuration files are loaded within your nagios.cfg file.<br>
+        Should one or more services and advanced services with the same name be linked to the same host, then Nagios will give precedence to the item it processes last when it loads the configuration. Processing order is dependent on the order in which the configuration files are listed within your main nagios.cfg file.<br><br>
 [ Caution: This behavior might differ depending on what version of Nagios / Icinga you are using. ]
         </p>
     </div>
@@ -478,7 +478,7 @@ echo '</div>';
         <p>
         These are advanced services which are directly linked to one or more hosts. <br><br>
         The difference between ordinary services and advanced services is that advanced services can be linked to more than one host and / or hostgroup simultaneously.<br><br>
-        Should one or more services and advanced services with the same name be linked to the same host, then Nagios will give precedence to the item it processes last, depending on which order the configuration files are loaded within your nagios.cfg file.<br>
+        Should one or more services and advanced services with the same name be linked to the same host, then Nagios will give precedence to the item it processes last when it loads the configuration. Processing order is dependent on the order in which the configuration files are listed within your main nagios.cfg file.<br><br>
 [ Caution: This behavior might differ depending on what version of Nagios / Icinga you are using. ]
         </p>
         </div>
@@ -488,7 +488,7 @@ echo '</div>';
         <p>
         These are advanced services which are inherited over hostgroups. Hosts can inherit service definitions from the hostgroups they are part of. This allows you to predefine a host's services globally.<br><br>
         The difference between ordinary services and advanced services is that advanced services can be linked to more than one host and / or hostgroup simultaneously.<br><br>
-        Should one or more services and advanced services with the same name be linked to the same host, then Nagios will give precedence to the item it processes last, depending on which order the configuration files are loaded within your nagios.cfg file.<br>
+        Should one or more services and advanced services with the same name be linked to the same host, then Nagios will give precedence to the item it processes last when it loads the configuration. Processing order is dependent on the order in which the configuration files are listed within your main nagios.cfg file.<br><br>
 [ Caution: This behavior might differ depending on what version of Nagios / Icinga you are using. ]
         </p>
     </div>
