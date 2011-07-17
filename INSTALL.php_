@@ -261,7 +261,13 @@ function parse_mysql_dump($url){
         foreach($file_content as $sql_line){
           if(trim($sql_line) != "" && strpos($sql_line, "--") === false){
             $query .= $sql_line;
-            if(preg_match("/;[\040]*\$/", $sql_line)){
+            // TODO: check compatibility of regex
+            // This regex does not work on xampp:
+            //   if(preg_match("/;[\040]*\$/", $sql_line)){
+            //   - why is there a backslash bevore $
+            //   - [\040] seems not work on xampp (windows) installation
+            if(preg_match('/;[\s]*$/', $sql_line)){
+            //if(preg_match("/;[\040]*\$/", $sql_line)){
               $result = mysql_query($query);   //or die(mysql_error());
               if (!$result) return $result;
 
@@ -529,7 +535,11 @@ if ($step == 0){
     echo table_row_select("AUTH_TYPE", array("file" => "file"), "file", "How do you want to authenticate?", '', 1);
     echo table_row_text("file_admin_password", "", "Password for admin when AUTH_TYPE = file<br>Do <b>not</b> use '::' (2 colons) in password", "password", '', '', 1);
     echo table_row_description("WARNING", "Please do not use '::' (2 colons) in passwords! You will not be able to login otherwise!<br>'::' is used as delimiter.", "none");
-
+    
+    echo NConf_HTML::limit_space(
+            NConf_HTML::show_highlight('Info', 'For more authentication setups, please reffer to the online documentation!'
+                                             . '<br>Just finish your installation and then have a look here --> <a href="http://nconf.org/dokuwiki/doku.php?do=search&id=Authentication+specific+options" target="_blank">Authentication @ nconf.org</a>')
+        );
     ?>
     <script type="text/javascript">
     <!--
