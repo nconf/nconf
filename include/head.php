@@ -40,15 +40,7 @@ if (AUTH_ENABLED == 1){
 # create Permission class
 $NConf_PERMISSIONS = new NConf_PERMISSIONS;
 
-/*
-// main file (nothing other will be accepted)
-$page_access = array();
-// main file with all sub strings
-$page_access_sub = array();
-
-*/
 ?>
-
 
 
 
