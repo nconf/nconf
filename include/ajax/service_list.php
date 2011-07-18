@@ -133,15 +133,21 @@ if ( $class == "service" ){
                         echo ICON_SERVICE;
                     }
                 echo '</td>';
-                echo '<td><a href="detail.php?id='.$entry["id"].'">'.$entry["entryname"].'</a></td>';
+                echo '<td><a href="detail.php?id='.$entry["id"].'" title="'.$entry["entryname"].'">'.$entry["entryname"].'</a></td>';
                 echo '<td align="center"><a href="handle_item.php?item=service&id='.$entry["id"].'">'.ICON_EDIT.'</a></td>';
                 echo '<td><div align=center><a href="delete_item.php?item=service&ids='.$entry["id"].'&from=modify_item_service.php?id='.$host_ID.'">'.ICON_DELETE.'</a></div></td>';
                 echo '<td><div align=center><a class="clone" id="'.$entry["id"].'" href="#">'.ICON_CLONE.'</a></div></td>';
             }elseif( $class == "advanced-service" ){
                 echo '<td><a href="detail.php?id='.$entry["id"].'">'.$entry["entryname"].'</a></td>';
             }elseif( $class == "hostgroup_service" ){
+                // compare service_name with service_description
+                $entry["title"] = $entry["advanced_service_name"];
+                if ( !empty($entry["advanced_service_description"]) AND ($entry["advanced_service_name"] != $entry["advanced_service_description"]) ){
+                    $entry["advanced_service_name"] = $entry["advanced_service_name"] . ' (' . $entry["advanced_service_description"] . ')';
+                    $entry["title"] = $entry["advanced_service_description"];
+                }
                 echo '<td></td>';
-                echo '<td><a href="detail.php?id='.$entry["advanced_service_id"].'">'.$entry["advanced_service_name"].'</a></td>';
+                echo '<td><a href="detail.php?id='.$entry["advanced_service_id"].'" title="'.$entry["title"].'">'.$entry["advanced_service_name"].'</a></td>';
                 echo '<td><a href="detail.php?id='.$entry["hostgroup_id"].'">'.$entry["hostgroup_name"].'</a></td>';
             }
 

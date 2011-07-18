@@ -839,7 +839,11 @@ something for later use... other query for link_as_child attrs....
                     (SELECT attr_value FROM ConfigValues, ConfigAttrs 
                         WHERE ConfigValues.fk_id_attr=ConfigAttrs.id_attr 
                         AND naming_attr='yes' 
-                        AND ConfigValues.fk_id_item=advanced_service_id) AS advanced_service_name
+                        AND ConfigValues.fk_id_item=advanced_service_id) AS advanced_service_name,
+                    (SELECT attr_value FROM ConfigValues, ConfigAttrs
+                        WHERE ConfigValues.fk_id_attr=ConfigAttrs.id_attr
+                        AND attr_name='service_description'
+                        AND ConfigValues.fk_id_item=advanced_service_id) AS advanced_service_description
                   FROM ItemLinks, ConfigItems, ConfigClasses
                   WHERE ItemLinks.fk_id_item=ConfigItems.id_item
                     AND ConfigItems.fk_id_class=ConfigClasses.id_class

@@ -61,17 +61,20 @@ require_once 'include/head.php';
 
             var warn_image = '<img src="img/icon_service_alert.gif" alt="warn" title="Warning: multiple services with same name exist on the same host" class="alert_icons jQ_tooltip">';
 
-            // create search_base from the list of "advanced service direct"
-            var search_base = $("select#toBox_advanced_services").children();
+            // create advanced_services_direct from the list of "advanced service direct"
+            var advanced_services_direct = $("select#toBox_advanced_services").children();
 
-            // Check "normal services" & "hostgroup service" with "advanced service Direct"
-            $("#service_list").add("#hostgroup_service_list").find("tbody > tr").each(function(index, searchServiceLine) {
+            // Check "normal services" with "advanced service Direct"
+            //$("#service_list").each(function(index, searchServiceLine) {
+            $("#service_list").add("#hostgroup_service_list").find("table > tbody").children("tr").each(function(index, searchServiceLine) {
                 // get the service name (2. td)
-                var search_service = $(this).children("td:first").next().contents("a").text();
-                // go through search_base
-                $(search_base).each( function(i, advancedServiceDirect) {
+                var search_service = $(this).children("td:first").next().contents("a").attr("title");
+                // go through advanced_services_direct
+                $(advanced_services_direct).each( function(i, advancedServiceDirect) {
                     // check if the service matches with a advanced service
-                    if ( $(advancedServiceDirect).text() == search_service ){
+                    // debug help:
+                    // alert(search_service + "->" + $(advancedServiceDirect).attr("title"));
+                    if ( $(advancedServiceDirect).attr("title") == search_service ){
                         // add some style to found advanced service and the search service
                         $(advancedServiceDirect).add(searchServiceLine).addClass("ui-state-error highlight");
                         // add a warn icon to the search service, only if the text is the only child (prevent mutliple icons)
@@ -80,15 +83,14 @@ require_once 'include/head.php';
                 });
             });
 
-
-            
-            // Check hostgroup services with "advanced service Direct"
+            // Check hostgroup services with normal services
             $("#hostgroup_service_list").find("tbody > tr").each(function(index, searchServiceLine) {
                 // get the service name 
-                var search_service = $(this).children("td:first").next().contents("a").text();
+                var search_service = $(this).children("td:first").next().contents("a").attr("title");
                 // go through normal services
-                $("tr", "#service_list").each( function(i, normalService) {
+                $("tbody > tr", "#service_list").each( function(i, normalService) {
                     // check if the service matches with a advanced service
+                    // alert($(normalService).text() + "->" + search_service);
                     if ( $(normalService).text() == search_service ){
                         // add style and a warn icon to the both services, only if the text is the only child (prevent mutliple icons)
                         $(searchServiceLine).add(normalService).addClass("ui-state-error").find("td:first").next().children("a:only-child").after(warn_image);
@@ -383,7 +385,12 @@ unset($output);
 
     // get all advanced services
     $query = 'SELECT id_item,
-                attr_value AS service_name
+                attr_value AS service_name,
+                ( SELECT attr_value
+                    FROM ConfigValues, ConfigAttrs
+                    WHERE ConfigValues.fk_id_attr = ConfigAttrs.id_attr
+                    AND attr_name = "service_description"
+                    AND ConfigValues.fk_id_item = id_item ) AS service_description
                 FROM ConfigItems,ConfigValues,ConfigAttrs,ConfigClasses
                 WHERE id_item=fk_id_item
                     AND id_attr=fk_id_attr
@@ -400,11 +407,23 @@ unset($output);
     $services = db_templates("get_services_from_host_id", $host_ID, "advanced-service");
 
     foreach ($service_names AS $advanced_service) {
+        // Title attribute is needed for later name conflict checks(over jQuery)
+        // First set the title attribute to the service name
+        $advanced_service["title"] = $advanced_service["service_name"];
+        // compare service_name with service_description
+        if ( !empty($advanced_service["service_description"]) AND ($advanced_service["service_name"] != $advanced_service["service_description"]) ){
+            // display the description in brackets behind the service name
+            $advanced_service["service_name"] = $advanced_service["service_name"] . ' (' . $advanced_service["service_description"] . ')';
+            // Override service title with service description, which is needed for later conflict checks
+            $advanced_service["title"] = $advanced_service["service_description"];
+        }
+
+        // move already selected items
         if ( array_key_exists($advanced_service["id_item"], $services ) ){
             $selected_items[] = $advanced_service;
             continue;
         }
-        $output .= '<option value='.$advanced_service["id_item"].'>'.$advanced_service["service_name"].'</option>';
+        $output .= '<option value="'.$advanced_service["id_item"].'" title="'.$advanced_service["title"].'">'.$advanced_service["service_name"].'</option>';
     }
     
     $output .= '</select>';
@@ -414,8 +433,8 @@ unset($output);
 
     if ( !empty($selected_items) ){
         foreach ($selected_items AS $selected_menu){
-            $output .= '<option value='.$selected_menu["id_item"];
-            $output .= '>'.$selected_menu["service_name"].'</option>';
+            $output .= '<option value="'.$selected_menu["id_item"].'" title="'.$selected_menu["title"].'">';
+            $output .= $selected_menu["service_name"].'</option>';
         }
     }
     $output .= '</select><br>';
