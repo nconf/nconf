@@ -140,12 +140,6 @@ if ( !empty($_GET["do"]) AND !empty($_GET["id"]) ){
 }
 
 
-
-
-//echo '<table class="ui-nconf-table ui-widget-content" style="min-width:480px">';
-//echo '<table class="ui-nconf-table ui-widget" style="width: 100%">';
-
-
     $query = 'SELECT ConfigAttrs.friendly_name, ConfigAttrs.ordering, id_attr, attr_name, datatype, mandatory, naming_attr
             FROM ConfigAttrs,ConfigClasses
                 WHERE id_class=fk_id_class
@@ -154,6 +148,8 @@ if ( !empty($_GET["do"]) AND !empty($_GET["id"]) ){
     ';
 
     $result = db_handler($query, "result", "get attributes from class");
+    
+    // Table beginning will be added in the output function
     $table  = '';
 
     if ($result != "") {
@@ -166,7 +162,7 @@ if ( !empty($_GET["do"]) AND !empty($_GET["id"]) ){
             $table .= '<th width=100>Datatype</th>';
             $table .= '<th width=70 class="center">Mandatory</th>';
             $table .= '<th width=60 class="center">Ordering</th>';
-            $table .= '<th width=40 class="center">PK</th>';
+            $table .= '<th width=50 class="center">PK</th>';
             $table .= '<th width=40 class="center">Edit</th>';
             $table .= '<th width=40 class="center">Delete</th>';
 
@@ -244,7 +240,7 @@ if ( !empty($_GET["do"]) AND !empty($_GET["id"]) ){
 
             // set list color
             if ($row_warn == 1){
-                $table .= '<tr class="color_warning highlight">';
+                $table .= '<tr class="ui-state-error highlight">';
             }elseif((1 & $count) == 1){
                 $table .= '<tr class="color_list1 highlight '.$additional_class.'">';
             }else{
@@ -286,8 +282,6 @@ $table .= '</tbody>';
 
 
 echo NConf_HTML::ui_table($table, 'ui-nconf-max-width');
-
-//echo '</table>';
 
 
 
