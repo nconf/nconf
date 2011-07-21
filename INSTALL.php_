@@ -76,7 +76,7 @@ function table_row_text($title, $value, $description, $type = "text", $attention
         <tr>
             <td width=150>'.$title.'</td>
         <td width=270>';
-        $row .= '<input type="'.$type.'" name="'.$title.'" maxlength=50 value="'.$value.'"';
+        $row .= '<input type="'.$type.'" name="'.$title.'" value="'.$value.'"';
             if ($disabled == 1) $row .= ' disabled="disabled" ';
             if ($check_input == 1) $row .= ' onchange="check_input()" onkeyup="check_input()"';
         $row .= '>';

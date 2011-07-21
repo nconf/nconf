@@ -99,4 +99,5 @@ CREATE TABLE `History` (
   CONSTRAINT `History_ibfk_1` FOREIGN KEY (`fk_id_item`) REFERENCES `ConfigItems` (`id_item`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-INSERT INTO `History` VALUES (1,'2011-07-14 00:15:39','NConf Setup','general','updated','NConf to version 1.2.7',NULL);
+# -- add history entry for installation --
+INSERT INTO History (user_str, action, attr_name, attr_value) VALUES ('NConf Setup','general','installed','NConf 1.2.7');
