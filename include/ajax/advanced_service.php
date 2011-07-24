@@ -43,9 +43,8 @@ $config_class = "advanced-service";
     # special case for advanced_services !
     # items_write2db will look for $advanced_services and use the "bidirection/child" feature, to swap the data
     require_once('include/items_write2db.php'); // needs $items2write
-
-if (!NConf_DEBUG::status('ERROR') AND $edited ){
-    echo '<div id="clone_success">ok</div>';
+if ( !NConf_DEBUG::status('ERROR') ){
+    echo '<div id="modify_success">'.$edited.'</div>';
 }
 
 
