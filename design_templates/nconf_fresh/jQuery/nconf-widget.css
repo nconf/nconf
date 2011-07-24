@@ -231,3 +231,12 @@ ICONs ICON BARs etc
 }
 */
 
+/* special image background for optimize selected style on error lines */
+#toBox_advanced_services option.ui-state-error:checked {
+    background-image: url("nconf/images/ui-bg_flat_100_D05353_40x100.png");
+}
+/* select fields: remove border around error lines if element is select field */
+select option.ui-state-error.ui-state-error.highlight {
+    border-style: none;
+}
+
