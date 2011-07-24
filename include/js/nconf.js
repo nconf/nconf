@@ -232,24 +232,11 @@ function moveElementsLeftRight(BoxIndex,move_direction,cust_order,element)
         }
     }
     
+    // new jQuery functionality for movement
     if(move_all === true){
-        // ALL button movements
-        for(var no=0;no<tmpFromBox.options.length;no++){
-            tmpToBox.options[tmpToBox.options.length] = new Option(tmpFromBox.options[no].text,tmpFromBox.options[no].value);           
-        }
-        tmpFromBox.options.length=0;
+        $('#' + tmpFromBox.id + ' option').remove().appendTo('#' + tmpToBox.id);
     }else{
-        // single movements (or multi selects)
-        for(var no=0;no<tmpFromBox.options.length;no++){
-            if(tmpFromBox.options[no].selected){
-                tmpFromBox.options[no].selected = false;
-                tmpToBox.options[tmpToBox.options.length] = new Option(tmpFromBox.options[no].text,tmpFromBox.options[no].value);
-                // remove element from box
-                tmpFromBox.remove(no);
-                // because the element is removed, we need to set the index number 1 down for next 
-                no = no -1;
-            }           
-        }
+        $('#' + tmpFromBox.id + ' option:selected').remove().appendTo('#' + tmpToBox.id);
     }
 
     // Update the live search
@@ -257,33 +244,24 @@ function moveElementsLeftRight(BoxIndex,move_direction,cust_order,element)
 
     // Sort the entries in the destination box (only left one) when moving an item to left one
     if ( (cust_order == 0) || (cust_order == 1 && (move_direction == "left") ) ){
-        sortAllElement(tmpToBox);
+        // new ordering function
+        $('#' + tmpToBox.id + ' option').sort(sortAlpha).appendTo('#' + tmpToBox.id);
     }
-
-}
-
-
-// sort elements 
-function sortAllElement(boxRef)
-{
-    var tmpArray = new Array();
-    for(var no=0;no<boxRef.options.length;no++){
-        //var tmpArray2 = {"boxRef.options[no].value" : "boxRef.options[no].text"}
-        //tmpArray[boxRef.options[no].value] = boxRef.options[no].text;
-        tmpArray.push(boxRef.options[no].text + '....' + boxRef.options[no].value);
-    }
-    tmpArray.sort();       
-    boxRef.options.length=0;
-
-    for(var no=0;no<tmpArray.length;no++){
-    //for (key in tmpArray){
-        var items = tmpArray[no].split('....');
-        boxRef.options[no] = new Option(items[0],items[1]);
-        //boxRef.options[key]= new Option(tmpArray[key],key);
-    }       
     
+    // remove classes on left move
+    if ( move_direction == "left" ){
+        $('#' + tmpToBox.id + ' option').removeClass();
+    }
+
 }
 
+
+// new Ordering function
+// found @ http://www.wrichards.com/blog/2009/02/jquery-sorting-elements/
+// including also the case insensitive ordering from the comment (.toLowerCase)
+function sortAlpha(a,b){  
+    return a.innerHTML.toLowerCase() > b.innerHTML.toLowerCase() ? 1 : -1;
+};  
 
 
 // update the livesearch values regarding the "tobox" and selectboxindex
