@@ -55,7 +55,9 @@ class scp extends NConf_Deployment_Modules
             $ssh_command = $this->ssh;
             if (!empty($host_infos["identity_file"]) ){
                 $ssh_command .= ' -i ';
-                $ssh_command .= $this->path.'/';
+                if ( !preg_match( '/^\//', $host_infos["identity_file"]) ){
+                    $ssh_command .= $this->path.'/';
+                }
                 $ssh_command .= $host_infos["identity_file"];
             }
 
