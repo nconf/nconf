@@ -22,11 +22,11 @@ define('OS_LOGO_PATH', "img/logos");
 # (copy it to the bin/ folder), or to a symbolic link. Make sure the binary is executable to the webserver user. 
 define('NAGIOS_BIN',   "/var/www/nconf/bin/nagios");
 
-# Update check
-# If you don't want NConf to check for updates, you can disable it here.
+# Check for updates
 # When enabled, NConf will access http://update.nconf.org and will display information about the latest available version.
 # This is done over your browser, so the server where NConf is running on does not need Internet access.
 # NO information about your environment and NO NConf related info will be sent or made available to others!
+# If you don't want NConf to check for updates, you can disable it here.
 define('CHECK_UPDATE', 1);
 
 #
