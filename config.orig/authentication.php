@@ -4,30 +4,27 @@
 ##
 
 #
-# enables/disables the use of users and passwords
-# if disabled (0) NConf runs without user login / without authentication
+# Enable or disable user authentication. 
+# If disabled, no login is prompted to access the GUI and all features will be available (admin privs). 
+#
 define('AUTH_ENABLED', "0");
 
-
 #
-# AUTH_FEEDBACK_AS_WELCOME_NAME defines if the authentication should get an different username (e.g. users real name)
-# It will be used for the Welcome Name and will also affect the name used in the History table
-# Otherwise userlogin name will be displayed
-#
-define('AUTH_FEEDBACK_AS_WELCOME_NAME', '1');
-
-
-#
-# select auth type
+# How to authenticate, if authentication is enabled. 
 # possible values: [file|sql|ldap|ad_ldap]
 #
 define('AUTH_TYPE', "file");
+
+#
+# Defines the user name in the history table and in the welcome message.
+#If set to "0", the username will be used. If set to "1", the real name will be fetched, depending on which AUTH_TYPE you selected. 
+#
+define('AUTH_FEEDBACK_AS_WELCOME_NAME', '1');
 
 # Groups
 define('GROUP_USER',       "user");
 define('GROUP_ADMIN',      "admin");
 define('GROUP_NOBODY',     "0");
-
 
 ###
 ###  Auth by "ldap"
@@ -43,6 +40,10 @@ define('USER_REPLACEMENT', "<username>");
 define('GROUP_DN',         "ou=Group,dc=mydomain,dc=com");
 define('ADMIN_GROUP',      "cn=nagiosadmin");
 define('USER_GROUP',       "cn=sysadmin");
+
+###
+###  Auth by "ad_ldap"
+###
 
 ### Active Directory
 define('AD_LDAP_SERVER',        "ldap://ad-ldaphost.mydomain.com");

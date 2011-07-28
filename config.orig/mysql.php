@@ -1,10 +1,10 @@
 <?php
 ##
-## MYSQL config
+## MySQL config
 ##
 
 #
-# Main MYSQL connection parameters
+# Main MySQL connection parameters
 #
 define('DBHOST', "localhost");
 define('DBNAME', "NConf");
