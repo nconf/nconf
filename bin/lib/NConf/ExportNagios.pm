@@ -48,14 +48,17 @@ unless($loglevel =~ /^[1245]$/){$loglevel=3}
 
 # global vars
 use vars qw($fattr $fval); # Superglobals
-my ($root_path, $output_path, $global_path, $test_path, $monitor_path, $collector_path);
-my (@superadmins, @oncall_groups, @global_cfg_files, @server_cfg_files);
+my ($root_path, $output_path, $global_path, $test_path, $monitor_path, $collector_path, $check_static_cfg);
+my (@superadmins, @oncall_groups, @global_cfg_files, @server_cfg_files, @static_cfg);
 my (%class_info, %checkcommand_info, %files_written);
 
 # fetch options from main NConf config
-@superadmins   = &readNConfConfig(NC_CONFDIR."/nconf.php","SUPERADMIN_GROUPS","array");
-@oncall_groups = &readNConfConfig(NC_CONFDIR."/nconf.php","ONCALL_GROUPS","array");
-$root_path     = &readNConfConfig(NC_CONFDIR."/nconf.php","NCONFDIR","scalar");
+$root_path        = &readNConfConfig(NC_CONFDIR."/nconf.php","NCONFDIR","scalar");
+@superadmins      = &readNConfConfig(NC_CONFDIR."/nconf.php","SUPERADMIN_GROUPS","array");
+@oncall_groups    = &readNConfConfig(NC_CONFDIR."/nconf.php","ONCALL_GROUPS","array");
+@static_cfg       = &readNConfConfig(NC_CONFDIR."/nconf.php","STATIC_CONFIG","array");
+$check_static_cfg = &readNConfConfig(NC_CONFDIR."/nconf.php","CHECK_STATIC_SYNTAX","scalar",1);
+if($check_static_cfg ne 0){$check_static_cfg=1}
 
 # fetch and cache all classes in ConfigClasses table
 %class_info = &getConfigClasses();
@@ -1497,6 +1500,18 @@ sub create_test_cfg {
         if($unique_server_cfg{$server_cfg} && $unique_server_cfg{$server_cfg} ne ""){next}
         print FILE "cfg_file=$server_cfg\n";
         $unique_server_cfg{$server_cfg} = $server_cfg;
+    }
+
+    # write static_cfg folders, if CHECK_STATIC_SYNTAX is enabled
+    if($check_static_cfg eq 1){
+        foreach my $static_cfg (@static_cfg){
+            unless($static_cfg){next}
+            if($static_cfg =~ /\/+[^\/]+.*/){
+                print FILE "cfg_dir=$static_cfg\n";
+            }else{
+                print FILE "cfg_dir=$root_path/$static_cfg\n";
+            }
+        }
     }
 
     # write footer + extra options

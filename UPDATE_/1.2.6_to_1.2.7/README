@@ -12,12 +12,16 @@ Added:
   http://dev.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:modules:deployment:main
  
 
-The following configuration option(s) have been removed:
+The following configuration options have been removed:
 - CONF_DEPLOY_URL
 - CONF_DEPLOY_USER
 - CONF_DEPLOY_PWD
 
-Optional: new config constant DEBUG_GENERATE [1-5]
+
+The following (optional) configuration options have been added:
+- DEBUG_GENERATE [1-5]
+- CHECK_UPDATE [1|0]
+- CHECK_STATIC_SYNTAX [1|0]
 
 ##------------------------------------------------##
 ##              Additional changes                ##
