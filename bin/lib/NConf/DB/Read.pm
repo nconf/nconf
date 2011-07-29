@@ -30,7 +30,7 @@ BEGIN {
     use vars qw(@ISA @EXPORT @EXPORT_OK);
 
     @ISA         = qw(NConf::DB);
-    @EXPORT      = qw(@NConf::DB::EXPORT getItemId getItemName getServiceId getServiceHostname getAttrId getItemClass getConfigAttrs getNamingAttr getConfigClasses getItemData getItems getItemsLinked getChildItemsLinked getImportCounter checkLinkAsChild checkItemsLinked checkItemExistsOnServer queryExecRead);
+    @EXPORT      = qw(@NConf::DB::EXPORT getItemId getItemName getServiceId getServiceHostname getAttrId getItemClass getConfigAttrs getNamingAttr getConfigClasses getItemData getItems getItemsLinked getChildItemsLinked getUniqueNameCounter getImportCounter checkLinkAsChild checkItemsLinked checkItemExistsOnServer queryExecRead);
     @EXPORT_OK   = qw(@NConf::DB::EXPORT_OK);
 }
 
@@ -637,10 +637,77 @@ sub getChildItemsLinked {
 
 ##############################################################################
 
+sub getUniqueNameCounter {
+    &logger(5,"Entered getUniqueNameCounter()");
+
+    # SUB use: determine a unique name for items by appending a numeric counter, if necessary
+
+    # SUB specs: ###################
+
+    # Expected arguments:
+    # 0: the class name
+    # 1: the current item name that needs to be made unique
+
+    # Return values:
+    # 0: a unique name for a new item within that class in the following format:
+    #    "item name_n" ("n" being a unique numeral)
+
+    # Info: this function will only query the database the first time it processes a new item.
+    # It will store the last generated counter value in a global cache and will access the cache if it is invoked with 
+    # the same parameters a second time. This allows counters to remain unique even if items aren't written to the database right away.
+
+    ################################
+    
+    my $class = $_[0];
+    my $item_name = $_[1];
+    my $max_count = 0;
+
+    unless($class && $item_name){&logger(1,"getUniqueNameCounter(): Missing argument(s). Aborting.")}
+
+    # if possible, try to read max_counter value from global cache, rather than the database
+    if($NC_ctrcache_getUniqueNameCounter{$class}->{$item_name}){
+        $max_count = $NC_ctrcache_getUniqueNameCounter{$class}->{$item_name};
+        $max_count++;
+    }
+    else{
+        # if not in the cache, query the database and determine counter value
+        my @class_items = &getItems($class,1);
+        my %item_hash;
+
+        foreach my $item (@class_items){
+            $item_hash{$item->[1]} = $item;
+        }
+
+        if($item_hash{$item_name}){
+            $max_count = 2;
+            while($item_hash{"$item_name\_$max_count"}){
+                $max_count++;
+            }
+        }
+    }
+
+    # check if a counter needs to be added at all.
+    if($max_count > 0){
+        my $new_item_name = $item_name."_".$max_count;
+        &logger(5,"Assigned unique name for $class: '$new_item_name'");
+
+        # store current counter value to global cache before exiting
+        $NC_ctrcache_getUniqueNameCounter{$class}->{$item_name} = $max_count;
+        &logger(5,"Stored current counter value to global cache: '$class' > '$item_name' > '$max_count'");
+        return $new_item_name;
+
+    }else{
+        return $item_name;
+    }
+}
+
+##############################################################################
+
 sub getImportCounter {
     &logger(5,"Entered getImportCounter()");
 
-    # SUB use: determine a unique name for imported items
+    # SUB use: determine a unique numeric counter to be used when importing items with 
+    # a name in the following format: "imported_class-name_n" ("n" being the next available number)
 
     # SUB specs: ###################
 
@@ -648,11 +715,10 @@ sub getImportCounter {
     # 0: the class name of the items being imported
 
     # Return values:
-    # 0: a unique name for that class in the following format:
-    #    "imported_class-name_n" ("n" being the next available number)
+    # 0: a unique numeral
 
-    # Note: the name returned by this function is unique at the time this function is called.
-    # If you wish to add multiple items, make sure you increment the number part for each item!
+    # Note: the numeral returned by this function is unique at the time this function is called.
+    # If you wish to add multiple items in a row, make sure you increment the number for each item!
 
     ################################
     
@@ -660,7 +726,7 @@ sub getImportCounter {
 
     unless($class){&logger(1,"getImportCounter(): Missing argument(s). Aborting.")}
 
-    my @class_items = getItems($class,1);
+    my @class_items = &getItems($class,1);
 
     my $max_count = undef;
     foreach my $item (@class_items){

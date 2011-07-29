@@ -24,7 +24,7 @@ use NConf::Helpers;
 use NConf::Logger;
 
 use vars qw($NC_dbh $NC_db_readonly $NC_db_caching);
-use vars qw(%NC_dbcache_getAttrId %NC_dbcache_getItemClass %NC_dbcache_getConfigAttrs %NC_dbcache_getNamingAttr %NC_dbcache_getConfigClasses %NC_dbcache_checkLinkAsChild);
+use vars qw(%NC_dbcache_getAttrId %NC_dbcache_getItemClass %NC_dbcache_getConfigAttrs %NC_dbcache_getNamingAttr %NC_dbcache_getConfigClasses %NC_dbcache_checkLinkAsChild %NC_ctrcache_getUniqueNameCounter);
 
 $NC_dbh = undef;
 $NC_db_readonly = 0;
@@ -38,7 +38,7 @@ BEGIN {
     use vars qw(@ISA @EXPORT @EXPORT_OK);
 
     @ISA         = qw(NConf);
-    @EXPORT      = qw(@NConf::EXPORT $NC_dbh $NC_db_readonly $NC_db_caching %NC_dbcache_getAttrId %NC_dbcache_getItemClass %NC_dbcache_getConfigAttrs %NC_dbcache_getNamingAttr %NC_dbcache_getConfigClasses %NC_dbcache_checkLinkAsChild dbConnect dbDisconnect dbQuote setDbReadonly);
+    @EXPORT      = qw(@NConf::EXPORT $NC_dbh $NC_db_readonly $NC_db_caching %NC_dbcache_getAttrId %NC_dbcache_getItemClass %NC_dbcache_getConfigAttrs %NC_dbcache_getNamingAttr %NC_dbcache_getConfigClasses %NC_dbcache_checkLinkAsChild %NC_ctrcache_getUniqueNameCounter dbConnect dbDisconnect dbQuote setDbReadonly);
     @EXPORT_OK   = qw(@NConf::EXPORT_OK);
 
 }

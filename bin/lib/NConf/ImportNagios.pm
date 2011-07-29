@@ -163,16 +163,23 @@ sub parseNagiosConfigFile {
             }
         }
 
+        # if no naming attr was found in the current block
         unless($block_naming_attr){
 
             # check if the naming attr for the current class is an NConf internal attribute (true for dependencies, escalations etc.)
-            if($conf_attrs{$input_class}->{$naming_attr}->{'write_to_conf'} eq "no"){
-
+            if($conf_attrs{$input_class}->{$naming_attr}->{'write_to_conf'} eq "no" && $input_class ne "advanced-service"){
                 # if so, generate a unique name for the item to be imported
                 unless($import_counter){$import_counter=&getImportCounter($input_class)}
                 else{$import_counter++}
                 $block_naming_attr = "imported_".$input_class."_".$import_counter;
                 $block_hash{$naming_attr} = $block_naming_attr;
+
+            }elsif($input_class eq "advanced-service"){
+                # for advanced-services, set the naming attr to match the service_description, 
+                # run getUniqueNameCounter() to add a numeric counter, if necessary
+                $block_naming_attr = &getUniqueNameCounter($input_class, $block_hash{'service_description'});
+                $block_hash{$naming_attr} = $block_naming_attr;
+
             }else{
                 # in any other case, exit with an error
                 &logger(1,"Could not locate '$naming_attr' for $input_class (starting at line $filepos). Aborting.");
