@@ -956,6 +956,24 @@ something for later use... other query for link_as_child attrs....
                                        AND fk_id_item='.$value;
             $output = db_handler($command_query, "getOne", "Get command_param_count");
             break;
+            
+        case "get_default_checkcommand_params":
+            $query = 'SELECT attr_value FROM ConfigValues,ConfigAttrs,ConfigClasses
+                                  WHERE id_attr=fk_id_attr
+                                  AND attr_name="default_params"
+                                  AND id_class=fk_id_class
+                                  AND config_class="checkcommand"
+                                  AND fk_id_item="'.$value.'"';
+
+            $default_params = db_handler($query, "getOne", "Read default checkcommand params");
+            if ($default_params == ""){
+                $output = "!";
+            }else{
+                # escape the string for mysql (field contains: " ' \ etc. )
+                $output =  escape_string($default_params);
+            }
+            break;
+            
 
     }
 

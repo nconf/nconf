@@ -166,21 +166,7 @@ if (  ( is_array($checkcommand) ) AND !empty($checkcommand)  ){
 
 
             // Read default checkcommand params
-            $query = 'SELECT attr_value FROM ConfigValues,ConfigAttrs,ConfigClasses
-                                  WHERE id_attr=fk_id_attr
-                                  AND attr_name="default_params"
-                                  AND id_class=fk_id_class
-                                  AND config_class="checkcommand"
-                                  AND fk_id_item="'.$checkcommand_ID.'"';
-
-            $default_params = db_handler($query, "getOne", "Read default checkcommand params");
-
-            if ($default_params == ""){
-                $default_params = "!";
-            }else{
-                # escape the string for mysql (field contains: " ' \ etc. )
-                $default_params = escape_string($default_params);
-            }
+            $default_params = db_templates("get_default_checkcommand_params", $checkcommand_ID);
 
             // Set default checkcommand params
             $query = 'INSERT INTO ConfigValues (fk_id_item,attr_value,fk_id_attr)

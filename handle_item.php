@@ -483,9 +483,16 @@ if(
                         if ( !empty($_SESSION["cache"]["handle"][$check_command_attr_id][0]) ){
                             $check_command_id = $_SESSION["cache"]["handle"][$check_command_attr_id][0];
                         }elseif( !empty($check_command_first_id) ){
+                            # When adding a new service, this will help displaying the correct command_param for the first check_command
+                            # This is only needed for not changed check_command select field
                             $check_command_id = $check_command_first_id;
                         }
                         $command_param_count = db_templates("get_command_param_count_of_checkcommand", $check_command_id);
+                        
+                        # Read default checkcommand params of selected check command and override predefined value (which makes more sense here)
+                        $default_params = db_templates("get_default_checkcommand_params", $check_command_id);
+                        $item_data[$entry["id_attr"]] = $default_params;
+                        
                     }elseif( $handle_action == "modify" AND !empty($_GET["id"]) ){
                         $check_command_id = db_templates("get_checkcommand_of_service", $_GET["id"]);
                         $command_param_count = db_templates("get_command_param_count_of_checkcommand", $check_command_id);
@@ -535,15 +542,17 @@ if(
                         echo '<fieldset class="inline ui-widget-content">';
                         echo '<legend><b>service parameters</b></legend>';
 
-                        if (  isset($_SESSION["cache"]["handle"][$entry["id_attr"]])  ){
+                        if (  isset( $_SESSION["cache"]["handle"][$entry["id_attr"]] )
+                                AND empty( $_SESSION["cache"]["handle"][$entry["id_attr"]]["check_command_changed"] )
+                           ){
                             $value = $_SESSION["cache"]["handle"][$entry["id_attr"]];
                         }elseif ( isset($item_data[$entry["id_attr"]]) ){
                             $value = $item_data[$entry["id_attr"]];
                         }else{
                             $value = "";
                         }
-
-                        // command
+                        
+                        # command
                         $commands_split = explode("!", $value);
 
                         #
@@ -566,7 +575,8 @@ if(
                             }
                         }
 
-                        // get syntax of arguments
+
+                        # get syntax of arguments
                         # Get command syntax
                         $command_query = 'SELECT attr_value FROM ConfigValues,ConfigAttrs
                                                        WHERE id_attr=fk_id_attr
@@ -718,7 +728,7 @@ if(
                 }
                 $result2 = db_handler($query2, "result", "assign_one");
 
-                if ($handle_action == "add" AND ($item_class == "service" OR "advanced-service") AND $entry["id_attr"] == $check_command_attr_id){
+                if ($handle_action == "add" AND ($item_class == "service" OR $item_class == "advanced-service") AND $entry["id_attr"] == $check_command_attr_id){
                     # special for check_command
                     $check_command_first_id = db_handler($query2.' LIMIT 1', "getOne", "get id of first checkcommand for check params / arguments");
                     echo '<td><select id="check_command_select" name="'.$entry["id_attr"].'[]">';
