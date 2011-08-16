@@ -697,6 +697,7 @@ sub getUniqueNameCounter {
         return $new_item_name;
 
     }else{
+        $NC_ctrcache_getUniqueNameCounter{$class}->{$item_name} = 1;
         return $item_name;
     }
 }
