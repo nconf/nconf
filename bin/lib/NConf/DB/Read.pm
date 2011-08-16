@@ -30,7 +30,7 @@ BEGIN {
     use vars qw(@ISA @EXPORT @EXPORT_OK);
 
     @ISA         = qw(NConf::DB);
-    @EXPORT      = qw(@NConf::DB::EXPORT getItemId getItemName getServiceId getServiceHostname getAttrId getItemClass getConfigAttrs getNamingAttr getConfigClasses getItemData getItems getItemsLinked getChildItemsLinked getUniqueNameCounter getImportCounter checkLinkAsChild checkItemsLinked checkItemExistsOnServer queryExecRead);
+    @EXPORT      = qw(@NConf::DB::EXPORT getItemId getItemName getServiceId getServiceHostname getAttrId getItemClass getConfigAttrs getNamingAttr getConfigClasses getItemData getItems getItemsLinked getChildItemsLinked getUniqueNameCounter checkLinkAsChild checkItemsLinked checkItemExistsOnServer queryExecRead);
     @EXPORT_OK   = qw(@NConf::DB::EXPORT_OK);
 }
 
@@ -699,43 +699,6 @@ sub getUniqueNameCounter {
     }else{
         return $item_name;
     }
-}
-
-##############################################################################
-
-sub getImportCounter {
-    &logger(5,"Entered getImportCounter()");
-
-    # SUB use: determine a unique numeric counter to be used when importing items with 
-    # a name in the following format: "imported_class-name_n" ("n" being the next available number)
-
-    # SUB specs: ###################
-
-    # Expected arguments:
-    # 0: the class name of the items being imported
-
-    # Return values:
-    # 0: a unique numeral
-
-    # Note: the numeral returned by this function is unique at the time this function is called.
-    # If you wish to add multiple items in a row, make sure you increment the number for each item!
-
-    ################################
-    
-    my $class = $_[0];
-
-    unless($class){&logger(1,"getImportCounter(): Missing argument(s). Aborting.")}
-
-    my @class_items = &getItems($class,1);
-
-    my $max_count = undef;
-    foreach my $item (@class_items){
-        $item->[1] =~ /^imported_$class\_([0-9]+)/;
-        if($1 && (($1 > $max_count) || !defined($max_count))){$max_count = $1}
-    }
-
-    if(defined($max_count)){return $max_count+1}
-    else{return "1"}
 }
 
 ##############################################################################
