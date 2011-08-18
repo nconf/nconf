@@ -977,10 +977,11 @@ $fattr,$fval
             # process service-templates
             # templates will be applied to services in the following order: 
 
-            # 1. service specific template(s)
-            # 2. notification_period template(s)
-            # 3. check_period template(s)
-            # 4. collector/monitor template(s)
+            # 1. template(s) directly linked to advanced-service
+            # 2. default service template(s) linked to checkcommand
+            # 3. notification_period template(s)
+            # 4. check_period template(s)
+            # 5. collector/monitor template(s)
 
             my @service_templates;
             push(@service_templates, @service_templates1);
@@ -1219,12 +1220,13 @@ $fattr,$fval
                 }
 
                 # process service-templates
-                # templates will be applied to services in the following order: 
+                # templates will be applied to advanced-services in the following order: 
 
                 # 1. template(s) directly linked to advanced-service
-                # 2. notification_period template(s)
-                # 3. check_period template(s)
-                # 4. collector/monitor template(s)
+                # 2. default service template(s) linked to checkcommand
+                # 3. notification_period template(s)
+                # 4. check_period template(s)
+                # 5. collector/monitor template(s)
 
                 my @service_templates;
                 push(@service_templates, @service_templates1);
