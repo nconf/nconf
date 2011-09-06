@@ -624,7 +624,6 @@ $fattr,$fval
                 # don't write templates to config yet, store them separately to be processed later on
                 if($attr->[0] eq "host_template"){push(@host_templates2, $attr->[1]);next}
 
-                if($attr->[0] eq "host_notification_options"){$attr->[0] = "notification_options"}
                 if($attr->[0] ne "" && $attr->[1] ne ""){ $fattr=$attr->[0];$fval=$attr->[1];write FILE}
             }
 
@@ -911,8 +910,6 @@ $fattr,$fval
                 # don't write templates to config yet, store them separately to be processed later on
                 if($attr->[0] eq "service_template"){push(@service_templates2, $attr->[1]);next}
 
-                # TO REMOVE    
-                if($attr->[0] eq "service_notification_options"){$attr->[0] = "notification_options"}
                 if($attr->[0] ne "" && $attr->[1] ne ""){ $fattr=$attr->[0];$fval=$attr->[1];write FILE}
             }
 
@@ -1579,33 +1576,6 @@ sub fetch_inherited_host_templates {
     }
 
     my @attrs;
-    # TO REMOVE
-    # fetch timeperiod host values (notification_period)
-    $sql = "SELECT attr_name,attr_value FROM ConfigValues,ConfigAttrs
-            WHERE id_attr=fk_id_attr
-                AND (attr_name='notification_interval' OR attr_name='host_notification_options')
-                AND fk_id_item=(SELECT fk_item_linked2 FROM ItemLinks,ConfigAttrs
-                                WHERE id_attr=fk_id_attr
-                                    AND attr_name='notification_period'
-                                    AND fk_id_item = $_[0])
-                                    ORDER BY ordering";
-
-    my @attrs1 = &queryExecRead($sql, "Fetching timeperiod host values (notification_period) for host '$_[0]'", "all");
-    foreach (@attrs1){push(@attrs,$_)}
-
-    # TO REMOVE
-    # fetch timeperiod host values (check_period)
-    $sql = "SELECT attr_name,attr_value FROM ConfigValues,ConfigAttrs
-            WHERE id_attr=fk_id_attr
-                AND attr_name='max_check_attempts'
-                AND fk_id_item=(SELECT fk_item_linked2 FROM ItemLinks,ConfigAttrs
-                                WHERE id_attr=fk_id_attr
-                                    AND attr_name='check_period'
-                                    AND fk_id_item = $_[0])
-                                    ORDER BY ordering";
-
-    my @attrs2 = &queryExecRead($sql, "Fetching timeperiod host values (check_period) for host '$_[0]'", "all");
-    foreach (@attrs2){push(@attrs,$_)}
 
     # fetch host-templates linked to timeperiod (notification_period)
     $sql = "SELECT attr_name,attr_value
@@ -1653,34 +1623,6 @@ sub fetch_inherited_service_templates {
 
     my $sql = undef;
     my @attrs;
-
-    # TO REMOVE
-    # fetch timeperiod service values (notification_period)
-    $sql = "SELECT attr_name,attr_value FROM ConfigValues,ConfigAttrs
-            WHERE id_attr=fk_id_attr
-                AND (attr_name='notification_interval' OR attr_name='service_notification_options')
-                AND fk_id_item=(SELECT fk_item_linked2 FROM ItemLinks,ConfigAttrs
-                                WHERE id_attr=fk_id_attr
-                                   AND attr_name='notification_period'
-                                   AND fk_id_item = $_[0])
-                                   ORDER BY ordering";
-
-    my @attrs1 = &queryExecRead($sql, "Fetching timeperiod service values (notification_period) for service '$_[0]'", "all");
-    foreach (@attrs1){push(@attrs,$_)}
-
-    # TO REMOVE
-    # fetch timeperiod service values (check_period)
-    $sql = "SELECT attr_name,attr_value FROM ConfigValues,ConfigAttrs
-            WHERE id_attr=fk_id_attr
-                AND (attr_name='max_check_attempts' OR attr_name='check_interval' OR attr_name='retry_interval')
-                AND fk_id_item=(SELECT fk_item_linked2 FROM ItemLinks,ConfigAttrs
-                                WHERE id_attr=fk_id_attr
-                                    AND attr_name='check_period'
-                                    AND fk_id_item = $_[0])
-                                    ORDER BY ordering";
-
-    my @attrs2 = &queryExecRead($sql, "Fetching timeperiod service values (check_period) for service '$_[0]'", "all");
-    foreach (@attrs2){push(@attrs,$_)}
 
     # fetch service-templates linked to checkcommand
     $sql = "SELECT attr_name,attr_value
