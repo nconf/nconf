@@ -632,8 +632,6 @@ $fattr,$fval
 
                 # don't write templates to config yet, store them separately to be processed later on
                 if($attr->[0] eq "host_template"){push(@host_templates3, $attr->[1]);next}
-
-                if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){ $fattr=$attr->[0];$fval=$attr->[1];write FILE}
             }
 
             # fetch all linked items (assign_one, assign_many etc.)
@@ -941,6 +939,7 @@ $fattr,$fval
                 if($id_item->[3] eq "yes" && $attr->[0] eq "check_freshness"  && $monitor_path && $path =~ /\Q$monitor_path\E/ && $new_checkfreshness){
                     $fattr=$attr->[0];
                     $fval=$new_checkfreshness;
+	                if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){write FILE}
 
                 # TO REMOVE
                 # also overwrite the threshhold value, but only for one sevice of the same host (PROC_sshd)
@@ -948,15 +947,11 @@ $fattr,$fval
                 && $new_freshthresh){
                     $fattr=$attr->[0];
                     $fval=$new_freshthresh;
-                }else{
-                    $fattr=$attr->[0];
-                    $fval=$attr->[1];
+	                if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){write FILE}
                 }
-
-                # TO REMOVE
-                if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){write FILE}
             }
 
+            # TO REMOVE
     	    # overwrite the check_freshness and freshness_threshhold values also if the attributes 
     	    # are not set on a service level (e.g. using service-templates)
 	        if($id_item->[3] eq "yes" && $monitor_path && $path =~ /\Q$monitor_path\E/ && $new_checkfreshness && $checkfreshness_isset eq "0"){
