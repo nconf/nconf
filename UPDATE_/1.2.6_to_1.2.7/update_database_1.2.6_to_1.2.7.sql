@@ -151,8 +151,8 @@ UPDATE ConfigClasses SET friendly_name="Central monitors" WHERE config_class ="n
 UPDATE ConfigClasses SET friendly_name="Distrib. collectors" WHERE config_class="nagios-collector";
 
 # -- update some descriptions --
-UPDATE ConfigAttrs SET description='value is applied to all services on collector hosts' WHERE attr_name='collector_check_freshness' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='nagios-monitor');
-UPDATE ConfigAttrs SET description='value is applied to "check_ssh" service on collector hosts; sets time until service becomes "stale" (useful to check connection between collectors and monitors)' WHERE attr_name='collector_freshness_threshold' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='nagios-monitor');
+UPDATE ConfigAttrs SET description='value is applied to all services on "host is collector" flagged hosts' WHERE attr_name='collector_check_freshness' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='nagios-monitor');
+UPDATE ConfigAttrs SET description='value is applied to "check_ssh" service on "host is collector" flagged hosts; sets the time until service becomes "stale" (useful to verify connection between collectors and monitors)' WHERE attr_name='collector_freshness_threshold' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='nagios-monitor');
 
 # -- set timeperiod alias to "mandatory" --
 UPDATE ConfigAttrs SET mandatory="yes" WHERE attr_name="alias" AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class="timeperiod");
