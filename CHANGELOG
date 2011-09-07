@@ -72,6 +72,8 @@ REMOVED the -n parameter for all import scripts. No more need to specify the nam
 
 MOVED   config.orig/main.php (config/main.php) -> moved to root NConf directory (nconf/)
 MOVED   include/history_tab.php -> moved to tabs directory include/tabs/history.php
+MOVED	5 attributes from timeperiods to hosts/services directly (max_check_attempts, notification_interval etc.) -> refer to the Update Information!
+MOVED	5 attributes from collectors/monitors to hosts/services directly (active_checks_enabled, notifications_enabled etc.) -> refer to the Update Information!
 
 CHANGED step2 will now redirect directly to 'modify service' which will add all services of selected host-preset
 CHANGED 'message'-function: INFO,DEBUG etc. are now handled over the new class (NConf_DEBUG). Old message function only forwards to new class.
