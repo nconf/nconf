@@ -216,8 +216,8 @@ sub create_monitor_specific_files {
     &logger(5,"Entered create_monitor_specific_files()");
 
     my $sql = undef;
-    my @monitor_host_params;
-    my @monitor_srv_params;
+    my @monitor_host_tpl;
+    my @monitor_srv_tpl_params;
 
     # fetch all host ID's that have a collector assigned (hosts which are monitored)
     $sql = "SELECT id_item AS item_id
@@ -232,20 +232,6 @@ sub create_monitor_specific_files {
 
     my @hosts1 = &queryExecRead($sql, "Fetching all host ID's that have a collector assigned", "all");
 
-    # TO REMOVE
-    # fetch monitor-specific options, these will be added to each host
-    $sql = "SELECT attr_name,attr_value,write_to_conf FROM ConfigValues,ConfigAttrs
-               WHERE id_attr=fk_id_attr
-                   AND naming_attr='no'
-                   AND (attr_name='active_checks_enabled'
-                           OR attr_name='passive_checks_enabled'
-                           OR attr_name='notifications_enabled')
-                   AND fk_id_item=$_[0]
-                   ORDER BY ordering";
-
-    my @host_attrs1 = &queryExecRead($sql, "Fetching monitor-specific options for hosts", "all");
-    foreach (@host_attrs1){push(@monitor_host_params,$_)}
-
     # fetch monitor-specific host-templates, these will be added to each host
     $sql = "SELECT attr_name,attr_value,write_to_conf
                     FROM ConfigValues,ItemLinks,ConfigAttrs
@@ -257,7 +243,7 @@ sub create_monitor_specific_files {
                         ORDER BY cust_order,ordering";
 
     my @host_tpl = &queryExecRead($sql, "Fetching monitor-specific host-templates", "all");
-    foreach (@host_tpl){push(@monitor_host_params,$_)}
+    foreach (@host_tpl){push(@monitor_host_tpl,$_)}
 
     # fetch all host ID's that have a collector assigned (hosts which are monitored) and if a host is a collector itself
     $sql = "SELECT id_item AS item_id,
@@ -276,16 +262,17 @@ sub create_monitor_specific_files {
 
     my @hosts2 = &queryExecRead($sql, "Fetching all host ID's that have a collector assigned and if a host is a collector itself", "all");
 
-    # TO REMOVE
-    # fetch monitor-specific options, these will be added to each service
+    # fetch special monitor-specific options
     $sql = "SELECT attr_name,attr_value,write_to_conf FROM ConfigValues,ConfigAttrs
                WHERE id_attr=fk_id_attr
                AND naming_attr='no'
+               AND (attr_name='collector_check_freshness'
+                           OR attr_name='collector_freshness_threshold')
                AND fk_id_item=$_[0]
                ORDER BY ordering";
 
-    my @srv_attrs1 = &queryExecRead($sql, "Fetching monitor-specific options for services", "all");
-    foreach (@srv_attrs1){push(@monitor_srv_params,$_)}
+    my @srv_attrs1 = &queryExecRead($sql, "Fetching special monitor-specific options for services", "all");
+    foreach (@srv_attrs1){push(@monitor_srv_tpl_params,$_)}
 
     # fetch monitor-specific service-templates, these will be added to each service
     $sql = "SELECT attr_name,attr_value,write_to_conf
@@ -298,7 +285,7 @@ sub create_monitor_specific_files {
                         ORDER BY cust_order,ordering";
 
     my @srv_tpl = &queryExecRead($sql, "Fetching monitor-specific service-templates", "all");
-    foreach (@srv_tpl){push(@monitor_srv_params,$_)}
+    foreach (@srv_tpl){push(@monitor_srv_tpl_params,$_)}
 
     # fetch 'stale_service_command' attr for nagios-monitor
     $sql = "SELECT attr_name,attr_value,write_to_conf
@@ -311,7 +298,7 @@ sub create_monitor_specific_files {
                         LIMIT 1";
 
     # expect exactly one row to be returned
-    push(@monitor_srv_params,&queryExecRead($sql, "Fetching 'stale_service_command' attr", "all"));
+    push(@monitor_srv_tpl_params,&queryExecRead($sql, "Fetching 'stale_service_command' attr", "all"));
 
     # fetch all service ID's of hosts that have a collector assigned and which are not disabled, also pass if a host is a collector itself
     my @services = undef;
@@ -353,18 +340,18 @@ sub create_monitor_specific_files {
             if($config_class eq 'host'){
                 # write hosts to cfg file
                 &write_file("$monitor_path/$class_info{'host'}->{'out_file'}","host","$class_info{'host'}->{'nagios_object'}",
-                    \@hosts1,\@monitor_host_params);
+                    \@hosts1,\@monitor_host_tpl);
             }
             elsif($config_class eq 'service'){
                 # write services to cfg file
                 &write_file("$monitor_path/$class_info{'service'}->{'out_file'}","service","$class_info{'service'}->{'nagios_object'}",
-                    \@services,\@monitor_srv_params);
+                    \@services,\@monitor_srv_tpl_params);
             }
             else{
-                # write remaining classes to cfg file (attach @monitor_srv_params array, which is needed for advanced-services)
+                # write remaining classes to cfg file (attach @monitor_srv_tpl_params array, which is needed for advanced-services)
                 my @class_items = &getItems("$config_class");
                 &write_file("$monitor_path/$class_info{$config_class}->{'out_file'}","$config_class","$class_info{$config_class}->{'nagios_object'}",
-                    \@class_items,\@monitor_srv_params);
+                    \@class_items,\@monitor_srv_tpl_params);
             }
         }
     }
@@ -379,8 +366,8 @@ sub create_collector_specific_files {
     &logger(5,"Entered create_collector_specific_files()");
 
     my $sql = undef;
-    my @collector_host_params;
-    my @collector_srv_params;
+    my @collector_host_tpl;
+    my @collector_srv_tpl;
 
     # fetch all host ID's that are assigned to the collector (hosts which are monitored)
     $sql = "SELECT id_item AS item_id FROM ConfigItems,ConfigClasses
@@ -394,20 +381,6 @@ sub create_collector_specific_files {
 
     my @hosts = &queryExecRead($sql, "Fetching all host ID's that are assigned to the current collector", "all");
 
-    # TO REMOVE
-    # fetch collector-specific options, these will be added to each host
-    $sql = "SELECT attr_name,attr_value,write_to_conf FROM ConfigValues,ConfigAttrs
-                WHERE id_attr=fk_id_attr
-                    AND naming_attr='no'
-                    AND (attr_name='active_checks_enabled'
-                         OR attr_name='passive_checks_enabled'
-                         OR attr_name='notifications_enabled')
-                    AND fk_id_item=$_[0]
-                    ORDER BY ordering";
-
-    my @host_attrs1 = &queryExecRead($sql, "Fetching collector-specific options for hosts", "all");
-    foreach (@host_attrs1){push(@collector_host_params,$_)}
-
     # fetch collector-specific host-templates, these will be added to each host
     $sql = "SELECT attr_name,attr_value,write_to_conf
                     FROM ConfigValues,ItemLinks,ConfigAttrs
@@ -419,18 +392,7 @@ sub create_collector_specific_files {
                         ORDER BY cust_order,ordering";
 
     my @host_tpl = &queryExecRead($sql, "Fetching collector-specific host-templates", "all");
-    foreach (@host_tpl){push(@collector_host_params,$_)}
-
-    # TO REMOVE
-    # fetch collector-specific options, these will be added to each service
-    $sql = "SELECT attr_name,attr_value,write_to_conf FROM ConfigValues,ConfigAttrs
-                WHERE id_attr=fk_id_attr
-                AND naming_attr='no'
-                AND fk_id_item=$_[0]
-                ORDER BY ordering";
-
-    my @srv_attrs1 = &queryExecRead($sql, "Fetching collector-specific options for services", "all");
-    foreach (@srv_attrs1){push(@collector_srv_params,$_)}
+    foreach (@host_tpl){push(@collector_host_tpl,$_)}
 
     # fetch collector-specific service-templates, these will be added to each service
     $sql = "SELECT attr_name,attr_value,write_to_conf
@@ -443,7 +405,7 @@ sub create_collector_specific_files {
                         ORDER BY cust_order,ordering";
 
     my @srv_tpl = &queryExecRead($sql, "Fetching collector-specific service-templates", "all");
-    foreach (@srv_tpl){push(@collector_srv_params,$_)}
+    foreach (@srv_tpl){push(@collector_srv_tpl,$_)}
 
     # fetch all service ID's of hosts assigned to the collector and which are not disabled
     my @services = undef;
@@ -492,7 +454,7 @@ sub create_collector_specific_files {
 
                 # write hosts to cfg file
                 &write_file("$collector_path/$class_info{'host'}->{'out_file'}","host","$class_info{'host'}->{'nagios_object'}",
-                    \@hosts,\@collector_host_params);
+                    \@hosts,\@collector_host_tpl);
             }
             elsif($config_class eq 'service'){
 
@@ -503,7 +465,7 @@ sub create_collector_specific_files {
 
                 # write services to cfg file
                 &write_file("$collector_path/$class_info{'service'}->{'out_file'}","service","$class_info{'service'}->{'nagios_object'}",
-                    \@services,\@collector_srv_params);
+                    \@services,\@collector_srv_tpl);
             }
             else{
 
@@ -514,9 +476,9 @@ sub create_collector_specific_files {
                     $entry->[1] = $_[0];
                 }
 
-                # write remaining classes to cfg file (attach @collector_srv_params array, which is needed for advanced-services)
+                # write remaining classes to cfg file (attach @collector_srv_tpl array, which is needed for advanced-services)
                 &write_file("$collector_path/$class_info{$config_class}->{'out_file'}","$config_class","$class_info{$config_class}->{'nagios_object'}",
-                    \@class_items,\@collector_srv_params);
+                    \@class_items,\@collector_srv_tpl);
             }
         }
     }
@@ -872,7 +834,7 @@ $fattr,$fval
 
                 if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){ $fattr=$attr->[0];$fval=$attr->[1];write FILE}
 
-                # TO REMOVE
+                # TO CHANGE
                 # read and store the host we're currently working on
                 $curr_host[0] = $hostname;
                 $curr_host[1] = $id_item->[3];
@@ -881,7 +843,7 @@ $fattr,$fval
             } # end of loop through a service's links
 
 
-            # TO REMOVE
+            # TO CHANGE
             # check if the host whose services we're working on has changed
             if($curr_host[0] ne $prev_host[0]){
 
@@ -911,19 +873,15 @@ $fattr,$fval
                 if($attr->[0] ne "" && $attr->[1] ne ""){ $fattr=$attr->[0];$fval=$attr->[1];write FILE}
             }
 
-            # TO REMOVE
-            # determine if this service belongs to a collector host (host is collector set to "yes")
-            my $new_checkfreshness = undef;
-            my $new_freshthresh = undef;
-    	    my $checkfreshness_isset = 0;
-	        my $freshthresh_isset = 0;
+            # TO CHANGE
+            # determine if this service belongs to a collector host ("host is collector" flag is set to "yes")
+            my $checkfreshness = undef;
+            my $freshthresh = undef;
             if($id_item->[3] eq "yes"){
                 # look for collector-specific check_freshness and freshness_threshhold
                 foreach my $extattr (@mon_col_params){
-                    if($extattr->[0] eq "collector_check_freshness"){$new_checkfreshness = $extattr->[1]}
-                    if($extattr->[0] eq "collector_freshness_threshold"){$new_freshthresh = $extattr->[1]}
-	    	        if($extattr->[0] eq "check_freshness" && $extattr->[1] ne ""){$checkfreshness_isset=1}
-		            if($extattr->[0] eq "freshness_threshold" && $extattr->[1] ne ""){$freshthresh_isset=1}
+                    if($extattr->[0] eq "collector_check_freshness"){$checkfreshness = $extattr->[1]}
+                    if($extattr->[0] eq "collector_freshness_threshold"){$freshthresh = $extattr->[1]}
                 }
             }
 
@@ -932,37 +890,19 @@ $fattr,$fval
 
                 # don't write templates to config yet, store them separately to be processed later on
                 if($attr->[0] eq "service_template"){push(@service_templates3, $attr->[1]);next}
-
-                # TO REMOVE
-                # overwrite the check_freshness and freshness_threshhold values if
-                # this service belongs to a collector host (only in monitor config)
-                if($id_item->[3] eq "yes" && $attr->[0] eq "check_freshness"  && $monitor_path && $path =~ /\Q$monitor_path\E/ && $new_checkfreshness){
-                    $fattr=$attr->[0];
-                    $fval=$new_checkfreshness;
-	                if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){write FILE}
-
-                # TO REMOVE
-                # also overwrite the threshhold value, but only for one sevice of the same host (PROC_sshd)
-                }elsif($id_item->[3] eq "yes" && $attr->[0] eq "freshness_threshold" && $is_proc_sshd == 1 && $monitor_path && $path =~ /\Q$monitor_path\E/ 
-                && $new_freshthresh){
-                    $fattr=$attr->[0];
-                    $fval=$new_freshthresh;
-	                if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){write FILE}
-                }
             }
 
-            # TO REMOVE
-    	    # overwrite the check_freshness and freshness_threshhold values also if the attributes 
-    	    # are not set on a service level (e.g. using service-templates)
-	        if($id_item->[3] eq "yes" && $monitor_path && $path =~ /\Q$monitor_path\E/ && $new_checkfreshness && $checkfreshness_isset eq "0"){
+            # TO CHANGE
+            # apply the collector_check_freshness value to .*ssh.* service(s) on "host is collector" flagged hosts (only in monitor config)
+	        if($id_item->[3] eq "yes" && $is_proc_sshd == 1 && $monitor_path && $path =~ /\Q$monitor_path\E/ && $checkfreshness){
 		        $fattr = "check_freshness";
-    		    $fval  = $new_checkfreshness;
+    		    $fval  = $checkfreshness;
 	    	    write FILE;
     	    }
-	        if($id_item->[3] eq "yes" && $is_proc_sshd == 1 && $monitor_path && $path =~ /\Q$monitor_path\E/ 
-            && $new_freshthresh && $freshthresh_isset eq "0"){
+            # apply the collector_freshness_threshhold value to .*ssh.* service(s) on "host is collector" flagged hosts (only in monitor config)
+	        if($id_item->[3] eq "yes" && $is_proc_sshd == 1 && $monitor_path && $path =~ /\Q$monitor_path\E/ && $freshthresh){
 		        $fattr = "freshness_threshold";
-    		    $fval  = $new_freshthresh;
+    		    $fval  = $freshthresh;
 	    	    write FILE;
 	        }
 
@@ -1207,6 +1147,7 @@ $fattr,$fval
 
                 # process monitor-/collector-specific templates
                 foreach my $attr (@mon_col_params){
+
                     # don't write templates to config yet, store them separately to be processed later on
                     if($attr->[0] eq "service_template"){push(@service_templates3, $attr->[1]);next}
                 }
