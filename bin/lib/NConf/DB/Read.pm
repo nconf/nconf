@@ -946,6 +946,8 @@ sub checkItemExistsOnServer {
             # check if all hosts / services within the group exist on the current collector / are monitored at all by any collector
             if($attr->[0] eq "members"){ # this clause prevents endless loops!
                 unless(&checkItemExistsOnServer($attr->[3],$collector_id) eq "true"){undef $attr->[1]}
+            } elsif ($attr->[0] eq "hostgroup_members"){
+                unless(&checkItemExistsOnServer($attr->[3],$collector_id) eq "true"){undef $attr->[1]}
             }
         }
 
@@ -959,6 +961,7 @@ sub checkItemExistsOnServer {
                 $check_item_on_collector = 0;
             }
             if($attr->[0] eq "members"){$has_members = 1}
+            if($attr->[0] eq "hostgroup_members"){$has_members = 1}
         }
 
         # process servicegroups
