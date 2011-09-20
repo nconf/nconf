@@ -30,7 +30,7 @@ use Tie::IxHash;    # preserve hash order
 
 # read commandline arguments
 use vars qw($opt_c $opt_f $opt_x $opt_s $opt_d);
-getopts('c:n:f:x:sd:');
+getopts('c:f:x:sd:');
 unless($opt_c && $opt_f){&usage}
 if($opt_x){&setLoglevel($opt_x)}
 if($opt_s){&setDbReadonly(1)}
