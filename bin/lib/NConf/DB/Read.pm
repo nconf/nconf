@@ -343,6 +343,12 @@ sub getConfigAttrs {
                         FROM ConfigAttrs 
                         ORDER BY fk_id_class, ordering";
 
+	# TEMPORARY FIX
+	# check if 'link_bidirectional' attr exists in the database (necessary for reverse compatibility of this function with v1.2.6)
+	my %struct_ConfigAttrs = &queryExecRead("SHOW COLUMNS FROM ConfigAttrs","Fetching structure of ConfigAttrs table","all2","Field");
+	unless(defined($struct_ConfigAttrs{'link_bidirectional'})){$q_attr =~ s/\s*link_bidirectional,\s*\n/\n/}
+	# END OF TEMPORARY FIX
+
     my %config_attrs = &queryExecRead($q_attr,"Fetching all attributes from ConfigAttrs table","all2","id_attr");
 
     # get all available classes
@@ -787,7 +793,7 @@ sub checkItemsLinked {
     # fetch id_attr
     my $id_attr = &getAttrId($attr_name, $class_name);
     unless($id_attr){
-        &logger(2,"Failed to resolve attr ID for '$attr_name' using getAttrId(). Aborting checkItemsLinked().");
+        &logger(2,"Failed to resolve attr ID for attribute '$attr_name' using getAttrId(). Aborting checkItemsLinked().");
         return undef;
     }
 
