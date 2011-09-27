@@ -474,6 +474,7 @@ if ($step == 0){
 
     function find_PERL_Version() {
         $output = shell_exec('perl -v');
+        NConf_DEBUG::set($output, 'DEBUG', "Perl version check");
         if ( !$output ){
             # could not execute
             return "UNKNOWN";
