@@ -164,7 +164,6 @@ if ( isset($_POST["modify"]) ){
         # - class: service
         # - attributes: checkcommand and hostname
         # they will not be editable on "modify" so do not make theme mandatory
-        
         if ($config_class == "service"){
             # get id of attr check_command and host_name
             $check_command_attr_id = db_templates("get_attr_id", $config_class, "check_command");
@@ -172,6 +171,11 @@ if ( isset($_POST["modify"]) ){
             if (isset( $m_array[$check_command_attr_id]))   unset($m_array[$check_command_attr_id]);
             if (isset( $m_array[$host_name_attr_id]))       unset($m_array[$host_name_attr_id]);
             NConf_DEBUG::set($m_array, 'DEBUG', "after special case for service");
+        }elseif ($config_class == "advanced-service"){
+            # - class: advanced-service
+            $check_command_attr_id = db_templates("get_attr_id", $config_class, "check_command");
+            if (isset( $m_array[$check_command_attr_id]))   unset($m_array[$check_command_attr_id]);
+            NConf_DEBUG::set($m_array, 'DEBUG', "after special case for advanced-service");
         }
         $write2db = check_mandatory($m_array,$_POST);
         NConf_DEBUG::close_group();
