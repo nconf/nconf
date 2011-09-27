@@ -94,7 +94,7 @@ sub linkItems {
     # fetch id_attr
     my $id_attr = &getAttrId($attr_name, $class_name);
     unless($id_attr){
-        &logger(2,"Failed to resolve attr ID for '$attr_name' using getAttrId(). Aborting linkItems().");
+        &logger(2,"Failed to resolve attr ID for attribute '$attr_name' using getAttrId(). Aborting linkItems().");
         return undef;
     }
 

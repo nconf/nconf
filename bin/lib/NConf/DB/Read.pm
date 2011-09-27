@@ -30,7 +30,7 @@ BEGIN {
     use vars qw(@ISA @EXPORT @EXPORT_OK);
 
     @ISA         = qw(NConf::DB);
-    @EXPORT      = qw(@NConf::DB::EXPORT getItemId getItemName getServiceId getServiceHostname getAttrId getItemClass getConfigAttrs getNamingAttr getConfigClasses getItemData getItems getItemsLinked getChildItemsLinked getUniqueNameCounter getImportCounter checkLinkAsChild checkItemsLinked checkItemExistsOnServer queryExecRead);
+    @EXPORT      = qw(@NConf::DB::EXPORT getItemId getItemName getServiceId getServiceHostname getAttrId getItemClass getConfigAttrs getNamingAttr getConfigClasses getItemData getItems getItemsLinked getChildItemsLinked getUniqueNameCounter checkLinkAsChild checkItemsLinked checkItemExistsOnServer queryExecRead);
     @EXPORT_OK   = qw(@NConf::DB::EXPORT_OK);
 }
 
@@ -342,6 +342,12 @@ sub getConfigAttrs {
                     (SELECT config_class FROM ConfigClasses WHERE id_class=fk_show_class_items) AS assign_to_class
                         FROM ConfigAttrs 
                         ORDER BY fk_id_class, ordering";
+
+	# TEMPORARY FIX
+	# check if 'link_bidirectional' attr exists in the database (necessary for reverse compatibility of this function with v1.2.6)
+	my %struct_ConfigAttrs = &queryExecRead("SHOW COLUMNS FROM ConfigAttrs","Fetching structure of ConfigAttrs table","all2","Field");
+	unless(defined($struct_ConfigAttrs{'link_bidirectional'})){$q_attr =~ s/\s*link_bidirectional,\s*\n/\n/}
+	# END OF TEMPORARY FIX
 
     my %config_attrs = &queryExecRead($q_attr,"Fetching all attributes from ConfigAttrs table","all2","id_attr");
 
@@ -697,45 +703,9 @@ sub getUniqueNameCounter {
         return $new_item_name;
 
     }else{
+        $NC_ctrcache_getUniqueNameCounter{$class}->{$item_name} = 1;
         return $item_name;
     }
-}
-
-##############################################################################
-
-sub getImportCounter {
-    &logger(5,"Entered getImportCounter()");
-
-    # SUB use: determine a unique numeric counter to be used when importing items with 
-    # a name in the following format: "imported_class-name_n" ("n" being the next available number)
-
-    # SUB specs: ###################
-
-    # Expected arguments:
-    # 0: the class name of the items being imported
-
-    # Return values:
-    # 0: a unique numeral
-
-    # Note: the numeral returned by this function is unique at the time this function is called.
-    # If you wish to add multiple items in a row, make sure you increment the number for each item!
-
-    ################################
-    
-    my $class = $_[0];
-
-    unless($class){&logger(1,"getImportCounter(): Missing argument(s). Aborting.")}
-
-    my @class_items = &getItems($class,1);
-
-    my $max_count = undef;
-    foreach my $item (@class_items){
-        $item->[1] =~ /^imported_$class\_([0-9]+)/;
-        if($1 && (($1 > $max_count) || !defined($max_count))){$max_count = $1}
-    }
-
-    if(defined($max_count)){return $max_count+1}
-    else{return "1"}
 }
 
 ##############################################################################
@@ -823,7 +793,7 @@ sub checkItemsLinked {
     # fetch id_attr
     my $id_attr = &getAttrId($attr_name, $class_name);
     unless($id_attr){
-        &logger(2,"Failed to resolve attr ID for '$attr_name' using getAttrId(). Aborting checkItemsLinked().");
+        &logger(2,"Failed to resolve attr ID for attribute '$attr_name' using getAttrId(). Aborting checkItemsLinked().");
         return undef;
     }
 
@@ -982,6 +952,8 @@ sub checkItemExistsOnServer {
             # check if all hosts / services within the group exist on the current collector / are monitored at all by any collector
             if($attr->[0] eq "members"){ # this clause prevents endless loops!
                 unless(&checkItemExistsOnServer($attr->[3],$collector_id) eq "true"){undef $attr->[1]}
+            } elsif ($attr->[0] eq "hostgroup_members"){
+                unless(&checkItemExistsOnServer($attr->[3],$collector_id) eq "true"){undef $attr->[1]}
             }
         }
 
@@ -995,6 +967,7 @@ sub checkItemExistsOnServer {
                 $check_item_on_collector = 0;
             }
             if($attr->[0] eq "members"){$has_members = 1}
+            if($attr->[0] eq "hostgroup_members"){$has_members = 1}
         }
 
         # process servicegroups
