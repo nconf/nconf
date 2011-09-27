@@ -69,7 +69,7 @@ $result = db_handler($query, "result", "does entry already exist");
 if ( mysql_num_rows($result) ){
 
     NConf_DEBUG::set('An item with the name &quot;'.$_POST[$id_naming_attr].'&quot; already exists!', 'ERROR');
-    NConf_DEBUG::set('Click for details or go back:', 'ERROR');
+    NConf_DEBUG::set('For its details click the link below or go back:', 'ERROR');
 
     $list_items = '';
     while($entry = mysql_fetch_assoc($result)){
