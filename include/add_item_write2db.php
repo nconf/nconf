@@ -44,14 +44,24 @@ if ($config_class == "service"){
             AND fk_id_class = id_class
             AND config_class = "service"
             AND attr_value = "'.escape_string($_POST[$id_naming_attr]).'"';
-            //AND ConfigValues.fk_id_item <> "'.$id.'"';
+    }elseif($config_class == "nagios-collector" OR $config_class == "nagios-monitor"){
+        $query = 'SELECT attr_value, fk_id_item
+                        FROM ConfigItems, ConfigValues, ConfigAttrs, ConfigClasses
+                        WHERE id_item = fk_id_item
+                        AND id_attr = fk_id_attr
+                        AND naming_attr = "yes"
+                        AND ConfigItems.fk_id_class = id_class
+                        AND (
+                            config_class = "nagios-monitor"
+                            OR config_class = "nagios-collector"
+                            )
+                        AND attr_value="'.escape_string($_POST[$id_naming_attr]).'"';
 }else{
     $query = 'SELECT attr_value, fk_id_item
             FROM ConfigValues
             WHERE fk_id_attr='.$id_naming_attr.'
             AND attr_value = "'.escape_string($_POST[$id_naming_attr]).'"
         ';
-            //AND fk_id_item <>'.$id.'
 }
 $result = db_handler($query, "result", "does entry already exist");
         
