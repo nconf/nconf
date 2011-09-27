@@ -1,4 +1,4 @@
-Release 1.2.7 (tbd...)
+Release 1.3.0 (tbd...)
 
 FIXED   a bug with the $SUPERADMIN_GROUPS array (array couldn't be unset). Also, superadmin groups are now listed first in the 'contact_groups' attr,
         allowing users to place the '+' sign in the beginning (useful to control inheritance of contact_groups from templates).

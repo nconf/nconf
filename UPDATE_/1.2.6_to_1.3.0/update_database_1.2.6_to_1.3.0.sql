@@ -1,5 +1,5 @@
 # -- NConf database update sctipt --
-# -- from version 1.2.6 to 1.2.7 --
+# -- from version 1.2.6 to 1.3.0 --
 
 # -- add 'link_bidirectional' attribute to ConfigAttrs table --
 ALTER TABLE ConfigAttrs ADD COLUMN `link_bidirectional` enum('yes','no') NOT NULL default 'no' AFTER link_as_child;
@@ -246,4 +246,4 @@ UPDATE ConfigAttrs SET ordering=23 WHERE attr_name='check_params' AND fk_id_clas
 UPDATE ConfigAttrs SET friendly_name = 'address', description = 'IP-address / DNS name' WHERE attr_name='address' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class="host");
 
 # -- add history entry for update --
-INSERT INTO History (user_str, action, attr_name, attr_value) VALUES ('NConf Setup','general','updated','NConf to version 1.2.7');
+INSERT INTO History (user_str, action, attr_name, attr_value) VALUES ('NConf Setup','general','updated','NConf to version 1.3.0');

@@ -101,4 +101,4 @@ CREATE TABLE `History` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 # -- add history entry for installation --
-INSERT INTO History (user_str, action, attr_name, attr_value) VALUES ('NConf Setup','general','installed','NConf 1.2.7');
+INSERT INTO History (user_str, action, attr_name, attr_value) VALUES ('NConf Setup','general','installed','NConf 1.3.0');

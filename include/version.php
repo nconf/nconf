@@ -2,12 +2,12 @@
 #
 # File for Version number and info
 #
-define("VERSION_NUMBER", '1.2.7');
+define("VERSION_NUMBER", '1.3.0');
 define("VERSION_STRING", '<img src="design_templates/nconf_fresh/nconf-logo-16.gif" style="vertical-align:bottom" alt="nconf-logo">
                           <b>NConf v. '.VERSION_NUMBER.' (alpha-7)</b>');
 
 
-define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf 1.2.7, intended FOR TESTING PURPOSES ONLY! 
+define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf 1.3.0, intended FOR TESTING PURPOSES ONLY! 
                                     <br>Do not use this version in a production environment or to upgrade your productive NConf installation!
                                     <br>Note that we will not provide any update functionality from this pre-release to the next official release.');
 
