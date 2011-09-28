@@ -12,8 +12,9 @@ use NConf::Logger;
 use Getopt::Std;
 
 # read commandline arguments
-use vars qw($opt_x $opt_s);
-getopts('x:s');
+use vars qw($opt_h $opt_x $opt_s);
+getopts('x:sh');
+if($opt_h){&usage}
 if($opt_x){&setLoglevel($opt_x)}
 if($opt_s){&setDbReadonly(1)}
 
@@ -34,6 +35,8 @@ my %mon_col_attrs = ("active_checks_enabled" => "",
 my %data2convert = ("timeperiod" => \%tp_attrs, 
 					"nagios-collector" => \%mon_col_attrs, 
 					"nagios-monitor" => \%mon_col_attrs);
+
+my $no_work = undef;
 
 #########################
 # MAIN
@@ -60,39 +63,75 @@ foreach my $class (keys(%data2convert)){
 			unless(defined($data2convert{$class}->{$attr->[0]})){next}
 
 			# extract relevant data
-			$item_new_data{$attr->[0]} = $attr->[1];
+			if($attr->[1] ne ""){$item_new_data{$attr->[0]} = $attr->[1]}
 		}
 
+		# proceed if one or more of the relevant attributes are in use
 		if(%item_new_data){
-			# juggle some data
-			$item_new_data{'register'} = '0';
+
+			$no_work = "false";
+
+			# evaluate host/service notification_options
 			my $host_notification_options = $item_new_data{'host_notification_options'};
 			my $service_notification_options = $item_new_data{'service_notification_options'};
 			delete $item_new_data{'host_notification_options'};
 			delete $item_new_data{'service_notification_options'};
-			$item_new_data{'name'} = &getUniqueNameCounter("host-template", "converted_host-template");
-			$item_new_data{'notification_options'} = $host_notification_options;
 
-			# add a host-template with available data
-			&logger(3,"Adding host-template \'$item_new_data{'name'}\' with data from $class '".&getItemName($item->[0])."'");
-			unless(&addItem("host-template", %item_new_data)){&logger(1,"Error adding host-template with data from $class '".&getItemName($item->[0])."'")};
+			##### host-templates
 
-			# link new host-template with original item
-			my $new_tpl_id = &getItemId($item_new_data{'name'}, "host-template");
-			unless(&linkItems($item->[0], $new_tpl_id, "host_template", "0")){&logger(1,"Error linking new host-template with $class '".&getItemName($item->[0])."'")};
+			if($host_notification_options ne ""){$item_new_data{'notification_options'} = $host_notification_options}
 
-			# juggle some more data
-			$item_new_data{'name'} = &getUniqueNameCounter("service-template", "converted_service-template");
-			$item_new_data{'notification_options'} = $service_notification_options;
+			# do one last check to see if relevant attributes are still set for host-templates
+			if(%item_new_data){
 
-			# add a service-template with available data
-			&logger(3,"Adding service-template \'$item_new_data{'name'}\' with data from $class '".&getItemName($item->[0])."'");
-			unless(&addItem("service-template", %item_new_data)){&logger(1,"Error adding service-template with data from $class '".&getItemName($item->[0])."'")};
-			# link new service-template with original item
-			my $new_tpl_id = &getItemId($item_new_data{'name'}, "service-template");
-			unless(&linkItems($item->[0], $new_tpl_id, "service_template", "0")){&logger(1,"Error linking new service-template with $class '".&getItemName($item->[0])."'")};
+				# determine the 'name' + 'register' attributes
+				$item_new_data{'name'} = &getUniqueNameCounter("host-template", "converted_host-template");
+				$item_new_data{'register'} = '0';
+
+				# add a host-template with the available data
+				&logger(3,"Adding host-template    \'$item_new_data{'name'}\'    with data from $class '".&getItemName($item->[0])."'");
+				unless(&addItem("host-template", %item_new_data)){&logger(1,"Error adding host-template with data from $class '".&getItemName($item->[0])."'")};
+
+				# link new host-template with original item
+				my $new_tpl_id = &getItemId($item_new_data{'name'}, "host-template");
+				unless(&linkItems($item->[0], $new_tpl_id, "host_template", "0")){&logger(1,"Error linking new host-template with $class '".&getItemName($item->[0])."'")};
+
+				# remove the 'name' + 'register' attributes
+				delete $item_new_data{'name'};
+				delete $item_new_data{'register'};
+				delete $item_new_data{'notification_options'};
+			}
+
+			##### service-templates
+
+			if($service_notification_options ne ""){$item_new_data{'notification_options'} = $service_notification_options}
+
+			# do one last check to see if relevant attributes are still set for service-templates
+			if(%item_new_data){
+
+				# determine the 'name' + 'register' attributes
+				$item_new_data{'name'} = &getUniqueNameCounter("service-template", "converted_service-template");
+				$item_new_data{'register'} = '0';
+
+				# add a service-template with the available data
+				&logger(3,"Adding service-template \'$item_new_data{'name'}\' with data from $class '".&getItemName($item->[0])."'");
+				unless(&addItem("service-template", %item_new_data)){&logger(1,"Error adding service-template with data from $class '".&getItemName($item->[0])."'")};
+
+				# link new service-template with original item
+				my $new_tpl_id = &getItemId($item_new_data{'name'}, "service-template");
+				unless(&linkItems($item->[0], $new_tpl_id, "service_template", "0")){&logger(1,"Error linking new service-template with $class '".&getItemName($item->[0])."'")};
+
+				# remove the 'name' + 'register' attributes
+				delete $item_new_data{'name'};
+				delete $item_new_data{'register'};
+				delete $item_new_data{'notification_options'};
+			}
 		}
 	}
+}
+
+unless($no_work eq "false"){
+	&logger(3,"None of the relevant attributes are in use. There is no data to convert.");
 }
 
 &logger(3,"Finished running $0");
@@ -104,7 +143,29 @@ sub usage {
 print <<"EOT";
 
 Script by Angelo Gargiulo, Sunrise Communications AG
-This script...
+
+This script will convert timeperiods, nagios-collector and nagios-monitor servers in the following way:
+If these items use one or any combination of the attributes listed below, the script will create host- and service-templates 
+based on the content of the attributes and link the new templates with the original item.
+
+The goal is to ensure that there is no data missing after an update to NConf 1.3.0 and that the config can be generated as usual.
+If prior to the update you weren't using any of the attributes listed below or, if you don't wish for any auto-created templates, 
+then you do not need to run this script.
+
+timeperiod attributes:
+- max_check_attempts
+- check_interval
+- retry_interval
+- notification_interval
+- host_notification_options
+- service_notification_options
+
+nagios-collector & nagios-monitor attributes:
+- active_checks_enabled
+- passive_checks_enabled
+- notifications_enabled
+- check_freshness
+- freshness_threshold
 
 Usage:
 $0 [-x (1-5)] [-s]
@@ -112,6 +173,8 @@ $0 [-x (1-5)] [-s]
 Help:
 
   optional
+
+  -h  Display this help and exit
 
   -x  Set a custom loglevel (1 = lowest, 5 = most verbose)
 
