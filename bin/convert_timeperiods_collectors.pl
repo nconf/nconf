@@ -42,10 +42,6 @@ my $no_work = undef;
 # MAIN
 
 &logger(3,"Started executing $0");
-&logger(4,"Current loglevel is set to $NC_loglevel");
-if($NC_db_readonly == 1){
-    &logger(3,"Running in simulation mode. No modifications will be made to the database!");
-}
 
 # iterate through all classes that we need to convert
 foreach my $class (keys(%data2convert)){
@@ -174,7 +170,7 @@ Help:
 
   optional
 
-  -h  Display this help and exit
+  -h  Display command usage and syntax (this text)
 
   -x  Set a custom loglevel (1 = lowest, 5 = most verbose)
 

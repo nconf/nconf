@@ -29,10 +29,6 @@ $opt_c =~ s/\s*$//;
 # MAIN
 
 &logger(3,"Started executing $0");
-&logger(4,"Current loglevel is set to $NC_loglevel");
-if($NC_db_readonly == 1){
-    &logger(3,"Running in simulation mode. No modifications will be made to the database!");
-}
 
 tie my %main_hash, 'Tie::IxHash';
 %main_hash = &parseNagiosConfigFile($opt_c, $opt_f);

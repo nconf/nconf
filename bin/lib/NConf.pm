@@ -40,12 +40,9 @@ BEGIN {
     $COPYRIGHT   = "(c) 2006 - 2011 Sunrise Communications AG, Zurich, Switzerland";
 }
 
-print "\n";
-print "[ Initializing NConf perl-API (library version $VERSION, written by $AUTHOR) ]\n";
-print "[ Copyright $COPYRIGHT  ]\n\n";
-
-#print "[ DISCLAIMER: This library is BETA and comes with ABSOLUTELY NO WARRANTY of any kind! ]\n";
-#print "[ Syntax may be subject to change in the future!                                      ]\n\n";
+print STDERR "\n";
+print STDERR "[ Initializing NConf perl-API (library version $VERSION, written by $AUTHOR) ]\n";
+print STDERR "[ Copyright $COPYRIGHT  ]\n\n";
 
 ##############################################################################
 ### S U B S ##################################################################

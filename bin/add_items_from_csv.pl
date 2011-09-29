@@ -43,10 +43,6 @@ if($opt_d){$csv_delimiter = "$opt_d"}
 # MAIN
 
 &logger(3,"Started executing $0");
-&logger(4,"Current loglevel is set to $NC_loglevel");
-if($NC_db_readonly == 1){
-    &logger(3,"Running in simulation mode. No modifications will be made to the database!");
-}
 
 tie my %main_hash, 'Tie::IxHash';
 %main_hash = &parseCsv($opt_f, $opt_c, $csv_delimiter);

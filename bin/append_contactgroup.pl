@@ -26,10 +26,6 @@ my $dst_group = $opt_b;
 # MAIN
 
 &logger(3,"Started executing $0");
-&logger(4,"Current loglevel is set to $NC_loglevel");
-if($NC_db_readonly == 1){
-    &logger(3,"Running in simulation mode. No modifications will be made to the database!");
-}
 
 # fetch contactgroup IDs
 my $src_group_id = getItemId($src_group,"contactgroup");

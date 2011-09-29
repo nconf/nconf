@@ -137,6 +137,10 @@ sub setDbReadonly {
     if($ro == 0 or $ro == 1){
         &logger(4,"Setting DB read-only to $ro");
         $NC_db_readonly = $ro;
+
+        if($NC_db_readonly == 1){
+            &logger(3,"Running in simulation mode. No modifications will be made to the database!");
+        }
     }
 }
 

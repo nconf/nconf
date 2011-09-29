@@ -14,7 +14,7 @@ use Getopt::Std;
 
 # read commandline arguments
 use vars qw($opt_c $opt_f $opt_l $opt_a $opt_g $opt_x $opt_s);
-getopts('c:n:f:l:a:g:x:s');
+getopts('c:f:l:a:g:x:s');
 unless($opt_c && $opt_f && $opt_l && $opt_a){&usage}
 if($opt_x){&setLoglevel($opt_x)}
 if($opt_s){&setDbReadonly(1)}
@@ -26,10 +26,6 @@ $opt_c =~ s/\s*$//;
 # MAIN
 
 &logger(3,"Started executing $0");
-&logger(4,"Current loglevel is set to $NC_loglevel");
-if($NC_db_readonly == 1){
-    &logger(3,"Running in simulation mode. No modifications will be made to the database!");
-}
 
 my %main_hash = &parseNagiosConfigFile($opt_c, $opt_f);
 
@@ -85,7 +81,7 @@ foreach my $item (keys(%main_hash)){
             }
 
         }elsif($items_linked eq "true"){
-            &logger(3,"$opt_c '$item' and $opt_l '$l_item' seem to be already linked. Skipping.");
+            &logger(3,"$opt_c '$item' and $opt_l '$l_item' seem to already be linked. Skipping.");
         }else{
             &logger(1,"Failed to check if $opt_c '$item' and $opt_l '$l_item' are linked. Aborting.");
         }
