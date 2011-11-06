@@ -206,9 +206,6 @@ if ( !empty($_GET["id"]) ){
 		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
 			$_POST["ids"] = $_SESSION["cache"]["handle"]["HIDDEN_modify_ids"];
 		}
-		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
-			$_POST["ids"] = $_SESSION["cache"]["handle"]["HIDDEN_modify_ids"];
-		}
 		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_selected_attr"]) ){
 			$_POST["attr"] = $_SESSION["cache"]["handle"]["HIDDEN_selected_attr"];
 		}
