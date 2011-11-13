@@ -328,16 +328,18 @@ function upgrade_files($installed_version, $dir, $file_regex, $action, $special 
                 $to_version = $matches[2];
                 # has actual version a upgrade directory ?
                 if($installed_version == $from_version
-                    OR ($special == 'last_readme' AND $installed_version == $to_version )
+                    OR ( !empty($special) AND $installed_version == $to_version )
                 ){
                     # or if no update just display the last README file
-                    if ($special != 'last_readme'){
+                    if (empty($special)){
                         $next_update_version = $to_version;
                     }
                     $files = getFiles($dir.'/'.$update_folder);
                     foreach($files as $update_file){
                         if( preg_match($file_regex, $update_file) ){
-                            if (is_callable($action)){
+                            if (($special == "load_extension") AND is_readable($dir.'/'.$update_folder.'/'.$update_file)){
+                                include($dir.'/'.$update_folder.'/'.$update_file);
+                            }elseif (is_callable($action)){
                                 $update = $action($dir.'/'.$update_folder.'/'.$update_file);
                                 //echo table_row_check('Executing '.$update_file, $update );
                                 if (!$update){
@@ -601,8 +603,7 @@ if ($step == 0){
                 if ($installed_version){
                     echo table_row_check('DB version detected: '.$installed_version, TRUE );
                     if ( version_compare($installed_version, $newest_version, '>=') ){
-                        echo table_row_description('<br>No update necessary', '<input type=hidden name="db_status" value="ok">');
-                        echo table_row_description('', '<input type=hidden name="old_version" value="'.$installed_version.'">');
+                        echo table_row_description('<br>No update necessary', '<input type=hidden name="db_status" value="ok"><input type=hidden name="old_version" value="'.$installed_version.'">');
                     }elseif($db_check == "upgrade"){
                         echo table_row_check('update conflict check', $conflict_check );
                         echo '</table>
@@ -653,6 +654,12 @@ if ($step == 0){
                         }
 
                     }  // end of upgrade
+                    
+                    # Check for perl scripts to give user a choice to run.
+                    # These could be scripts for helping migrate data
+                    # The logic of these extensions is handled by them self
+                    upgrade_files($installed_version, 'UPDATE', '/extension\.php$/', '', 'load_extension');
+                    
 
                 }else{
                     echo table_row_check('lookup NConf DB version', FALSE );
