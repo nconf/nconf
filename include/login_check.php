@@ -10,13 +10,19 @@
 #   - $_SESSION['username'] for "welcome username, and history entries"
 
 NConf_DEBUG::open_group("Authentication");
-
-# Handle loginname
-$user_loginname = $_POST["username"];
-
 # authentication type
 message($debug, "Authentication type: ".AUTH_TYPE);
 message($debug, "Encryption type: ".PASSWD_ENC);
+
+# Handle loginname
+if ( defined("AUTH_METHOD") AND AUTH_METHOD == "basic") {
+    message($debug, "Auth method: ".AUTH_METHOD);
+    $user_loginname = $_SERVER['PHP_AUTH_USER'];
+    $_POST["password"] = $_SERVER['PHP_AUTH_PW'];
+}else{
+    $user_loginname = $_POST["username"];
+}
+
 
 
 # prepare password function
@@ -367,6 +373,5 @@ if (!empty($_SESSION["group"]) ){
 }else{
     history_add("general", "login", "access denied (user: ".$user_loginname.")");
 }
-
 NConf_DEBUG::close_group();
 ?>

@@ -16,6 +16,17 @@ define('AUTH_ENABLED', "0");
 define('AUTH_TYPE', "file");
 
 #
+# Select auth method
+# login: normal login formular
+# basic: HTTP Basic Authentication (pop-up with user and password)
+# possible values: [login|basic]
+#
+define('AUTH_METHOD', 'login');
+
+# The HTTP Basic Auth Realm to display when using basic auth method
+define('BASICAUTH_REALM',  "NConf Basic Auth");
+
+#
 # Defines the user name in the history table and in the welcome message.
 #If set to "0", the username will be used. If set to "1", the real name will be fetched, depending on which AUTH_TYPE you selected. 
 #

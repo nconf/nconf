@@ -17,16 +17,49 @@ if ( isset($_GET["clear"]) ){
     }
 }
 
+
 // Logout
 if ( isset($_GET["logout"]) ){
-    session_unset();
+    if (AUTH_METHOD == "basic") {
+        unset($_SERVER['PHP_AUTH_USER']);
+        unset($_SERVER['PHP_AUTH_PW']);
+        //$_POST["authenticate"] = 1;
+        $auth_logout = TRUE;
+        // HTTP Auth is some kind of special, there is no logout possibility
+        // Send authentication after logout prevents user to stay authenticated
+        Header("WWW-Authenticate: Basic realm=\"".BASICAUTH_REALM."\"");
+        Header("HTTP/1.0 401 Unauthorized");
+    }
+    // Unset all of the session variables.
+    $_SESSION = array();
+    
+    // If it's desired to kill the session, also delete the session cookie.
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
     session_destroy();
+    session_unset();
+}
+
+if (AUTH_METHOD == "basic" && !isset($_SESSION['group']) ){
+    unset($_GET["logout"]);
+    $_POST["authenticate"] = 1;
 }
 
 // Authenticate
 if (AUTH_ENABLED == 1){
-    if ( isset($_POST["authenticate"]) ){
+    if ( isset($_POST["authenticate"]) AND empty($auth_logout)){
+        # check credentials
         require_once(NCONFDIR.'/include/login_check.php');
+    }
+    # Basic authentication and not yet authorized
+    if (AUTH_METHOD == "basic" && !isset($_SESSION['group']) ){
+        Header("WWW-Authenticate: Basic realm=\"".BASICAUTH_REALM."\"");
+        Header("HTTP/1.0 401 Unauthorized");
     }
 
 }else{
@@ -36,6 +69,8 @@ if (AUTH_ENABLED == 1){
     message($debug, 'authentication is disabled');
     message($debug, $_SESSION["group"].' access granted');
 }
+
+
 
 # create Permission class
 $NConf_PERMISSIONS = new NConf_PERMISSIONS;

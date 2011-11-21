@@ -34,44 +34,56 @@
                         </tr>
                     </table>
                     <br><br>
-                    <form action="<?php echo $url; ?>" method="POST">
-                    <table frame=box rules=none cellspacing=2 cellpadding=2 style="border-width: 0px">
                     <?php
-                        if ( constant("VERSION_NOT_FINAL_WARNING") !== ''){
-                            echo "<tr>
-                                    <td colspan=2>";
-                            echo NConf_HTML::show_error('Attention', VERSION_NOT_FINAL_WARNING);
-                            echo"   </td>
-                                  </tr>";
-                            echo "<tr><td>&nbsp;</td></tr>";
-                        }
+                    if ( !defined("AUTH_METHOD") OR (AUTH_METHOD == "login") ){
                     ?>
-                        <tr>
-                            <td width=75>
-                                &nbsp;<b>Login as:</b>
-                            </td>
-                            <td>
-                                <input style="width:200px" type="text" name="username" id="login_username" tabindex="1">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width=75>
-                                &nbsp;<b>Password:</b>
-                            </td>
-                            <td>
-                                <input style="width:200px" type="password" name="password" tabindex="2">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan=2><br>
-                                <input type="hidden" name="authenticate" value="yes">
-                                <input style="width:75px" type="submit" value="login" tabindex="3">
-                            </td>
-                        </tr>
-                    </table>
-                    </form>
+                        <form action="<?php echo $url; ?>" method="POST">
+                        <table frame=box rules=none cellspacing=2 cellpadding=2 style="border-width: 0px">
+                            <?php
+                            if ( constant("VERSION_NOT_FINAL_WARNING") !== ''){
+                                echo "<tr>
+                                        <td colspan=2>";
+                                echo NConf_HTML::show_error('Attention', VERSION_NOT_FINAL_WARNING);
+                                echo"   </td>
+                                      </tr>";
+                                echo "<tr><td>&nbsp;</td></tr>";
+                            }
+                            ?>
+                            <tr>
+                                <td width=75>
+                                    &nbsp;<b>Login as:</b>
+                                </td>
+                                <td>
+                                    <input style="width:200px" type="text" name="username" id="login_username" tabindex="1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width=75>
+                                    &nbsp;<b>Password:</b>
+                                </td>
+                                <td>
+                                    <input style="width:200px" type="password" name="password" tabindex="2">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2><br>
+                                    <input type="hidden" name="authenticate" value="yes">
+                                    <input style="width:75px" type="submit" value="login" tabindex="3">
+                                </td>
+                            </tr>
+                        </table>
+                        </form>
+                        
                     <?php
-
+                    }elseif( !empty($auth_logout) ){
+                        message($info, "Logout successfull");
+                        ?>
+                        <form action="<?php echo $url; ?>" method="POST">
+                          Logout sucessfull<br><br>
+                          <input style="width:75px" type="submit" value="login" tabindex="1">
+                        </form>
+                        <?php
+                    }
                 }
 
             ?>
