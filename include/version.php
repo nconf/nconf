@@ -38,7 +38,9 @@ define("POWERED_BY_LOGOS", '<b>Powered by:</b><br><br>
                              <a href="http://www.sunrise.ch" target=_blank>
                              <img src="img/sunrise-logo.gif" style="vertical-align:middle" alt="sunrise-logo"></a>
                              <a href="http://www.jquery.org" target=_blank>
-                             <img src="img/jquery_logo.gif" style="vertical-align:middle;margin-left:35px" alt="jquery_logo"></a>
+                             <img src="img/jquery_logo.gif" style="vertical-align:middle;margin-left:30px" alt="jquery_logo"></a>
+                             <a href="http://github.com/nconf" target=_blank>
+                             <img src="img/github_logo.gif" style="vertical-align:middle;margin-left:30px" alt="github_logo"></a>
                              <br><br><br>
                              <a href="http://www.swissmadesoftware.org" target=_blank>
                              <img src="img/sms-logo-small.gif" style="vertical-align:middle;margin-left:3px" alt="swiss-made-software-logo"></a>
