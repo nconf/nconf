@@ -658,9 +658,9 @@ sub getUniqueNameCounter {
     # 0: a unique name for a new item within that class in the following format:
     #    "item name_n" ("n" being a unique numeral)
 
-    # Info: this function will only query the database the first time it processes a new item.
+    # Info: this function will query the database the first time it processes a new item name (and for double-checking).
     # It will store the last generated counter value in a global cache and will access the cache if it is invoked with 
-    # the same parameters a second time. This allows counters to remain unique even if items aren't written to the database right away.
+    # the same parameters a second time. This allows counters to remain unique even if items aren't commited to the database immediately.
 
     ################################
     
@@ -674,6 +674,12 @@ sub getUniqueNameCounter {
     if($NC_ctrcache_getUniqueNameCounter{$class}->{$item_name}){
         $max_count = $NC_ctrcache_getUniqueNameCounter{$class}->{$item_name};
         $max_count++;
+
+		# double-check if unique name really doesn't exist yet in the database (catch cases of uncontinuous numbering)
+		# if name is found, keep incrementing the counter until name is unique
+		while(&getItemId($item_name.'_'.$max_count,$class)){
+			$max_count++;
+		}
     }
     else{
         # if not in the cache, query the database and determine counter value
