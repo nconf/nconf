@@ -38,9 +38,9 @@ tie my %mon_col_attrs, 'Tie::IxHash';
 				  "freshness_threshold"    => "");
 
 tie my %data2convert, 'Tie::IxHash';
-%data2convert =  ("timeperiod" 		 => \%tp_attrs, 
-				  "nagios-collector" => \%mon_col_attrs, 
-				  "nagios-monitor" 	 => \%mon_col_attrs);
+%data2convert =  ("nagios-monitor"   => \%mon_col_attrs, 
+				  "nagios-collector" => \%mon_col_attrs,
+                  "timeperiod"       => \%tp_attrs);
 
 my $no_work = undef;
 tie my %uniq_htpl_cache, 'Tie::IxHash';
