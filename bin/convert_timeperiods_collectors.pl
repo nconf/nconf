@@ -33,9 +33,9 @@ tie my %tp_attrs, 'Tie::IxHash';
 tie my %mon_col_attrs, 'Tie::IxHash';
 %mon_col_attrs = ("active_checks_enabled"  => "", 
  				  "passive_checks_enabled" => "", 
-				  "notifications_enabled"  => "", 
-				  "check_freshness"		   => "", 
-				  "freshness_threshold"    => "");
+				  "notifications_enabled"  => ""); 
+				  #"check_freshness"		   => "", 
+				  #"freshness_threshold"    => "");
 
 tie my %data2convert, 'Tie::IxHash';
 %data2convert =  ("nagios-monitor"   => \%mon_col_attrs, 
@@ -73,7 +73,7 @@ foreach my $class (keys(%data2convert)){
 		# proceed if one or more of the relevant attributes are in use
 		if(%item_new_data){
 
-			# evaluate host/service notification_options
+            # evaluate attributes that defer between host- and service-templates
 			my $host_notification_options = $item_new_data{'host_notification_options'};
 			my $service_notification_options = $item_new_data{'service_notification_options'};
 			delete $item_new_data{'host_notification_options'};
@@ -134,9 +134,15 @@ foreach my $class (keys(%data2convert)){
 						$item_new_data{'name'} = $uniq_tpl_name;
 						$item_new_data{'register'} = '0';
 
+                        # last manipulations before add
+                        tie my %item_new_manip, 'Tie::IxHash';
+                        %item_new_manip = %item_new_data;
+                        delete $item_new_manip{'check_interval'};
+                        delete $item_new_manip{'retry_interval'};
+                        
 						# add a host-template with the available data
 						&logger(3,"Adding host-template     \'$item_new_data{'name'}\'    with data from $class '".&getItemName($item->[0])."'");
-						unless(&addItem("host-template", %item_new_data)){&logger(1,"Error adding host-template with data from $class '".&getItemName($item->[0])."'")};
+						unless(&addItem("host-template", %item_new_manip)){&logger(1,"Error adding host-template with data from $class '".&getItemName($item->[0])."'")};
 
 						# link new host-template with original item
 						my $new_tpl_id = &getItemId($item_new_data{'name'}, "host-template");
@@ -149,7 +155,7 @@ foreach my $class (keys(%data2convert)){
 						unless(&linkItems($item->[0], $existing_tpl_id, "host_template", "0")){&logger(1,"Error linking existing host-template with $class '".&getItemName($item->[0])."'")};
 					}
 
-					# remove the 'name' + 'register' attributes, if set
+					# remove any attributes we manipulated to let the next section re-evaluate them
 					delete $item_new_data{'name'};
 					delete $item_new_data{'register'};
 					delete $item_new_data{'notification_options'};
@@ -226,7 +232,7 @@ foreach my $class (keys(%data2convert)){
 						unless(&linkItems($item->[0], $existing_tpl_id, "service_template", "0")){&logger(1,"Error linking existing service-template with $class '".&getItemName($item->[0])."'")};
 					}
 
-					# remove the 'name' + 'register' attributes, if set
+					# remove any attributes we manipulated
 					delete $item_new_data{'name'};
 					delete $item_new_data{'register'};
 					delete $item_new_data{'notification_options'};
