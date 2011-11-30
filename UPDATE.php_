@@ -28,7 +28,7 @@ if ( !isset($_POST["step"]) ){
 }else{
     $step = $_POST["step"];
     if (isset($_POST["submit"]) AND $_POST["submit"] == "Back"){
-        #Back button pressed
+        # Back button pressed
         $step = $step - 1;
     }elseif(isset($_POST["submit"]) AND $_POST["submit"] == "Next"){
         # increase step for next form
@@ -56,6 +56,13 @@ unset($_POST["db_status"]);
 if ( ($step == 2 AND $_POST["submit"] != "Back") AND !($db_check == "ok") ){
     # run again the Database part
     $step = 1;
+}
+
+# migrate handling
+if (!empty($_POST["submit"]) AND $_POST["submit"] == "Migrate" ){
+    # do noting, the migrate scripts will do something
+    $migrate = TRUE;
+    $db_check = "upgrade";
 }
 
 
@@ -163,11 +170,12 @@ function table_row_check($title, $status){
             <td class="status_unknown">UNKNOWN</td>
             <td></td>
         </tr>';
-    }elseif ($status === FALSE){
+    }elseif ($status === FALSE OR $status == 'ATTENTION'){
+        $status = ($status === FALSE) ? 'FAILED' : $status;
         $row = '
         <tr>
             <td><b>'.$title.'</b></td>
-            <td class="status_failed">FAILED</td>
+            <td class="status_failed">'.$status.'</td>
             <td></td>
         </tr>';
     }else{
@@ -298,7 +306,6 @@ function parse_mysql_dump($url){
 
 function upgrade_mysql($file){
     $update = parse_mysql_dump($file);
-    echo table_row_check('Executing '.basename($file), $update );
     return $update;
 }
 
@@ -313,7 +320,7 @@ function upgrade_files($installed_version, $dir, $file_regex, $action, $special 
     $dirs = getDirectoryTree($dir);
     $success = TRUE;
 
-    # update each seperate version
+    # update each separate version
     do {
         # reset next version
         if ( isset($next_update_version) ){
@@ -328,25 +335,58 @@ function upgrade_files($installed_version, $dir, $file_regex, $action, $special 
                 $to_version = $matches[2];
                 # has actual version a upgrade directory ?
                 if($installed_version == $from_version
-                    OR ( !empty($special) AND $installed_version == $to_version )
+                    OR ( $special == 'last_readme' AND $installed_version == $to_version )
                 ){
                     # or if no update just display the last README file
                     if (empty($special)){
                         $next_update_version = $to_version;
                     }
+                    
                     $files = getFiles($dir.'/'.$update_folder);
+                    NConf_DEBUG::set($files, 'DEBUG', "files");
+                    # prepare pre & after update
+                    if ($special == 'db_update'){
+                        # check if file exists
+                        if ( in_array('pre_db_update_extension.php', $files) ){
+                            $pre_DB_update_script   = $dir.'/'.$update_folder.'/pre_db_update_extension.php';
+                        }
+                        if ( in_array('after_db_update_extension.php', $files) ){
+                            $after_DB_update_script = $dir.'/'.$update_folder.'/after_db_update_extension.php';
+                        }
+                    }
+                    
+                    # Migration before db update
+                    if ( !empty($pre_DB_update_script) AND is_readable($pre_DB_update_script)) {
+                        echo '</table>
+                                  <table width="400">';
+                        echo table_row_check('Found migration possibility to run before update!', 'ATTENTION' );
+                        require_once($pre_DB_update_script);
+                        if (!$pre_status){
+                          return "stopped";
+                        }
+                    }
+                    # normal update process
                     foreach($files as $update_file){
                         if( preg_match($file_regex, $update_file) ){
                             if (($special == "load_extension") AND is_readable($dir.'/'.$update_folder.'/'.$update_file)){
                                 include($dir.'/'.$update_folder.'/'.$update_file);
                             }elseif (is_callable($action)){
                                 $update = $action($dir.'/'.$update_folder.'/'.$update_file);
-                                //echo table_row_check('Executing '.$update_file, $update );
+                                echo table_row_check('Executing '.$update_file, $update );
                                 if (!$update){
                                     $success = FALSE;
                                 }
                             }
                         }
+                    }
+                    
+                    # after update migrations
+                    if (!empty($after_DB_update_script) AND is_readable($after_DB_update_script)) {
+                        echo '</table>
+                                  <table width="400">';
+                        echo table_row_check('Found migration possibility to run after update!', 'ATTENTION' );
+                        require_once($after_DB_update_script);
+                        break;
                     }
                 }
             }
@@ -581,7 +621,6 @@ if ($step == 0){
                 $newest_version = VERSION_NUMBER;
 
 
-
                 ###
                 # check installed version
                 ###
@@ -597,7 +636,7 @@ if ($step == 0){
                     }
                 }
                 
-                # check conflicts bevore updating
+                # check conflicts before updating
                 $conflict_check = upgrade_files($installed_version, 'UPDATE', '/\.ini$/', 'db_conflict_check');
 
                 if ($installed_version){
@@ -611,7 +650,9 @@ if ($step == 0){
                               <table width="300">';
                         echo table_row_description('<br>Update in progress...', '');
                     }else{
-                        if ($conflict_check == TRUE){
+                        if (!empty($migrate) ){
+                            # ignore update, migration script should do some stuff
+                        }elseif ($conflict_check == TRUE){
                             # ok
                             echo table_row_check('update conflict check', TRUE );
                             echo table_row_description('<br>Please proceed to update', '<input type=hidden name="db_status" value="upgrade">');
@@ -645,9 +686,8 @@ if ($step == 0){
 
                     # upgrade process
                     if ($db_check == "upgrade"){
-
                         # update DB with sql files
-                        $success = upgrade_files($installed_version, 'UPDATE', '/\.sql$/', 'upgrade_mysql');
+                        $success = upgrade_files($installed_version, 'UPDATE', '/\.sql$/', 'upgrade_mysql', 'db_update');
                         if ($success){
                             # say that db is done, go to next step
                             echo table_row_description('', '<input type=hidden name="db_status" value="ok">');
@@ -658,7 +698,7 @@ if ($step == 0){
                     # Check for perl scripts to give user a choice to run.
                     # These could be scripts for helping migrate data
                     # The logic of these extensions is handled by them self
-                    upgrade_files($installed_version, 'UPDATE', '/extension\.php$/', '', 'load_extension');
+                    //upgrade_files($installed_version, 'UPDATE', '/extension\.php$/', '', 'load_extension');
                     
 
                 }else{
