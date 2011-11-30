@@ -72,6 +72,12 @@ sub dbConnect {
 
     &logger(4,"Connecting to database '$dbname' on host '$dbhost'");
     my $dsn = "DBI:mysql:database=$dbname;host=$dbhost";
+
+	# allow use of mysql socket connection rather than TCP connection only
+	if ($dbhost =~ /^:(.+)/) {
+		$dsn = "DBI:mysql:database=$dbname;mysql_socket=$1";
+	}
+
     $NC_dbh = DBI->connect($dsn, $dbuser, $dbpass, { RaiseError => 1, AutoCommit => 1 }) or &logger(1,"Could not connect to database $dbname on $dbhost");
 
     return $NC_dbh;

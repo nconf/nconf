@@ -103,6 +103,7 @@ sub parseNagiosConfigFile {
         $file_class = $1;
 
         # clean up current block (remove empty lines and trailing spaces/comments)
+        $block =~ s/\n\s*#.*//g;
         $block =~ s/\n*.*\{//;
         $block =~ s/\s*\}[^"']*\n*//;
         $block =~ s/^\s*\n//;
