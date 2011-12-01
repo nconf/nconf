@@ -33,9 +33,9 @@ tie my %tp_attrs, 'Tie::IxHash';
 tie my %mon_col_attrs, 'Tie::IxHash';
 %mon_col_attrs = ("active_checks_enabled"  => "", 
  				  "passive_checks_enabled" => "", 
-				  "notifications_enabled"  => ""); 
+				  "notifications_enabled"  => "",
 				  #"check_freshness"		   => "", 
-				  #"freshness_threshold"    => "");
+				  "freshness_threshold"    => "");
 
 tie my %data2convert, 'Tie::IxHash';
 %data2convert =  ("nagios-monitor"   => \%mon_col_attrs, 
@@ -125,7 +125,9 @@ foreach my $class (keys(%data2convert)){
 					unless($existing_htpl_name){
 
 						# determine a unique name for the new template
-						my $uniq_tpl_name = &getUniqueNameCounter("host-template", "converted_host-template");
+                        my $tmp_class = $class;
+                        $tmp_class =~ s/nagios-//;
+						my $uniq_tpl_name = &getUniqueNameCounter("host-template", "converted_".$tmp_class."_host-tpl");
 	
 						# write a string representation of the current template to cache
 						$uniq_htpl_cache{$uniq_tpl_name} = Dumper(%item_new_data);
@@ -139,6 +141,7 @@ foreach my $class (keys(%data2convert)){
                         %item_new_manip = %item_new_data;
                         delete $item_new_manip{'check_interval'};
                         delete $item_new_manip{'retry_interval'};
+                        delete $item_new_manip{'freshness_threshold'};
                         
 						# add a host-template with the available data
 						&logger(3,"Adding host-template     \'$item_new_data{'name'}\'    with data from $class '".&getItemName($item->[0])."'");
@@ -208,7 +211,9 @@ foreach my $class (keys(%data2convert)){
 					unless($existing_stpl_name){
 
 						# determine a unique name for the new template
-						my $uniq_tpl_name = &getUniqueNameCounter("service-template", "converted_service-template");
+                        my $tmp_class = $class;
+                        $tmp_class =~ s/nagios-//;
+						my $uniq_tpl_name = &getUniqueNameCounter("service-template", "converted_".$tmp_class."_serv-tpl");
 
 						# write a string representation of the current template to cache
 						$uniq_stpl_cache{$uniq_tpl_name} = Dumper(%item_new_data);
