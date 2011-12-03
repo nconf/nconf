@@ -3,15 +3,13 @@
 # A collection of shared functions for the NConf Perl scripts.
 # Functions needed to parse existing Nagios configuration files.
 #
-# Version 0.1.2
+# Version 0.1.1
 # Written by Angelo Gargiulo
 #
 # Revision history:
 # 2009-02-25 v0.1.0   A. Gargiulo   First release
 # 2011-01-31 v0.1.1   Y. Charton    Handle comments in the imported config
 #                                   Superseded Nagios attribute substitution
-# 2011-12-03 v0.1.2	  A. Gargiulo	Changed the way the input file is read
-#									(might require more memory for large files)
 #
 ##############################################################################
 
@@ -77,13 +75,13 @@ sub parseNagiosConfigFile {
     my $file_class = undef;
     my $filepos = 1;
 
+    # set block delimiter
+    $/ = "define ";
+
     &logger(4,"Opening and parsing input file $input_file");
     open(LIST, $input_file) or &logger(1,"Could not read from $input_file. Aborting.");
 
-    # unset input record separator (read whole file at once!)
-	$/ = undef;
-	my @blocks = split(/[^#\s]\n\s*define\s+/, <LIST>);
-	foreach (@blocks){
+    while(<LIST>){
 
         # count amount of lines in current block
         my $linecount = 0;
@@ -94,6 +92,7 @@ sub parseNagiosConfigFile {
         unless($_){next}
         if($_ =~ /^\s*$/){next}
         if($_ =~ /^\s*#/){next}
+        if($_ =~ /#\s*\}[^"']*\n*/){next} # assume the whole block can be skipped if we find an uncommented closing-bracket
         my $block = $_;
 
         # check if more than one class type is defined within the input file
