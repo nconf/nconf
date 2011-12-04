@@ -105,21 +105,23 @@ INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_le
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
 ('retry_interval','retry interval','number of [min.] to wait before scheduling a re-check','text',4,'','','no',16,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notification_interval','notification interval','number of [min.] to wait before re-notifying a contact','text',4,'','','no',17,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('first_notification_delay','first notification delay','number of [min.] to wait before sending the first notification','text',4,'','','no',17,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notification_options','notification options','possible values: w,u,c,r,f,s,[n]','text',20,'','','no',18,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('notification_interval','notification interval','number of [min.] to wait before re-notifying a contact','text',4,'','','no',18,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('active_checks_enabled','active checking','do active checking of services','select',0,'0::1','','no',19,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('notification_options','notification options','possible values: w,u,c,r,f,s,[n]','text',20,'','','no',19,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('passive_checks_enabled','passive checking','do passive checking of services','select',0,'0::1','','no',20,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('active_checks_enabled','active checking','do active checking of services','select',0,'0::1','','no',20,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notifications_enabled','notification enabled','send notifications for services','select',0,'0::1','','no',21,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('passive_checks_enabled','passive checking','do passive checking of services','select',0,'0::1','','no',21,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('check_freshness','check freshness','check age of last check results','select',0,'0::1','','no',22,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('notifications_enabled','notification enabled','send notifications for services','select',0,'0::1','','no',22,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('freshness_threshold','freshness threshold','age threshold in [sec.]','text',5,'','','no',23,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('check_freshness','check freshness','check age of last check results','select',0,'0::1','','no',23,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('check_params','params for check command','','text',1024,'','!','no',24,'yes','no','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+('freshness_threshold','freshness threshold','age threshold in [sec.]','text',5,'','','no',24,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
+INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
+('check_params','params for check command','','text',1024,'','!','no',25,'yes','no','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='advanced-service'));
 
 # -- add attributes from timeperiod/collector/monitor to hosts class --
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
@@ -129,19 +131,21 @@ INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_le
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
 ('retry_interval','retry interval','number of [min.] to wait before scheduling a re-check','text',4,'','','no',20,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notification_interval','notification interval','number of [min.] to wait before re-notifying a contact','text',4,'','','no',21,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
+('first_notification_delay','first notification delay','number of [min.] to wait before sending the first notification','text',4,'','','no',21,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notification_options','notification options','possible values: d,u,r,f,s,[n]','text',20,'','','no',22,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
+('notification_interval','notification interval','number of [min.] to wait before re-notifying a contact','text',4,'','','no',22,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('active_checks_enabled','active checking','do active checking of hosts','select',0,'0::1','','no',23,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
+('notification_options','notification options','possible values: d,u,r,f,s,[n]','text',20,'','','no',23,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('passive_checks_enabled','passive checking','do passive checking of hosts','select',0,'0::1','','no',24,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
+('active_checks_enabled','active checking','do active checking of hosts','select',0,'0::1','','no',24,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notifications_enabled','notification enabled','send notifications for hosts','select',0,'0::1','','no',25,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
+('passive_checks_enabled','passive checking','do passive checking of hosts','select',0,'0::1','','no',25,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('check_freshness','check freshness','check age of last check results','select',0,'0::1','','no',26,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
+('notifications_enabled','notification enabled','send notifications for hosts','select',0,'0::1','','no',26,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('freshness_threshold','freshness threshold','age threshold in [sec.]','text',5,'','','no',27,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
+('check_freshness','check freshness','check age of last check results','select',0,'0::1','','no',27,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
+INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
+('freshness_threshold','freshness threshold','age threshold in [sec.]','text',5,'','','no',28,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host'));
 
 # -- add attributes from timeperiod/collector/monitor to services class --
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
@@ -151,19 +155,31 @@ INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_le
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
 ('retry_interval','retry interval','number of [min.] to wait before scheduling a re-check','text',4,'','','no',14,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notification_interval','notification interval','number of [min.] to wait before re-notifying a contact','text',4,'','','no',15,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+('first_notification_delay','first notification delay','number of [min.] to wait before sending the first notification','text',4,'','','no',15,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notification_options','notification options','possible values: w,u,c,r,f,s,[n]','text',20,'','','no',16,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+('notification_interval','notification interval','number of [min.] to wait before re-notifying a contact','text',4,'','','no',16,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('active_checks_enabled','active checking','do active checking of services','select',0,'0::1','','no',17,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+('notification_options','notification options','possible values: w,u,c,r,f,s,[n]','text',20,'','','no',17,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('passive_checks_enabled','passive checking','do passive checking of services','select',0,'0::1','','no',18,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+('active_checks_enabled','active checking','do active checking of services','select',0,'0::1','','no',18,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('notifications_enabled','notification enabled','send notifications for services','select',0,'0::1','','no',19,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+('passive_checks_enabled','passive checking','do passive checking of services','select',0,'0::1','','no',19,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('check_freshness','check freshness','check age of last check results','select',0,'0::1','','no',20,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+('notifications_enabled','notification enabled','send notifications for services','select',0,'0::1','','no',20,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
 INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
-('freshness_threshold','freshness threshold','age threshold in [sec.]','text',5,'','','no',21,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+('check_freshness','check freshness','check age of last check results','select',0,'0::1','','no',21,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
+('freshness_threshold','freshness threshold','age threshold in [sec.]','text',5,'','','no',22,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service'));
+
+# -- add attributes to host-template class --
+UPDATE ConfigAttrs SET ordering=ordering+1 WHERE ordering>14 AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='host-template');
+INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
+('first_notification_delay','first notification delay','number of [min.] to wait before sending the first notification','text',4,'','','no',15,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='host-template'));
+
+# -- add attributes to service-template class --
+UPDATE ConfigAttrs SET ordering=ordering+1 WHERE ordering>13 AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service-template');
+INSERT INTO ConfigAttrs (attr_name, friendly_name, description, datatype, max_length, poss_values, predef_value, mandatory, ordering, visible, write_to_conf, naming_attr, link_as_child, link_bidirectional, fk_show_class_items, fk_id_class) VALUES
+('first_notification_delay','first notification delay','number of [min.] to wait before sending the first notification','text',4,'','','no',14,'yes','yes','no','no','no',NULL,(SELECT id_class FROM ConfigClasses WHERE config_class='service-template'));
 
 # -- remove deprecated attributes from timeperiods --
 DELETE FROM ConfigAttrs WHERE attr_name='max_check_attempts' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='timeperiod');
@@ -239,8 +255,8 @@ UPDATE ConfigAttrs SET ordering=ordering-1 WHERE ordering>8 AND ordering<11 AND 
 UPDATE ConfigAttrs SET ordering=10 WHERE attr_name='use' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='host');
 UPDATE ConfigAttrs SET ordering=ordering-1 WHERE ordering>5 AND ordering<8 AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service');
 UPDATE ConfigAttrs SET ordering=7 WHERE attr_name='use' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service');
-UPDATE ConfigAttrs SET ordering=22 WHERE attr_name='event_handler_enabled' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service');
-UPDATE ConfigAttrs SET ordering=23 WHERE attr_name='check_params' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service');
+UPDATE ConfigAttrs SET ordering=23 WHERE attr_name='event_handler_enabled' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service');
+UPDATE ConfigAttrs SET ordering=24 WHERE attr_name='check_params' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class='service');
 
 # -- replace the friendly_name "IP-address" with "address" to call it like Nagios does --
 UPDATE ConfigAttrs SET friendly_name = 'address', description = 'IP-address / DNS name' WHERE attr_name='address' AND fk_id_class=(SELECT id_class FROM ConfigClasses WHERE config_class="host");
