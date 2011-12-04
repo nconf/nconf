@@ -323,6 +323,35 @@ sub addItem {
 	        &logger(2, "$class_name with $class_naming_attr '$main_hash{$class_naming_attr}' already exists!");
             return undef;
     	}
+
+		# make sure there are no nagios-collectors + nagios-monitors with the same name
+		if($class_name eq "nagios-collector"){
+	    	if(&getItemId($main_hash{$class_naming_attr},"nagios-monitor")){
+		        &logger(2, "nagios-monitor with $class_naming_attr '$main_hash{$class_naming_attr}' already exists! collector and monitor names cannot be identical.");
+        	    return undef;
+	    	}
+		}
+		if($class_name eq "nagios-monitor"){
+	    	if(&getItemId($main_hash{$class_naming_attr},"nagios-collector")){
+		        &logger(2, "nagios-collector with $class_naming_attr '$main_hash{$class_naming_attr}' already exists! collector and monitor names cannot be identical.");
+        	    return undef;
+	    	}
+		}
+
+		# make sure there are no checkcommands + misccommands with the same name
+		if($class_name eq "checkcommand"){
+	    	if(&getItemId($main_hash{$class_naming_attr},"misccommand")){
+		        &logger(2, "misccommand with $class_naming_attr '$main_hash{$class_naming_attr}' already exists! checkcommand and misccommand names cannot be identical.");
+        	    return undef;
+	    	}
+		}
+		if($class_name eq "misccommand"){
+	    	if(&getItemId($main_hash{$class_naming_attr},"checkcommand")){
+		        &logger(2, "checkcommand with $class_naming_attr '$main_hash{$class_naming_attr}' already exists! checkcommand and misccommand names cannot be identical.");
+        	    return undef;
+	    	}
+		}
+
     }else{
     # make sure a host doesn't have more than one service with the same name
         unless(&getItemId($main_hash{'host_name'},'host')){
