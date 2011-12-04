@@ -61,7 +61,8 @@ ADDED   advanced-services which allow more liberty and can be assigned to multip
 ADDED   syntax checking for static config folders. This functionality can be enabled/disabled using the new CHECK_STATIC_SYNTAX constant.
 ADDED   script to link an additional contactgroup with existing hosts & services
 ADDED   conversion script to make sure config is still generated the same way after an update to NConf 1.3 -> refer to the Update Information!
-ADDED	"first_notification_delay" attribute to the classes host, service, advanced-service, host-template and service-template
+ADDED   "first_notification_delay" attribute to the classes host, service, advanced-service, host-template and service-template
+ADDED   when debug mode is active, when a config is not generated successfully (doesn't pass the nagios binary check), an archive containing the config is generated in the output dir with a FAILED tag.
 
 REMOVED 'extended_host_info.cfg' and 'extended_service_info.cfg' files. The original contents of those files are now written to 'hosts.cfg' 
         and 'services.cfg' respectively. Also, those properties are now available both on Collector and Monitor servers.

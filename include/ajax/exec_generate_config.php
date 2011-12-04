@@ -246,6 +246,11 @@
     }else{
         history_add("general", "config", "generate failed with syntax errors");
         // Remove generated config - syntax check has failed
+        if(DEBUG_MODE == 1){
+            // Move generated config to "output" dir, but tag it as FAILED
+            system("mv ".NCONFDIR."/temp/NagiosConfig.tgz ".NCONFDIR."/output/NagiosConfig_FAILED.tgz.".time());
+        }
+        // Remove generated config
         system("rm -rf ".NCONFDIR."/temp/*");
         $content = "Deployment not possible due to errors in configuration.";
         echo NConf_HTML::limit_space(
