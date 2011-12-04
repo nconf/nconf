@@ -116,6 +116,18 @@ if ( isset($_POST["modify"]) ){
                             )
                         AND attr_value="'.escape_string($_POST[$id_naming_attr]).'"
                         AND fk_id_item <> '.$id ;
+    }elseif($config_class == "checkcommand" OR $config_class == "misccommand"){
+        $query = 'SELECT attr_value, fk_id_item
+                FROM ConfigItems, ConfigValues, ConfigAttrs, ConfigClasses
+                WHERE id_item = fk_id_item
+                AND id_attr = fk_id_attr
+                AND naming_attr = "yes"
+                AND ConfigItems.fk_id_class = id_class
+                AND (
+                    config_class = "checkcommand"
+                    OR config_class = "misccommand"
+                    )
+                AND attr_value="'.escape_string($_POST[$id_naming_attr]).'"';
     }else{
         $query = 'SELECT attr_value, fk_id_item
                 FROM ConfigValues
