@@ -16,14 +16,14 @@ define('AUTH_ENABLED', "0");
 define('AUTH_TYPE', "file");
 
 #
-# Select auth method
-# login: normal login formular
-# basic: HTTP Basic Authentication (pop-up with user and password)
+# Select the login authentication method
 # possible values: [login|basic]
+# 'login' = authenticate using the ordinary NConf login form
+# 'basic' = authenticate using HTTP Basic Authentication (pop-up window for username/password)
 #
 define('AUTH_METHOD', 'login');
 
-# The HTTP Basic Auth Realm to display when using basic auth method
+# The HTTP Basic Auth Realm to display when using auth method "basic"
 define('BASICAUTH_REALM',  "NConf Basic Auth");
 
 #

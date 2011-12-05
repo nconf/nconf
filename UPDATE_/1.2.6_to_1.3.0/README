@@ -22,8 +22,8 @@ The following (optional) configuration options have been added:
 - DEBUG_GENERATE [1-5]
 - CHECK_UPDATE [1|0]
 - CHECK_STATIC_SYNTAX [1|0]
-- AUTH_METHOD[login|basic]
-- BASICAUTH_REALM[text]
+- AUTH_METHOD [login|basic]
+- BASICAUTH_REALM [text]
 
 ##------------------------------------------------##
 ##              Additional changes                ##
