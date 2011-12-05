@@ -311,7 +311,12 @@ function upgrade_mysql($file){
 
 function print_file($file){
     $file_content = @file_get_contents($file);
-    echo '<pre class="editor_field">'.$file_content.'</pre>';
+    if ($file_content !== FALSE){
+        echo '<pre class="editor_field">'.$file_content.'</pre>';
+        return TRUE;
+    }else{
+        return FALSE;
+    }
 }
 
 # upgrade file handling
@@ -345,7 +350,7 @@ function upgrade_files($installed_version, $dir, $file_regex, $action, $special 
                     $files = getFiles($dir.'/'.$update_folder);
                     NConf_DEBUG::set($files, 'DEBUG', "files");
                     # prepare pre & after update
-                    if ($special == 'db_update'){
+                    if ($special == 'upgrade'){
                         # check if file exists
                         if ( in_array('pre_db_update_extension.php', $files) ){
                             $pre_DB_update_script   = $dir.'/'.$update_folder.'/pre_db_update_extension.php';
@@ -643,7 +648,7 @@ if ($step == 0){
                     echo table_row_check('DB version detected: '.$installed_version, TRUE );
                     if ( version_compare($installed_version, $newest_version, '>=') ){
                         echo table_row_description('<br>No update necessary', '<input type=hidden name="db_status" value="ok"><input type=hidden name="old_version" value="'.$installed_version.'">');
-                    }elseif($db_check == "upgrade"){
+                    }elseif($db_check == "upgrade" OR $db_check == "upgrade_pass_migrate"){
                         echo table_row_check('update conflict check', $conflict_check );
                         echo '</table>
                                 <input type=hidden name="old_version" value="'.$installed_version.'">
@@ -685,12 +690,15 @@ if ($step == 0){
                     <?php
 
                     # upgrade process
-                    if ($db_check == "upgrade"){
+                    if ($db_check == "upgrade" OR $db_check == "upgrade_pass_migrate"){
                         # update DB with sql files
-                        $success = upgrade_files($installed_version, 'UPDATE', '/\.sql$/', 'upgrade_mysql', 'db_update');
-                        if ($success){
+                        $success = upgrade_files($installed_version, 'UPDATE', '/\.sql$/', 'upgrade_mysql', $db_check);
+                        if ($success === TRUE){
                             # say that db is done, go to next step
                             echo table_row_description('', '<input type=hidden name="db_status" value="ok">');
+                        }else{
+                            echo table_row_description('', '<input type=hidden name="db_status" value="upgrade_pass_migrate">');
+                            
                         }
 
                     }  // end of upgrade
