@@ -675,6 +675,9 @@ sub getUniqueNameCounter {
         $max_count = $NC_ctrcache_getUniqueNameCounter{$class}->{$item_name};
         $max_count++;
 
+		# add a leading '0' to the counter
+		if($max_count <= 9){unless($max_count=~/0[1-9]/){$max_count="0".$max_count}}
+
 		# double-check if unique name really doesn't exist yet in the database (catch cases of uncontinuous numbering)
 		# if name is found, keep incrementing the counter until name is unique
 		while(&getItemId($item_name.'_'.$max_count,$class)){
@@ -691,7 +694,7 @@ sub getUniqueNameCounter {
         }
 
         if($item_hash{$item_name}){
-            $max_count = 2;
+            $max_count = "2";
             while($item_hash{"$item_name\_$max_count"}){
                 $max_count++;
             }
@@ -700,12 +703,17 @@ sub getUniqueNameCounter {
 
     # check if a counter needs to be added at all.
     if($max_count > 0){
-        my $new_item_name = $item_name."_".$max_count;
+
+		# add a leading '0' to the counter
+		if($max_count <= 9){unless($max_count=~/0[1-9]/){$max_count="0".$max_count}}
+
+	    my $new_item_name = $item_name."_".$max_count;
         &logger(5,"Assigned unique name for $class: '$new_item_name'");
 
         # store current counter value to global cache before exiting
         $NC_ctrcache_getUniqueNameCounter{$class}->{$item_name} = $max_count;
         &logger(5,"Stored current counter value to global cache: '$class' > '$item_name' > '$max_count'");
+
         return $new_item_name;
 
     }else{
