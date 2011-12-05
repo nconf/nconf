@@ -1,5 +1,16 @@
 <?php
     require_once 'main.php';
+    
+    # Remove lock file if process fails
+    $lock_file = 'temp/generate.lock';
+    function remove_lock(){
+        # remove lock file
+        global $lock_file;
+        $unlink_status = unlink($lock_file);
+        if (!$unlink_status){
+            NConf_DEBUG::set('removing old lock failed', 'ERROR');
+        }
+    }
 
     history_add("general", "config", "generating...");
 
@@ -13,6 +24,7 @@
         echo NConf_HTML::limit_space(
             NConf_HTML::show_error('Error')
         );
+        remove_lock();
         exit;
     }
 
@@ -23,6 +35,7 @@
         echo NConf_HTML::limit_space(
             NConf_HTML::show_error('Error')
         );
+        remove_lock();
         exit;
     }
 
@@ -33,6 +46,7 @@
         echo NConf_HTML::limit_space(
             NConf_HTML::show_error('Error')
         );
+        remove_lock();
         exit;
     }
 
@@ -44,6 +58,7 @@
         echo NConf_HTML::limit_space(
             NConf_HTML::show_error('Error')
         );
+        remove_lock();
         exit;
 	}
 
@@ -54,6 +69,7 @@
         echo NConf_HTML::limit_space(
             NConf_HTML::show_error('Error')
         );
+        remove_lock();
         exit;
     }
 
@@ -66,6 +82,7 @@
             echo NConf_HTML::limit_space(
                 NConf_HTML::show_error('Error')
             );
+            remove_lock();
             exit;
         }
     }

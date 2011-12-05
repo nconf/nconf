@@ -13,7 +13,7 @@ if ( $status ){
     NConf_DEBUG::set(" should be available in " . (600-$lock_file_age) . " seconds", '', 'Next execution');
     NConf_DEBUG::set("Remove the 'generate.lock' in the 'temp' directory", '', 'Force remove lock?');
 
-    # check if file is older than 5min(600sec) so replace it (should not be, because file will be removed)
+    # check if file is older than 10min(600sec) so replace it (should not be, because file will be removed)
     # but this will prevent lock file to stay there
     if ( $lock_file_age < 600 ){
         # some one other is generating the config
