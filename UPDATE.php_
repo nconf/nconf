@@ -59,7 +59,7 @@ if ( ($step == 2 AND $_POST["submit"] != "Back") AND !($db_check == "ok") ){
 }
 
 # migrate handling
-if (!empty($_POST["submit"]) AND $_POST["submit"] == "Migrate" ){
+if (!empty($_POST["submit"]) AND $_POST["submit"] == "Convert" ){
     # do noting, the migrate scripts will do something
     $migrate = TRUE;
     $db_check = "upgrade";
@@ -364,7 +364,7 @@ function upgrade_files($installed_version, $dir, $file_regex, $action, $special 
                     if ( !empty($pre_DB_update_script) AND is_readable($pre_DB_update_script)) {
                         echo '</table>
                                   <table width="400">';
-                        echo table_row_check('Found migration possibility to run before update!', 'ATTENTION' );
+                        echo table_row_check('Found script to run before update!', 'ATTENTION' );
                         require_once($pre_DB_update_script);
                         if (!$pre_status){
                           return "stopped";

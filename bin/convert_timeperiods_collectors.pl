@@ -267,11 +267,11 @@ based on the content of the attributes and then link the new templates with the 
 This way, the original attributes will still be applied to hosts and services via e.g. timeperiods, but users will have
 the ability to override inheritance by setting the same attributes on a host or service level directly.
 
-The goal is to ensure that there is no data missing after an update to NConf 1.3.0 and that the config can be generated as usual.
+The goal is to ensure that there is no data missing after an update to NConf 1.3 and that the config can be generated as usual.
 If prior to the update you weren't using any of the attributes listed below or, if you don't wish for any auto-created templates, 
 then you do not need to run this script.
 
-The following attributes are deprecated and will be removed in NConf release 1.3.0:
+The following attributes are deprecated and will be removed in NConf release 1.3:
 
 timeperiod attributes:
 - max_check_attempts
