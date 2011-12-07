@@ -129,10 +129,12 @@
                 // Look for error
                 if ( strstr($line, "ERROR") ){
                     $status = "error";
+                    echo '<br><span class="red">'.$line.'</span>';
+                }elseif ( strstr($line, "WARN") ){
+                    echo '<br><span class="orange">'.$line.'</span>';
+                }else{
+                    echo "<br>$line";
                 }
-
-                // print lines
-                echo "<br>$line";
             }
 
             
