@@ -127,7 +127,8 @@ if ( isset($_POST["modify"]) ){
                     config_class = "checkcommand"
                     OR config_class = "misccommand"
                     )
-                AND attr_value="'.escape_string($_POST[$id_naming_attr]).'"';
+                AND attr_value="'.escape_string($_POST[$id_naming_attr]).'"
+                AND fk_id_item <> '.$id ;
     }else{
         $query = 'SELECT attr_value, fk_id_item
                 FROM ConfigValues
