@@ -342,6 +342,10 @@ function upgrade_files($installed_version, $dir, $file_regex, $action, $special 
                 if($installed_version == $from_version
                     OR ( $special == 'last_readme' AND $installed_version == $to_version )
                 ){
+                    if (empty($_SESSION["base_version"]) ){
+                        NConf_DEBUG::set($installed_version, 'DEBUG', "Saving current installed base version for later reference");
+                        $_SESSION["base_version"] = $installed_version;
+                    }
                     # or if no update just display the last README file
                     if (empty($special)){
                         $next_update_version = $to_version;
@@ -647,7 +651,13 @@ if ($step == 0){
                 if ($installed_version){
                     echo table_row_check('DB version detected: '.$installed_version, TRUE );
                     if ( version_compare($installed_version, $newest_version, '>=') ){
-                        echo table_row_description('<br>No update necessary', '<input type=hidden name="db_status" value="ok"><input type=hidden name="old_version" value="'.$installed_version.'">');
+                        # check if some updates were done, or if just no update is necessary
+                        if ( empty($_SESSION["base_version"]) ){
+                             $message = "<br>No update necessary";
+                        }else{
+                             $message = "<br>Update finished";
+                        }
+                        echo table_row_description($message, '<input type=hidden name="db_status" value="ok"><input type=hidden name="old_version" value="'.$installed_version.'">');
                     }elseif($db_check == "upgrade" OR $db_check == "upgrade_pass_migrate"){
                         echo table_row_check('update conflict check', $conflict_check );
                         echo '</table>
@@ -693,11 +703,17 @@ if ($step == 0){
                     if ($db_check == "upgrade" OR $db_check == "upgrade_pass_migrate"){
                         # update DB with sql files
                         $success = upgrade_files($installed_version, 'UPDATE', '/\.sql$/', 'upgrade_mysql', $db_check);
-                        if ($success === TRUE){
-                            # say that db is done, go to next step
-                            echo table_row_description('', '<input type=hidden name="db_status" value="ok">');
-                        }else{
+                        NConf_DEBUG::set($success, 'DEBUG', "upgrade_files feedback");
+                        if ($success === "stopped"){
+                            # if status = stopped, the next button should proceed without migrating data
                             echo table_row_description('', '<input type=hidden name="db_status" value="upgrade_pass_migrate">');
+                        }else{
+                            # DB version is up to date, go to next step
+                            if ( VERSION_NUMBER == $installed_version ){
+                                echo table_row_description('', '<input type=hidden name="db_status" value="ok">');
+                            }else{
+                                echo table_row_description('', '<input type=hidden name="db_status" value="upgrade">');
+                            }
                             
                         }
 
@@ -706,6 +722,7 @@ if ($step == 0){
                     # Check for perl scripts to give user a choice to run.
                     # These could be scripts for helping migrate data
                     # The logic of these extensions is handled by them self
+                    # This feature is not yet complete, because we do not need it until now...
                     //upgrade_files($installed_version, 'UPDATE', '/extension\.php$/', '', 'load_extension');
                     
 
@@ -728,15 +745,15 @@ if ($step == 0){
     }
 
 }elseif ($step == 2){
-    if ($_POST["old_version"] == VERSION_NUMBER){
+    if ( empty($_SESSION["base_version"]) ){
         echo table_row_description("No database update found / no update required", "Please carefully examine the following release notes for additional update instructions.");
         echo '</table>';
         # display the last README
-        $update = upgrade_files($_POST["old_version"], 'UPDATE', '/^README$/', 'print_file', 'last_readme');
+        $update = upgrade_files(VERSION_NUMBER, 'UPDATE', '/^README$/', 'print_file', 'last_readme');
     }else{
         echo table_row_description("Please carefully examine the following release notes for additional update instructions.", '');
         echo '</table>';
-        $update = upgrade_files($_POST["old_version"], 'UPDATE', '/^README$/', 'print_file');
+        $update = upgrade_files($_SESSION["base_version"], 'UPDATE', '/^README$/', 'print_file');
     }
 
 

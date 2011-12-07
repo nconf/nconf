@@ -35,8 +35,13 @@ if ( isset($_POST["submit"]) AND $_POST["submit"] == "Convert" ){
             # Print feedback
             echo table_row_description('', $feedback);
             if ($status == "error") {
-				echo '</table><table width="400">';
-                echo table_row_check('Unfortunately there have been errors during conversion! This can have multiple reasons. NConf has not been updated yet.<br>If you wish to debug manually (e.g. run script on command line), exit now.<br><br>If you wish to continue the update without converting your data, click "Next".', FALSE );
+                echo '</table><table width="400">';
+                echo table_row_check('Unfortunately there have been errors during conversion! This can have multiple reasons. NConf has not been updated yet.<br>If you wish to debug manually (e.g. run script on command line), exit now.<br><br>If you wish to continue the update without converting your data, click "Next".<br><br>', FALSE );
+                # Display Convert button again, to allow users of 1.2.5 or earlier versions to change config and retry convert.
+                if ( !empty($_SESSION["base_version"]) AND version_compare($_SESSION["base_version"], "1.2.5", '<=') ){
+                    echo table_row_description('1.2.4 or 1.2.5 updater:', 'Looks like you are updating from 1.2.5 or earlier, please read the corresponding README files or the online release notes of the <i>releases your are skipping</i> to add the missing config variables. Then you can try again to convert your data:<br> -> <a href="http://www.nconf.org/dokuwiki/doku.php?id=nconf:download:releasenotes" target="_blank">Link to Release Notes</a>');
+                    echo table_row_description('', '<input type="Submit" value="Convert" name="submit" align="middle">');
+                }
                 $pre_status = FALSE;
             }else{
                 echo table_row_description('Done.', 'The update will now proceed...');
