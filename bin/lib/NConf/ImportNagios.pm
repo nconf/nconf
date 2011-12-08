@@ -82,7 +82,7 @@ sub parseNagiosConfigFile {
 
     # unset input record separator (read whole file at once!)
 	$/ = undef;
-	my @blocks = split(/[^#\s]\n\s*define\s+/, <LIST>);
+	my @blocks = split(/[^#\s]\s*\n\s*define\s+/, <LIST>);
 	foreach (@blocks){
 
         # count amount of lines in current block
