@@ -86,6 +86,15 @@ foreach my $class (keys(%data2convert)){
 			# do one last check to see if relevant attributes are still set for host-templates
 			if(%item_new_data){
 
+				# create a local copy of %item_new_data so that we can make changes to it without affecting the service-templates section below
+				tie my %item_new_local, 'Tie::IxHash';
+				%item_new_local = %item_new_data;
+
+                # remove some unwanted attributes from host-templates
+                delete $item_new_local{'check_interval'};
+                delete $item_new_local{'retry_interval'};
+                delete $item_new_local{'freshness_threshold'};
+
 				# check if item is already linked to a host-template with identical content
 				my $item_linked_to_identical_host_template = "false";
 				my @item_links = &getItemsLinked($item->[0]);
@@ -102,7 +111,7 @@ foreach my $class (keys(%data2convert)){
 							if($lattr->[1] ne ""){$linked_item_data{$lattr->[0]} = $lattr->[1]}
 						}
 						# compare content of each linked template
-						if(Dumper(%linked_item_data) eq Dumper(%item_new_data)){
+						if(Dumper(%linked_item_data) eq Dumper(%item_new_local)){
 							$item_linked_to_identical_host_template = "true";
 						}
 					}
@@ -116,7 +125,7 @@ foreach my $class (keys(%data2convert)){
 					# check if the same host-template definition already exists in cache
 					my $existing_htpl_name = undef;
 					foreach my $tpl (keys(%uniq_htpl_cache)){
-						if($uniq_htpl_cache{$tpl} eq Dumper(%item_new_data)){
+						if($uniq_htpl_cache{$tpl} eq Dumper(%item_new_local)){
 							$existing_htpl_name = $tpl;
 						}
 					}
@@ -130,25 +139,18 @@ foreach my $class (keys(%data2convert)){
 						my $uniq_tpl_name = &getUniqueNameCounter("host-template", "converted_".$tmp_class."_host-tpl");
 	
 						# write a string representation of the current template to cache
-						$uniq_htpl_cache{$uniq_tpl_name} = Dumper(%item_new_data);
+						$uniq_htpl_cache{$uniq_tpl_name} = Dumper(%item_new_local);
 
 						# set the 'name' + 'register' attributes
-						$item_new_data{'name'} = $uniq_tpl_name;
-						$item_new_data{'register'} = '0';
+						$item_new_local{'name'} = $uniq_tpl_name;
+						$item_new_local{'register'} = '0';
 
-                        # last manipulations before add
-                        tie my %item_new_manip, 'Tie::IxHash';
-                        %item_new_manip = %item_new_data;
-                        delete $item_new_manip{'check_interval'};
-                        delete $item_new_manip{'retry_interval'};
-                        delete $item_new_manip{'freshness_threshold'};
-                        
 						# add a host-template with the available data
-						&logger(3,"Adding host-template     \'$item_new_data{'name'}\'    with data from $class '".&getItemName($item->[0])."'");
-						unless(&addItem("host-template", %item_new_manip)){&logger(1,"Error adding host-template with data from $class '".&getItemName($item->[0])."'")};
+						&logger(3,"Adding host-template     \'$item_new_local{'name'}\'    with data from $class '".&getItemName($item->[0])."'");
+						unless(&addItem("host-template", %item_new_local)){&logger(1,"Error adding host-template with data from $class '".&getItemName($item->[0])."'")};
 
 						# link new host-template with original item
-						my $new_tpl_id = &getItemId($item_new_data{'name'}, "host-template");
+						my $new_tpl_id = &getItemId($item_new_local{'name'}, "host-template");
 						unless(&linkItems($item->[0], $new_tpl_id, "host_template", "0")){&logger(1,"Error linking new host-template with $class '".&getItemName($item->[0])."'")};
 
 					}else{
@@ -158,9 +160,11 @@ foreach my $class (keys(%data2convert)){
 						unless(&linkItems($item->[0], $existing_tpl_id, "host_template", "0")){&logger(1,"Error linking existing host-template with $class '".&getItemName($item->[0])."'")};
 					}
 
-					# remove any attributes we manipulated to let the next section re-evaluate them
-					delete $item_new_data{'name'};
-					delete $item_new_data{'register'};
+					# remove any attributes we manipulated within %item_new_local to let next iteration re-evaluate them
+					delete $item_new_local{'name'};
+					delete $item_new_local{'register'};
+
+					# remove any attributes we manipulated within %item_new_data to let the next section re-evaluate them
 					delete $item_new_data{'notification_options'};
 				}
 			}
