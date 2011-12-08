@@ -694,7 +694,7 @@ sub getUniqueNameCounter {
         }
 
         if($item_hash{$item_name}){
-            $max_count = "2";
+            $max_count = "02";
             while($item_hash{"$item_name\_$max_count"}){
                 $max_count++;
             }
