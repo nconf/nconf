@@ -578,7 +578,13 @@ sub insertValue {
         my $value_in_list = undef;
 
         # get separator from config, split possible values
-        my $separator = &readNConfConfig(NConf::NC_CONFDIR."/nconf.php","SELECT_VALUE_SEPARATOR","scalar");
+        my $separator = &readNConfConfig(NConf::NC_CONFDIR."/nconf.php","SELECT_VALUE_SEPARATOR","scalar",1);
+
+		# SELECT_VALUE_SEPARATOR has been a mandatory configuration option since NConf 1.2.6
+		# if it is not defined, then assume we are running NConf <= 1.2.5 where the separator value was statically set to ","
+		&logger(2,"Could not fetch SELECT_VALUE_SEPARATOR from config. Assuming it is ',' (true for NConf <= 1.2.5)");
+		unless(defined($separator)){$separator=","}
+
         my @poss_values = split(/$separator/, $class_attrs_hash{$class_name}->{$attr}->{'poss_values'});
 
         foreach my $option (@poss_values){

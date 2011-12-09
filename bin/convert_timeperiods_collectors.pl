@@ -9,6 +9,7 @@ use NConf::DB;
 use NConf::DB::Read;
 use NConf::DB::Modify;
 use NConf::Logger;
+use NConf::Helpers;
 use Getopt::Std;
 use Data::Dumper;
 use Tie::IxHash;    # preserve hash order
@@ -50,6 +51,16 @@ tie my %uniq_stpl_cache, 'Tie::IxHash';
 # MAIN
 
 &logger(3,"Started executing $0");
+
+### do some basic checks before running conversion ###
+
+# check if SELECT_VALUE_SEPARATOR is set in the config
+&readNConfConfig(NConf::NC_CONFDIR."/nconf.php","SELECT_VALUE_SEPARATOR","scalar");
+#unless(defined(&readNConfConfig(NConf::NC_CONFDIR."/nconf.php","SELECT_VALUE_SEPARATOR","scalar",1))){
+#	&logger(2,"Could not fetch SELECT_VALUE_SEPARATOR from config. Assuming it is ',' (true for NConf <= 1.2.5)");
+#}
+
+#####################################################
 
 # iterate through all classes that we need to convert
 foreach my $class (keys(%data2convert)){
