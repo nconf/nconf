@@ -9,7 +9,7 @@
 Added:
 - Deployment functionality
   To migrate your old config deployment or to set up new deployment rules, please refer to the online documentation:
-  http://dev.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:modules:deployment:main
+  http://www.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:modules:deployment:main
  
 
 The following configuration options have been removed:
@@ -24,6 +24,32 @@ The following (optional) configuration options have been added:
 - CHECK_STATIC_SYNTAX [1|0]
 - AUTH_METHOD [login|basic]
 - BASICAUTH_REALM [text]
+
+##------------------------------------------------##
+##     Changes to the generated configuration     ##
+##------------------------------------------------##
+
+The following attributes are DEPRECATED and have been removed:
+
+timeperiod attributes:
+- max_check_attempts
+- check_interval
+- retry_interval
+- notification_interval
+- host_notification_options
+- service_notification_options
+
+nagios-collector & nagios-monitor attributes:
+- active_checks_enabled
+- passive_checks_enabled
+- notifications_enabled
+- check_freshness
+- freshness_threshold
+
+The way Nagios configuration files are generated has changed in several ways. 
+Please refer to the online Release Notes for more information:
+
+http://www.nconf.org/dokuwiki/doku.php?id=nconf:download:releasenotes
 
 ##------------------------------------------------##
 ##              Additional changes                ##

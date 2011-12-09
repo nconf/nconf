@@ -4,12 +4,11 @@ NConf README
 NConf homepage:
 http://www.nconf.org
 
-Quick-start guide:
-http://www.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:quick-start_guide
+Start guide:
+http://www.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:start:main
 
 Complete documentation:
-http://www.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:main
-
+http://www.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:detail:main
 
 Table of contents
 -----------------
@@ -107,7 +106,7 @@ The icons can be downloaded here:
 http://www.monitoringexchange.org/p/47
 
 8. Authentication
-If you need authentication, configure ./conf/authentication.php appropriately.
+If you need authentication, configure ./config/authentication.php appropriately.
 
 
 C. Manual update
