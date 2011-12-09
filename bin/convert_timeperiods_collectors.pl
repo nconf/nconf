@@ -56,9 +56,6 @@ tie my %uniq_stpl_cache, 'Tie::IxHash';
 
 # check if SELECT_VALUE_SEPARATOR is set in the config
 &readNConfConfig(NConf::NC_CONFDIR."/nconf.php","SELECT_VALUE_SEPARATOR","scalar");
-#unless(defined(&readNConfConfig(NConf::NC_CONFDIR."/nconf.php","SELECT_VALUE_SEPARATOR","scalar",1))){
-#	&logger(2,"Could not fetch SELECT_VALUE_SEPARATOR from config. Assuming it is ',' (true for NConf <= 1.2.5)");
-#}
 
 #####################################################
 
