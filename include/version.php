@@ -7,7 +7,7 @@ define("VERSION_STRING", '<img src="design_templates/nconf_fresh/nconf-logo-16.g
                           <b>NConf v. '.VERSION_NUMBER.' (RC-1)</b>');
 
 define("VERSION_NOT_FINAL_WARNING", '');
-//define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf 1.3.0, intended FOR TESTING PURPOSES ONLY! 
+// define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf 1.3.0, intended FOR TESTING PURPOSES ONLY! 
 //                                    <br>Do not use this version in a production environment or to upgrade your productive NConf installation!
 //                                    <br>Note that we will not provide any update functionality from this pre-release to the next official release.');
 
