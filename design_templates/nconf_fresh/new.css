@@ -373,6 +373,11 @@ fieldset{
     font-weight: normal;
 }
 
+thead th{
+    text-align: left;
+    font-weight: bold;
+}
+
 /* inheritance table */
 .previously_applied{
     cursor: default;

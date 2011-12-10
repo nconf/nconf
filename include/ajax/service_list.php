@@ -57,11 +57,11 @@ if ( $class == "service" ){
             if ( $class == "service" OR $class == "hostgroup_service"){
                 echo '<th></th>';
             }
-            echo '<th><b>'.FRIENDLY_NAME_SERVICES.'</b></td>';
+            echo '<th>'.FRIENDLY_NAME_SERVICES.'</td>';
             if ( $class == "service" ){
-                echo '<th colspan="3" class="center"><b>'.FRIENDLY_NAME_ACTIONS.'</b></td>';
+                echo '<th colspan="3" class="center">'.FRIENDLY_NAME_ACTIONS.'</td>';
             }elseif ( $class == "hostgroup_service" ){
-                echo '<th><b>'.FRIENDLY_NAME_HOSTGROUP.'</b></td>';
+                echo '<th>'.FRIENDLY_NAME_HOSTGROUP.'</td>';
             }
         echo '</tr>'; 
     echo '</thead>';
