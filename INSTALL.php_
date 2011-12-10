@@ -266,11 +266,15 @@ function parse_mysql_dump($url){
             //   if(preg_match("/;[\040]*\$/", $sql_line)){
             //   - why is there a backslash bevore $
             //   - [\040] seems not work on xampp (windows) installation
-            if(preg_match('/;[\s]*$/', $sql_line)){
             //if(preg_match("/;[\040]*\$/", $sql_line)){
-              $result = mysql_query($query);   //or die(mysql_error());
-              if (!$result) return $result;
-
+            
+            if(preg_match('/;[\s]*$/', $sql_line)){
+              $result = db_handler($query, 'insert', 'running sql statement');
+              if (!$result){
+                $sqlErrorCode = mysql_errno();
+                $sqlErrorText = mysql_error();
+                NConf_DEBUG::set($sqlErrorCode, '', $sqlErrorText);
+              }
               $query = "";
             }
           }
@@ -447,7 +451,7 @@ if ($step == 0){
                 
                 # check if tables are set ....
                 //$query = 'SHOW TABLES FROM '.check_session_value("DBNAME");
-                $query = 'SELECT id_attr FROM ConfigAttrs LIMIT 1;';
+                $query = 'SELECT fk_id_item FROM ItemLinks LIMIT 1;';
                 $result = mysql_query($query, $dbh);
                 if ($result){
                     # say that db is done, go to next step
