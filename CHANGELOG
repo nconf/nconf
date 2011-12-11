@@ -1,4 +1,4 @@
-Release 1.3.0 (2011-12-10)
+Release 1.3.0 (2011-12-11)
 
 FIXED   a bug with the $SUPERADMIN_GROUPS array (array couldn't be unset). Also, superadmin groups are now listed first in the 'contact_groups' attr,
         allowing users to place the '+' sign in the beginning (useful to control inheritance of contact_groups from templates).
@@ -8,8 +8,8 @@ FIXED   ordering of checkcommands with empty 'default service name'
 FIXED   attribute ordering. Modifying or creating new attributes will not cause duplicate order numbers any more.
         Order numbers will now be changed / re-arranged automatically.
 FIXED   a bug in displaying static links like 'generate nagios config' in the last user menu box, instead of 'Basic Items'
-FIXED   security bug on 'call_ajax.php' -> new file handler implemented 'call_file.php' which also does not allow going out of directory structure
-FIXED   'Reset'-button did not reset all input fields, now it will reload the page to make a real reset for all changed stuff
+FIXED   security issue with 'call_ajax.php' -> new file handler implemented ('call_file.php') which prevents breaking out of nconf directory structure
+FIXED   'Reset'-button did not reset all input fields, now it will reload the page to do a real reset for all changed values
 FIXED   multimodiy and multidelete: amount of selected items was limited, because of apache 'LimitRequestLine Directive'.
         This is fixed with a change from GET to POST.
 FIXED   some bugs with the way the Nagios importer parses uncommented lines in the Nagios configuration files; added check for prepending '+' characters
@@ -19,27 +19,27 @@ FIXED   a bug when adding a service over a host's "service" view. All attributes
 FIXED   a bug when modifying services where it was possible to change a service name to the same as an other on the same host.
 FIXED   services created over "add service" (in the main menu), did not check if the servicename is already taken by an other service on the host.
 FIXED   a bug with assign_* attributes when an item name ended with an underscore "_"
-FIXED   crypt will now work as expected (CRYPT_SALT not used anymore)
+FIXED   crypt will now work as expected (CRYPT_SALT option not used anymore)
 
 ADDED	new sample data based on original sample config files from Nagios 3.3.1
-ADDED   NConf can now handle 'modules'
-ADDED   new deployment module, see documentation for details
-ADDED   jQuery - most GUIs will also load jQuery and use its functionality
-ADDED   jQuery UI - most elements are designed with jQuery UI and use its themeroller styles.
+ADDED   NConf can now work with 'modules'
+ADDED   completely new deployment module with many new features (SCP, rsync, HTTPs, local deployment)
+ADDED   jQuery - most GUIs will now use jQuery and its functionality
+ADDED   jQuery UI - most elements are designed with jQuery UI and use its theme-roller styles.
 ADDED   option 'illegal_object_name_chars' to test nagios.cfg file which is used for syntax checking. This is to make sure that generated 
         configuration files containing illegal chars in object names cannot be deployed anymore.
 ADDED   'link_bidirectional' flag to allow attributes of type 'assign_*' to be visible in both classes that are linked to eachother
 ADDED   'class_type' attribute to ConfigClasses table to discern between 'global', 'monitor' and 'collector' classes
 ADDED   basic DB check (should detect a corrupt NConf DB and inform accordingly)
 ADDED   check for existing classes or attributes, to detect possible conflicts during an update
-ADDED   a script which exports items in the NConf database in different formats ('bin/get_items.pl'). It is intended for debugging purposes. 
-ADDED   'call_file.php' -> replaces 'call_ajax.php' (security bug) and handles also the new modules-files
-ADDED   'class: NConf_DEBUG' which helps handling DEBUG, INFO, ERROR and CRITICAL warnings.
-ADDED   'class: NConf_HTML' which helps printing output of DEBUG. It also stores some functions(templates) to allow generating some HTML outputs.
+ADDED   a script which exports items in the NConf database in different formats ('bin/get_items.pl'). It is intended for debugging and export purposes. 
+ADDED   'call_file.php' -> replacing 'call_ajax.php' (security issue); the new file also handles the new module-files
+ADDED   'class: NConf_DEBUG' which helps to manage DEBUG, INFO, ERROR and CRITICAL warnings.
+ADDED   'class: NConf_HTML' which helps to print DEBUG messages. It also stores some functions (templates) to allow generating HTML output.
 ADDED   optional constant 'DEBUG_GENERATE' for debugging config generation proccess (loglevel 1-5)
-ADDED   handle_item.php -> replaces the old add/modify/multimodify GUIs
+ADDED   handle_item.php -> replacing the old add/modify/multimodify GUIs
 ADDED   help button with info text on add/modify Attributes/Classes (administration part) (jQuery)
-ADDED   Attribute 'command_param_count' can also handle 0 (zero) arguments. The GUI will not show any input.
+ADDED   new possible_value for attribute 'command_param_count'; it can now also handle 0 (zero) arguments. The GUI will not show any param input lines then.
 ADDED   classes 'host-dependency' and 'service-dependency' including their attributes.
 ADDED   NConf file check: checks critical files (and directories) for read/write -able and if files exists/are removed, otherwise a critical error is thrown
 ADDED   "service_enabled" attribute for services. Setting it to "no" will prevent a service entry from being written to the configuration.
@@ -47,21 +47,21 @@ ADDED   "hostgroup_members", "servicegroup_members" and "contactgroup_members" a
 ADDED   "service_template" attribute to checkcommand class. This allows one to specify a service-template to be applied to all services using a command.
 ADDED   "default_service_dependency" attributes to checkcommand class. This allows NConf to auto-create service-dependencies for services on the same host.
 ADDED   "template inheritance" view on the detail page of hosts and services
-ADDED   new history action "edited". It shows which items were changed. This improves the usability and tracking of changes a lot.
-ADDED   CSV export script export_items_to_csv.pl (contributed by Yannick Charton)
+ADDED   new history action named "edited". It shows which items were changed. This improves the usability and tracking of changes a lot.
+ADDED   CSV export functionality to 'get_items.pl' script (contributed by Yannick Charton)
 ADDED   selecting a different checkcommand while adding a service will now update the default service parameters
-ADDED   Active Directory authentication mode.
-ADDED   locking system on 'generate config'. User will be stopped and warned if there is someone else already generating.
+ADDED   AD (Active Directory) authentication functionality
+ADDED   locking mechanism for 'generate config'. User will be stopped and warned if there is someone else already generating.
 ADDED   when adding/modifying service parameters on a service, NConf will automatically trim spaces in front/end of value. (preventing copy/paste failures)
-ADDED   bevore applying some inheritance from host to services, there is now also a preview of attributes, which would be removed from its services
-ADDED   NConf will now check for updates and show an info box (only: if not disabled; if user belongs to admin group; on HOME page)
-ADDED   progress bar to generate_config process
-ADDED   multimodify of "assign_many" attributes (like contact_groups) now have a mode selection for how to apply the values: 
-        override (as until now) or add as additional
+ADDED   before applying inherited values from the host to its services, there is now a preview of attributes, which are going to be overwritten
+ADDED   NConf will now check for updates and show an info message (only if the user belongs to the admin group and if the update check hasn't been disabled)
+ADDED   progress bar to the generate_config process
+ADDED   multimodify of an assign_many attribute (e.g. 'contact_groups') now shows a mode selection for how to apply the new values: 
+        'overwrite' (as previously) or 'add' to append additional values.
 ADDED   advanced-services which allow more liberty and can be assigned to multiple hosts and hostgroups
 ADDED   syntax checking for static config folders. This functionality can be enabled/disabled using the new CHECK_STATIC_SYNTAX constant.
-ADDED   script to link an additional contactgroup with existing hosts & services
-ADDED   conversion script to make sure config is still generated the same way after an update to NConf 1.3 -> refer to the Update Information!
+ADDED   script to append/link an additional contactgroup with existing hosts & services
+ADDED   conversion script to make sure config is still generated the same way after an update to NConf 1.3 -> refer to the Release Notes!
 ADDED   "first_notification_delay" attribute to the classes host, service, advanced-service, host-template and service-template
 ADDED   functionality to keep generated config even if it doesn't pass the syntax check when debug mode is active (contributed by Yannick Charton)
 ADDED   HTTP BASIC AUTHENTICATION, including 2 new constants AUTH_METHOD and BASICAUTH_REALM
@@ -72,30 +72,30 @@ REMOVED 'call_ajax.php' -> replaced with 'call_file.php'
 REMOVED add_item.php -> implemented as handle_item.php
 REMOVED modify_item.php -> implemented as handle_item.php
 REMOVED multimodify_attr.php -> implemented as handle_item.php
-REMOVED constant "CRYPT_SALT" -> NConf will now use the SALT correct, generating individual salt's or read from current password, as encryption should be made
+REMOVED constant "CRYPT_SALT" -> NConf will now use the SALT correctly, generating individual salt's or reading them from the password (the way it's meant to be done)
 REMOVED include/js/ajax-dynamic-content.js -> functionality replaced with jQuery & jQuery UI
-REMOVED the -n parameter for all import scripts. No more need to specify the naming attribute when importing from various sources.
+REMOVED the -n parameter for all import scripts. No more need to specify the naming attribute when running any of the import scripts.
 
 MOVED   config.orig/main.php (config/main.php) -> moved to root NConf directory (nconf/)
 MOVED   include/history_tab.php -> moved to tabs directory include/tabs/history.php
-MOVED	5 attributes from timeperiods to hosts/services directly (max_check_attempts, notification_interval etc.) -> refer to the Update Information!
-MOVED	5 attributes from collectors/monitors to hosts/services directly (active_checks_enabled, notifications_enabled etc.) -> refer to the Update Information!
+MOVED	5 attributes from timeperiods to hosts/services directly (max_check_attempts, notification_interval etc.) -> refer to the Release Notes!
+MOVED	5 attributes from collectors/monitors to hosts/services directly (active_checks_enabled, notifications_enabled etc.) -> refer to the Release Notes!
 
-CHANGED step2 will now redirect directly to 'modify service' which will add all services of selected host-preset
-CHANGED 'message'-function: INFO,DEBUG etc. are now handled over the new class (NConf_DEBUG). Old message function only forwards to new class.
-        Also the output of all types (INFO,DEBUG,ERROR and CRITICAL) is done over this class.
+CHANGED add host - step2 will now redirect directly to 'modify service', which will add services for each checkcommand linked to the cosen host-preset
+CHANGED 'message'-function: INFO, DEBUG etc. are now handled over the new class (NConf_DEBUG). Old message function only forwards to new class.
+        Also, the output of all types (INFO,DEBUG,ERROR and CRITICAL) is done over this class.
 CHANGED Services view (on a host). Service list and adding services is now solved with jQuery/AJAX functions.
 CHANGED Administration GUI:
-        - 'attributes': add & modify improved GUI with help
-        - 'classes': add & modify improved GUI with help
+        - 'attributes': add & modify - extended GUI with help functionality
+        - 'classes': add & modify - extended GUI with help functionality
 CHANGED 'members' attribute for hostgroups, servicegroups and contactgroups. Set the 'link_bidirectional' flag.
-CHANGED 'parents' attribute for hosts: this attribute is now also written to the collector config
+CHANGED 'parents' attribute for hosts: this attribute is now also written to the config of collector servers
 CHANGED 'services' in the navigation from the 'admins' section to the 'users' section
 CHANGED 'command_name' attribute in host-presets to not be mandatory anymore
-CHANGED advanced box: the box himself and clone/multimodify/delete/checkbox selection is now implemented with jQuery code.
+CHANGED advanced box: the box itself and clone/multimodify/delete/checkbox selection is now implemented with jQuery code.
 CHANGED the Nagios import mechanism to properly process services which are assigned to more than one host. Multiple services are created in NConf.
-CHANGED functionality for cloning services to other hosts: it is now possible to select multiple services and clone theme to multiple hosts in one action.
-CHANGED history entries of items which still exist: they now have a link to the item's detail view
+CHANGED functionality for cloning services to other hosts: it is now possible to select multiple services and clone them to multiple hosts with one action.
+CHANGED history entries: they now have a link to the item's detail view, if the item still exists
 CHANGED history view: it now uses jQuery plugin 'datatables'
 CHANGED default parameter settings for checkcommands, optimized the layout of service parameters
 CHANGED CSS: cleanup and simplified code. Implemented jQuery UI theme styles.
@@ -103,7 +103,8 @@ CHANGED SQL queries for overviews
 CHANGED access rules and permission/authorisation system renewed.
 
 RENAMED "dependency view" to "host parent / child view"
-RENAMED  add_items_from_cfg.pl to add_items_from_nagios.pl for better distinction
+RENAMED add_items_from_cfg.pl to add_items_from_nagios.pl for better distinction
+RENAMED NConf release 1.2.7 to 1.3, because there have been so many changes!
 
 Release 1.2.6 (2009-11-26)
 

@@ -6,10 +6,9 @@
 ##       Changes to the NConf configuration       ##
 ##------------------------------------------------##
 
-Added:
-- Deployment functionality
-  To migrate your old config deployment or to set up new deployment rules, please refer to the online documentation:
-  http://www.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:modules:deployment:main
+Added new deployment functionality. To migrate your old config deployment or to set up new deployment rules, 
+please refer to the online documentation:
+http://www.nconf.org/dokuwiki/doku.php?id=nconf:help:documentation:modules:deployment:main
  
 
 The following configuration options have been removed:
@@ -28,6 +27,8 @@ The following (optional) configuration options have been added:
 ##------------------------------------------------##
 ##     Changes to the generated configuration     ##
 ##------------------------------------------------##
+
+CAUTION
 
 The following attributes are DEPRECATED and have been removed:
 
@@ -64,9 +65,9 @@ Files not generated anymore:
 - extended_host_info.cfg
 - extended_service_info.cfg
 
-Security issue 'call_ajax.php':
+Security issue with 'call_ajax.php':
 Please remove this file from your nconf/ directory. 
-A more secure call handler was implemented ('call_file.php').
+A replacement which is more secure has been implemented ('call_file.php').
 
 ####################################################
 ##           End of update information            ##
