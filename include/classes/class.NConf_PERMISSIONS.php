@@ -133,12 +133,14 @@ class NConf_PERMISSIONS{
 
         # check group permission
         if ( empty($GROUPS) OR in_array($this->group, $GROUPS) ){
+            $this->debug .= NConf_HTML::swap_content($URL, "URL", FALSE, TRUE);
+            $this->debug .= NConf_HTML::swap_content($REGEX_OPEN_END, "REGEX_OPEN_END", FALSE, TRUE);
             if ($REGEX_OPEN_END){
-                if ( !preg_match('/^'.preg_quote($URL).'\w*/', $this->current_script) ){
+                if ( !preg_match('/(^|\/)'.preg_quote($URL).'\w*/', $this->current_script) ){
                     return;
                 }
             }else{
-                if ( !preg_match('/^'.preg_quote($URL).'$/', $this->current_script) ){
+                if ( !preg_match('/(^|\/)'.preg_quote($URL).'$/', $this->current_script) ){
                     return;
                 }
             }
