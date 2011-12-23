@@ -83,6 +83,7 @@ if ( ($action == "Save") AND (isset($content) AND isset($full_path) ) ){
         $saved = FALSE;
     }else{
         #write to file
+        $content = str_replace("\r\n", "\n", $content); #remove carriage returns
         if ( fwrite($fh, $content) == FALSE){
             # could not write to file
             message($info, "The config directory and all its content must be writable for your webserver user.", "overwrite");
