@@ -99,6 +99,8 @@
     $NConf_PERMISSIONS->setURL('clone_host', TRUE, array('user') );
     $NConf_PERMISSIONS->setURL('clone_service.php', FALSE, array('user') );
 
+    # Config deployment
+    $NConf_PERMISSIONS->setURL('call_file.php', FALSE, array('user') );
     
 
     # id_wrapper
