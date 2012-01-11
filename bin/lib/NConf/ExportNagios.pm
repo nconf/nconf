@@ -1433,7 +1433,7 @@ sub create_test_cfg {
     &logger(4,"Writing file '$testfile'");
 
     # write header
-    print FILE "### nagios.cfg file - FOR TESTING ONLY ###\n\n";
+    print FILE "### nagios.cfg file - FOR SYNTAX CHECKING ONLY ###\n\n";
     print FILE "# OBJECT CONFIGURATION FILE(S)\n";
 
     # write global cfg files
