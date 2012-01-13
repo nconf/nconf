@@ -124,4 +124,12 @@ define('PASSWD_DISPLAY', 0);
 #
 define('PASSWD_HIDDEN_STRING', "********");
 
+#
+# CONTRIBUTIONS
+#
+# Globally set how contactgroups are added when inherited:
+#  0: overwrite existing contact groups
+#  1: append to existing contact groups (add the '+' prefix)
+define('FORCE_CONTACTGROUPS_APPEND', 0);
+
 ?>
