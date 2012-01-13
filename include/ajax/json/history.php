@@ -141,6 +141,7 @@ while ( $aRow = mysql_fetch_array( $rResult ) )
 }
 $sOutput = substr_replace( $sOutput, "", -1 );
 $sOutput .= '] }';
+$sOutput = str_replace("\\'", "\\\\'", $sOutput);
 
 echo $sOutput;
 
