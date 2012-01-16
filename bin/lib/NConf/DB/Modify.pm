@@ -514,6 +514,11 @@ sub insertValue {
             }
             unless($group){next}
 
+            # quote any characters that must be escaped in SQL
+            $group = &NConf::DB::dbQuote($group);
+            $group =~ s/^'//;
+            $group =~ s/'$//;
+
             # check if the group to be linked actually exists
             my $id_group = &getItemId($group,$class_name);
 
@@ -656,10 +661,20 @@ sub insertValue {
 		        # get ID of host which the service belongs to
 		        my $host_id = &getItemId($hostname, 'host');
 
+                # quote any characters that must be escaped in SQL
+                $value = &NConf::DB::dbQuote($value);
+                $value =~ s/^'//;
+                $value =~ s/'$//;
+
             	# check if services to be linked actually exist
 		        $id_item_linked2 = &getServiceId($value,$host_id);
 
 	        }else{
+                # quote any characters that must be escaped in SQL
+                $value = &NConf::DB::dbQuote($value);
+                $value =~ s/^'//;
+                $value =~ s/'$//;
+
             	# check if items to be linked actually exist
             	$id_item_linked2 = &getItemId("$value","$class_attrs_hash{$class_name}->{$attr}->{'assign_to_class'}");
 	        }
