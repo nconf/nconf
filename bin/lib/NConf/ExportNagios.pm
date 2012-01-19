@@ -1016,7 +1016,6 @@ $fattr,$fval
                 my $has_sg_members = 0;
                 my $assigned_to_host = 0;
                 my $assigned_to_hostgroup = 0;
-                my $assigned_to_servicegroup = 0;
 
                 foreach my $attr (@item_links){
 
@@ -1079,10 +1078,9 @@ $fattr,$fval
 		                    }
                         }
                         
-                        # verify that the advanced-service is well linked to at least one host/hostgroup/servicegroup
+                        # verify that the advanced-service is well linked to at least one host / hostgroup
                         if($attr->[0] eq "host_name" && $attr->[1] ne ""){$assigned_to_host=1}
                         if($attr->[0] eq "hostgroup_name" && $attr->[1] ne ""){$assigned_to_hostgroup=1}
-                        if($attr->[0] eq "servicegroups" && $attr->[1] ne ""){$assigned_to_servicegroup=1}
                         
                     }
                 }
@@ -1111,10 +1109,10 @@ $fattr,$fval
                     }
                 }
                 
-                # special processing for advanced-service: remove it if not assigned to any host/hostgroup/servicegroup
+                # special processing for advanced-service: remove it if not assigned to any host / hostgroup
                 if($class eq "advanced-service"){
-                    if($assigned_to_host != 1 && $assigned_to_hostgroup != 1 && $assigned_to_servicegroup != 1){
-                        &logger(4,"Removing $class '$id_item->[0]' from config because the attributes 'host_name', 'hostgroup_name' and 'servicegroups' were empty");
+                    if($assigned_to_host != 1 && $assigned_to_hostgroup != 1){
+                        &logger(4,"Removing $class '$id_item->[0]' from config because the attributes 'host_name' and 'hostgroup_name' were empty");
                         $has_empty_linking_attrs = 1;
                     }
                 }
