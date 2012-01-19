@@ -124,4 +124,10 @@ define('PASSWD_DISPLAY', 0);
 #
 define('PASSWD_HIDDEN_STRING', "********");
 
+#
+# CONTRIBUTIONS
+#
+# Enable/disable the log of the remote ip/hostname in the nconf history. When activated, the ip (or hostname in case HostnameLookups is set to On in httpd.conf) is appended to the username.
+define('LOG_REMOTE_IP_HISTORY',0);
+
 ?>

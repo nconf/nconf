@@ -137,12 +137,12 @@ if ( ( empty($_GET["show"]) OR $_GET["show"] != "all" ) AND $show_num_rows > "50
 echo '<table id="history" style="width: 100%">';
 echo '<thead>';
 echo '<tr>';
-    echo '<th width="120">When</td>
-            <th width="120">Who</td>
-            <th width="60">Action</td>
-            <th width="100">Object</td>
-            <th width="360">Value</td>
-            <th width="20">ID</td>';
+echo '<th width="120">When</td>
+        <th width="220">Who</td>
+        <th width="60">Action</td>
+        <th width="100">Object</td>
+        <th width="360">Value</td>
+        <th width="20">ID</td>';
 echo '</tr>';
 echo '</thead>';
 echo '<tbody>';
