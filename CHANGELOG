@@ -4,6 +4,7 @@ FIXED   security issue: contents of the config directory were viewable. Added .h
 FIXED   compatibility problems with Internet Explorer 8 (and earlier)
 FIXED   compatibility issue with some Icinga versions: generating the config would fail if advanced-services were not assigned to either a host or hostgroup.
 FIXED   issue when importing items that are linked to other items which contain special characters in their names (e.g. service 'C:\ Drive')
+FIXED   bug in Nagios config importer where the first item was being skipped if there was a comment above it
 
 ADDED   icon preview to the OS details page
 
