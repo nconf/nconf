@@ -83,7 +83,7 @@ sub parseNagiosConfigFile {
     # unset input record separator (read whole file at once!)
 	$/ = undef;
 	#my @blocks = split(/[^#\s]\s*\n\s*define\s+/, <LIST>); # 20120131 A. Gargiulo changed this regex
-	my @blocks = split(/\n *define +/, <LIST>); # CAUTION: changing this regex might mess up the linecount mechanism! 
+	my @blocks = split(/\n[ \r\t\f]*define[ \r\t\f]*/, <LIST>); # CAUTION: changing this regex might mess up the linecount mechanism! 
 
 	foreach (@blocks){
 
