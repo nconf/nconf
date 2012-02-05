@@ -375,10 +375,8 @@ if (!empty($_SESSION["group"]) ){
 }
 if ( defined("LOG_REMOTE_IP_HISTORY") AND LOG_REMOTE_IP_HISTORY == 1 ){
     if ( !empty($_SERVER['REMOTE_HOST']) ){
-        //$user .= " (".$_SERVER['REMOTE_HOST'].")";
         history_add("general", "login-info", "REMOTE_HOST: (".$_SERVER['REMOTE_HOST'].")");
     }elseif( !empty($_SERVER['REMOTE_ADDR']) ){
-        //$user .= " (".$_SERVER['REMOTE_ADDR'].")";
         history_add("general", "login-info", "REMOTE_ADDR: (".$_SERVER['REMOTE_ADDR'].")");
     }
 }
