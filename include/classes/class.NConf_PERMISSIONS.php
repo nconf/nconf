@@ -133,8 +133,8 @@ class NConf_PERMISSIONS{
 
         # check group permission
         if ( empty($GROUPS) OR in_array($this->group, $GROUPS) ){
-            $this->debug .= NConf_HTML::swap_content($URL, "URL", FALSE, TRUE);
-            $this->debug .= NConf_HTML::swap_content($REGEX_OPEN_END, "REGEX_OPEN_END", FALSE, TRUE);
+            $regex_open_end_message = $REGEX_OPEN_END ? "Yes" : "No";
+            $this->debug .= NConf_HTML::status_text("<br>will use open end regex (REGEX_OPEN_END):", $regex_open_end_message, " @ ".$URL);
             if ($REGEX_OPEN_END){
                 if ( !preg_match('/(^|\/)'.preg_quote($URL).'\w*/', $this->current_script) ){
                     return;
