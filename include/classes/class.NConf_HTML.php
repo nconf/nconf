@@ -176,11 +176,19 @@ class NConf_HTML{
                 case "TRUE":
                     $output .= '<span class="status_ok">OK</span>';
                 break;
+                
+                case "Yes":
+                    $output .= '<span class="status_ok">'.$status.'</span>';
+                break;
 
                 case "FAILED":
                 case "ERROR":
                 case "FALSE":
                     $output .= '<span class="status_failed">FAILED</span>';
+                break;
+                
+                case "No":
+                    $output .= '<span class="status_failed">'.$status.'</span>';
                 break;
 
                 default:
