@@ -269,6 +269,13 @@ function history_add($action, $name, $value, $fk_id_item = 'NULL', $feature = ''
     }else{
         $user = "unknown";
     }
+    if (LOG_REMOTE_IP_HISTORY == 1){
+        if ( !empty($_SERVER['REMOTE_HOST']) ){
+            $user .= " (".$_SERVER['REMOTE_HOST'].")";
+        }elseif( !empty($_SERVER['REMOTE_ADDR']) ){
+            $user .= " (".$_SERVER['REMOTE_ADDR'].")";
+        }
+    }
     # Feature's
     switch($feature){
         # Resolve assignment looks up the real value behind the id(foreign keys)
