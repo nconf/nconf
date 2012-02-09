@@ -123,12 +123,4 @@ define('PASSWD_DISPLAY', 0);
 # Any passwords will be represented as the following string (in the detail view).
 #
 define('PASSWD_HIDDEN_STRING', "********");
-
-
-#
-# CONTRIBUTIONS
-#
-# Enable/disable the log of the remote ip/hostname in the nconf history.
-# When activated, the ip (or hostname in case HostnameLookups is set to On in httpd.conf) is appended as a history entry.
-define('LOG_REMOTE_IP_HISTORY', 1);
 ?>
