@@ -144,8 +144,8 @@ class NConf_PERMISSIONS{
                     return;
                 }
             }
-            $this->debug .=  NConf_HTML::text("URL matched: $URL", TRUE);
-
+            $this->debug .= NConf_HTML::text("URL matched: $URL", TRUE);
+            $this->debug .= NConf_HTML::swap_content($REQUEST, "REQUEST debug", FALSE, TRUE);
             # check for request limitations
             if ( !empty($REQUEST) ){
                 # check if needed request items match
@@ -158,10 +158,13 @@ class NConf_PERMISSIONS{
                     $this->debug .= NConf_HTML::swap_content($REQUEST, "REQUEST items matched", FALSE, TRUE);
                 }
                 //NConf_DEBUG::set($REQUEST, 'DEBUG', "REQUEST matched");
+            }else{
+                $this->debug .= NConf_HTML::text("No REQUEST data", TRUE);
             }
-
+            
             # all checks passed, URL is fine
             $this->url_check_status = TRUE;
+            $this->debug .= NConf_HTML::text("status: $this->url_check_status", TRUE);
             return;
         }
 
