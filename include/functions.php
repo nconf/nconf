@@ -1633,32 +1633,32 @@ return $password;
 
 function create_menu($result){
   if ($result){
+    /*
     echo '<table border=0 width=188>';
     echo '<colgroup>
             <col width="65">
             <col width="55">
             <col width="68">
           </colgroup>';
-
+    */
+    NConf_DEBUG::set( $result
+                    ,'DEBUG'
+                    ,"Menu creation debug" );
+                    
+    echo '<ul class="nav nav-list">';
     // Generate Menu
     $group_bevore = "";
     $block_i = 0;
     foreach ($result as $nav_class){
         if ($nav_class["grouping"] != $group_bevore){
 
-            echo '</table>
+            echo '</ul>
                 </div>';
 
             // New Block for Group
             echo '<h2 class="ui-widget-header header"><span>'.$nav_class["grouping"].'</span></h2>';
             echo '<div class="ui-widget-content box_content">';
-            echo '<table border=0 width=188>';
-            echo '<colgroup>
-                    <col width="55">
-                    <col width="65">
-                    <col width="68">
-                  </colgroup>';
-            echo "<tr><td></td><td></td><td></td></tr>";
+            echo '<ul class="nav nav-list">';
         }
         $group_bevore = $nav_class["grouping"];
 
@@ -1666,6 +1666,7 @@ function create_menu($result){
         $nav_links = explode(";;", $nav_class["nav_links"]);
         $link_i = 0;
         $link_output = "";
+        /* perhaps change this to icons ? */
         foreach ($nav_links as $entry){
             $link_i++;
             if ($link_i != "1"){
@@ -1682,11 +1683,33 @@ function create_menu($result){
             }
         }
 
-
+    /*
+            <li>
+    <a href="#">
+    <i class="icon-book"></i>
+    Library
+    </a>
+    </li>
+    </ul>
+*/
+        if ( defined('TEMPLATE_DIR') ){
+            /* Icon only if available ? */
+            if (!empty($nav_class["icon"]) ){
+                $icon = 'design_templates/'.TEMPLATE_DIR.'/img/'.$nav_class["icon"].'.png';
+            }elseif (!empty($nav_class["config_class"]) ){
+                $icon = 'design_templates/'.TEMPLATE_DIR.'/img/'.$nav_class["config_class"].'.png';
+            }
+            
+            if ( file_exists($icon) ){
+                echo '<img class="icon-'.$icon.'" src="'.$icon.'"></i>';
+            }
+        }
+        echo '<li>'.$nav_class["friendly_name"].'</li><li>'.$link_output.'</li>';
+        /*
         // filled or empty "friendly_name" will choose the print style of the link
         if($nav_class["friendly_name"] == ""){
             // empty/without friendly_name style
-            echo '<tr><td colspan=3><div class="link_with_tag">'.$link_output.'</div></td></tr>';
+            echo '<li>'.$link_output.'</li>';
         }else{
             // filled friendly name makes other style  (< 10 characters should work fine)
             if ( strlen($nav_class["friendly_name"]) < 10){
@@ -1697,9 +1720,7 @@ function create_menu($result){
                 $td2_colspan = 1;
             }
 
-            echo '<tr>
-                <td colspan="'.$td1_colspan.'" style="vertical-align:top">
-                    <div class="link_with_tag">'.$nav_class["friendly_name"].'
+            echo '<li>'.$nav_class["friendly_name"].'
                     </div>
                 </td>
                 <td colspan="'.$td2_colspan.'" align="right">
@@ -1708,11 +1729,12 @@ function create_menu($result){
               </tr>';
         
         }
+         */
     }
     //END foreach
 
     // Last Block has to be closed :
-    echo '</table>';
+    echo '</ul>';
 
   }
 
