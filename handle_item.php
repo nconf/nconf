@@ -30,6 +30,14 @@ set_page();
                 });
             }
         });
+    
+        /* resizable feature */    
+        $('div.multipleSelectBoxControl.ui-nconf-content').each(function () {
+            $(this).resizable({
+                handles: "e",
+                minWidth: 530
+            });
+        });
     });
 
 </script>
@@ -848,7 +856,9 @@ if(
                 }
 
                 $result2 = db_handler($query2, "result", "assign_many");
-                echo '<td colspan=3><select id="fromBox_'.$entry["id_attr"].'" name="from_'.$entry["id_attr"].'[]" style="'.CSS_SELECT_MULTI.'" multiple ';
+                echo '<td colspan=3>
+                        <div class="select-container">
+                          <select id="fromBox_'.$entry["id_attr"].'" name="from_'.$entry["id_attr"].'[]" style="'.CSS_SELECT_MULTI.'" multiple ';
                     /*# Load ajax info for PRIO's
                     if ($entry["id_attr"] == $contact_groups_attribute_id){
                         echo ' onmouseover="attachInfo(this, \'contacts\')"';
@@ -922,12 +932,12 @@ if(
                     }
                 }
                 echo '</select>';
-                
+                echo '</div>';
                 # assign_cust_order handling
                 $assign_cust_order = ($entry["datatype"] == "assign_cust_order") ? 1 : 0;
                 echo '
                 <script type="text/javascript">
-                    createMovableOptions("fromBox_'.$entry["id_attr"].'","toBox_'.$entry["id_attr"].'",500,145,"available items","selected items","livesearch",'.$assign_cust_order.','.$replace_mode.');
+                    createMovableOptions("fromBox_'.$entry["id_attr"].'","toBox_'.$entry["id_attr"].'",530,145,"available items","selected items","livesearch",'.$assign_cust_order.','.$replace_mode.');
                 </script>
                 ';
                 
@@ -1065,7 +1075,9 @@ if(
                 }
 
                 # generate base options
-                echo '<td colspan=3><select id="fromBox_'.$entry["id_attr"].'" name="from_'.$entry["id_attr"].'[]" style="'.CSS_SELECT_MULTI.'" multiple ';
+                echo '<td colspan=3>
+                    <div class="select-container">
+                        <select id="fromBox_'.$entry["id_attr"].'" name="from_'.$entry["id_attr"].'[]" style="'.CSS_SELECT_MULTI.'" multiple ';
                     /*# Load ajax info for PRIO's
                     if ($entry["id_attr"] == $contact_groups_attribute_id){
                         echo ' onmouseover="attachInfo(this, \'contacts\')"';
@@ -1106,7 +1118,7 @@ if(
                     }
                 }
                 echo '</select>';
-                
+                echo '</div>';
                 # assign_cust_order handling
                 $assign_cust_order = ($entry["datatype"] == "assign_cust_order") ? 1 : 0;
                 echo '

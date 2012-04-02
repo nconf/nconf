@@ -384,7 +384,7 @@ function createMovableOptions(fromBox,toBox,totalWidth,totalHeight,labelLeft,lab
     var parentEl = fromObj.parentNode;
     
     var parentDiv = document.createElement('DIV');
-    parentDiv.className='multipleSelectBoxControl';
+    parentDiv.className='multipleSelectBoxControl ui-nconf-content ui-widget-content ui-corner-all';
     parentDiv.id = 'selectBoxGroup' + selectBoxIndex;
     if (cust_order == 1){
         parentDiv.style.width = (totalWidth + 30) + 'px';
@@ -401,8 +401,10 @@ function createMovableOptions(fromBox,toBox,totalWidth,totalHeight,labelLeft,lab
     
     
     var subDiv = document.createElement('DIV');
-    subDiv.style.width = (Math.floor(totalWidth/2) - 15) + 'px';
-    fromObj.style.width = (Math.floor(totalWidth/2) - 17) + 'px';
+    //subDiv.style.width = (Math.floor(totalWidth/2) - 15) + 'px';
+    subDiv.style.width = "44%";
+    //fromObj.style.width = (Math.floor(totalWidth/2) - 17) + 'px';
+    fromObj.style.width = "100%";
     var livesearch_input_width = (Math.floor(totalWidth/2) - 17);
 
     var label = document.createElement('SPAN');
@@ -459,8 +461,10 @@ function createMovableOptions(fromBox,toBox,totalWidth,totalHeight,labelLeft,lab
     buttonDiv.appendChild(code);
     
     var subDiv = document.createElement('DIV');
-    subDiv.style.width = (Math.floor(totalWidth/2) - 15) + 'px';
-    toObj.style.width = (Math.floor(totalWidth/2) - 17) + 'px';
+    //subDiv.style.width = (Math.floor(totalWidth/2) - 15) + 'px';
+    subDiv.style.width = "44%";
+    //toObj.style.width = (Math.floor(totalWidth/2) - 17) + 'px';
+    toObj.style.width = "100%";
     var label = document.createElement('SPAN');
     label.innerHTML = labelRight;
     subDiv.appendChild(label);
@@ -498,7 +502,8 @@ function createMovableOptions(fromBox,toBox,totalWidth,totalHeight,labelLeft,lab
         var livesearch_input_marginBottom = 4;
         var toObjHeight = (totalHeight - label.offsetHeight + livesearch_input_height + livesearch_input_marginBottom);
         toObj.style.height = (toObjHeight) + "px";
-        livesearch_input.style.width = ( (livesearch_input_width) + "px");
+        //livesearch_input.style.width = ( (livesearch_input_width) + "px");
+        livesearch_input.style.width = "100%";
     }
 
     // CUST ORDER
