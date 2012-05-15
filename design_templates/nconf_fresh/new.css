@@ -1,6 +1,6 @@
 body, html, textarea, table, button, input, select{
 font-family:Arial,sans-serif;
-font-size:11px;
+font-size:12px;
 font-style:normal;
 font-variant:normal;
 font-weight:400;
@@ -104,8 +104,8 @@ input, select, textarea {
 }
 
 h2{
-font-size:12px;
-margin:0;
+  font-size:115%;
+  margin:0;
 }
 
 .left_navigation h2{
@@ -176,6 +176,7 @@ width:22px;
 */
 .content_header, #maincontent > h2{
     margin-bottom: 9px;
+    margin-top: 0px;
 }
 
 /*
@@ -404,4 +405,16 @@ input[disabled], select[disabled], textarea[disabled] {
     opacity: .35;
     filter:Alpha(Opacity=35);
     background-image: none;
+}
+
+/* new page title element */
+.title > img {
+  margin-right: 10px;
+}
+.title {
+  border-bottom: 1px solid #CCC;
+}
+
+.search {
+  margin-top: 10px;
 }

@@ -228,10 +228,16 @@ if (!empty($_GET["quantity"]) ){
 // Page output begin
 
 
-echo '<div style="width: 500px; float: left;">';
-
-echo '<h2 class="content_header">Show: '.$class.'</h2>';
-
+echo '<div class="title">';
+  // Get Icon
+  $icon = get_image(array( "type" => "design",
+                           "name" => $class,
+                           "size" => 24,
+                           "class" => "float_left"
+                           ) );
+  echo $icon.'<h1 class="content_header">'.$class.'</h1>';
+echo '</div>';
+echo '<div class="search">';  
 echo '<table border=0 frame=box rules=none style="border-width: 0px">';
 
 

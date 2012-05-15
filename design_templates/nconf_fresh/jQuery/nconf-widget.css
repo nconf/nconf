@@ -69,10 +69,18 @@ th.ui-state-default, td.ui-state-default{
     padding-left: 3px;
 }
 
-
+/* Floatings */
 
 /* GLOBAL definitions */
-
+.float_left {
+  float: left;
+}
+.float_right {
+  float: right;
+}
+.clear_both{
+  clear: both;
+}
 
 .inline{
     display: inline;
@@ -107,7 +115,7 @@ th.ui-state-default, td.ui-state-default{
 /* UI NCONF header element*/
 .ui-nconf-header{
     /*padding:4px 4px 4px 5px;*/
-    height: 15px;
+    /*height: 15px;*/
     padding: 5px;
 }
 
@@ -136,6 +144,9 @@ th.ui-state-default, td.ui-state-default{
 /* overwrite header in box */
 .ui-widget h2{
     margin-bottom: 0;
+}
+.ui-widget h3{
+    margin: 0;
 }
 
 .ui-nconf-link{
@@ -185,8 +196,53 @@ th.ui-state-default, td.ui-state-default{
 .ui-state-default.box_content{
     border-top-width: 0px;
 }
+#navigation .ui-widget{
+    font-size: 101%;
+}
+#navigation ul.nav-list ul li {
+    float: left;
+    list-style: none outside none;
+}
+#navigation ul.nav-list > li {
+  padding: 2px 6px;
+  height: 18px;
+  clear: both;
+}
+#navigation ul.nav-list ul.nav-list > li {
+  padding: 0;
+}
 
+#navigation ul.nav-list > li:hover {
+  background-color: #DBDDE2;
+}
+#navigation ul.nav-list > li.active {
+  background-color: #8C96A5;
+}
+#navigation ul.nav-list > li.active a{
+  color: #FFFFFF;
+}
 
+#navigation ul.nav-list > li > div:first-child {
+  padding-top: 1px;
+}
+
+#navigation img.nav-icon {
+  padding-right: 5px;
+}
+
+.nav-list {
+  padding: 0px;
+  margin: 0px;
+  list-style: none outside none;
+}
+
+#navigation .box_content {
+  padding: 6px;
+}
+
+#navigation .logout {
+  margin-top: 10px;
+}
 
 /*
 ICONs ICON BARs etc
