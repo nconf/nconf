@@ -4,7 +4,7 @@
 
 
 
-<div id="ui-nconf-icon-bar" class="tab_advanced">
+<div id="ui-nconf-icon-bar">
     <fieldset>
       <legend>Multi Actions</legend>
       <div id="ui-nconf-icon-bar2">
