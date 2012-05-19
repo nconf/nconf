@@ -8,6 +8,7 @@ $(document).ready(function(){
     // button style
     $( "#buttons > input, input:submit, input:button, :button" )
         .add('a > img', '#ui-nconf-icon-bar')
+        .add('input:image', '#ui-nconf-icon-bar')
         .button();
         
     // buttons for images

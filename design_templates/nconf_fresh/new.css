@@ -211,7 +211,6 @@ img {
 
 
 /* TABS */
-
 .tab_advanced {
     width: 150px;
     text-align: left;
@@ -230,17 +229,14 @@ img {
     margin: 0 0 0 5px;
     width: 100%;
 }
-
 /*
 .tab_advanced table{
     margin-left: 6px;
 }
 */
-
 .tab_advanced .ui-accordion-header{
     margin-top: 0px !important;
 }
-
 .tab_advanced.services{
     width: 160px;
 }
@@ -255,11 +251,6 @@ img {
 
 .tab_advanced.big {
     width: 250px;
-}
-
-.tab_advanced .independent{
-    position: absolute;
-    width:inherit;
 }
 
 .box_right{
@@ -417,4 +408,8 @@ input[disabled], select[disabled], textarea[disabled] {
 
 .search {
   margin-top: 10px;
+}
+
+#checkbox_selectall {
+    margin-right: 3px;
 }

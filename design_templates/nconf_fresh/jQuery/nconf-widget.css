@@ -170,7 +170,7 @@ th.ui-state-default, td.ui-state-default{
     border-top: 1px solid #d0d0d0;
 }
 /* define no top border for first line, otherwise the border from the table header is overwritten */
-.ui-nconf-table tbody tr:first-child:not(.ui-state-error){
+.ui-nconf-table tbody tr:first-child:not(".ui-state-error"){
     border-top: 0px none;
 }
 .ui-nconf-table tbody tr, .ui-nconf-table tbody tr a{
@@ -260,9 +260,13 @@ ICONs ICON BARs etc
     top: 3px;
 }
 
-.ui-widget-header > #ui-nconf-icon-bar img{
+#ui-nconf-icon-bar img, #ui-nconf-icon-bar input{
     margin-left: 2px;
     padding: 2px;
+}
+
+#advanced #ui-nconf-icon-bar {
+    margin-top: -40px;
 }
 
 /* multi (assign) vertical and horizontal movers */
