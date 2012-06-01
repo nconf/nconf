@@ -63,13 +63,13 @@ $template_cache_local = array();
 require_once 'include/tabs/history.php';
 
 
-
 # Normal detail page
 echo '<div style="width: 500px;" class="relative">';
+echo NConf_HTML::page_title($item_class, 'Details');
 
-    echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
+    echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr">';
 
-        echo '<div><h2>Details of '.$item_class.': '.$item_name.'</h2></div>';
+        echo '<div><h2>Details of '.$item_name.'</h2></div>';
         echo '<div id="ui-nconf-icon-bar">';
 		
 			// tool bar of details view

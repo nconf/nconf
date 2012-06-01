@@ -432,6 +432,12 @@ function db_templates($template, $value = '', $search = '', $filter = '', $outpu
                         AND id_item = "'.$value.'"';
             $output = db_handler($query, 'getOne', "select class name");
             break;
+        case "class_friendly_name":
+            $query = 'SELECT friendly_name
+                        FROM ConfigClasses
+                        WHERE config_class = "'.$value.'"';
+            $output = db_handler($query, 'getOne', "select class name");
+            break;
         case "get_value":
             $query = 'SELECT attr_value
                         FROM ConfigAttrs,ConfigValues,ConfigItems

@@ -119,9 +119,9 @@ th.ui-state-default, td.ui-state-default{
     padding: 5px;
 }
 
-.ui-nconf-header div{
+/*.ui-nconf-header div{
     float: left;
-}
+}*/
 
 /* UI NCONF content */
 .ui-nconf-content{
@@ -255,9 +255,13 @@ ICONs ICON BARs etc
 }
 
 /* icon bar in box header, like detail view */
-.ui-widget-header > #ui-nconf-icon-bar{
+.ui-widget-header > #ui-nconf-icon-bar {
     right: 10px;
     top: 3px;
+}
+.title #ui-nconf-icon-bar{
+  top: 10px;
+  right: 10px;
 }
 
 #ui-nconf-icon-bar img, #ui-nconf-icon-bar input{

@@ -418,7 +418,36 @@ class NConf_HTML{
         return $output;
     }
 
-
+    // page title including icon of the class and optional actions
+    public static function page_title($class, $title, $toolbar = array()){
+        $output = '<div class="title">';
+        // Get Icon
+        $icon = get_image(array( "type" => "design",
+                                 "name" => $class,
+                                 "size" => 24,
+                                 "class" => "float_left"
+                                 ) );
+        // get friendly name of class, if it exists
+        $class_friendly_name   = db_templates('class_friendly_name', $class);
+        if ($class_friendly_name) $title = $class_friendly_name;
+        
+        $output .= $icon.'<h1 class="content_header">'.$title.'</h1>';
+        
+        if ( !empty($toolbar) ){
+            $output .=  '<div id="ui-nconf-icon-bar">';
+            $add_item = get_image( array(  "type" => "design",
+                                           "name" => "add",
+                                           "size" => 16,
+                                           "tooltip" => 'Add '.$nav_class["friendly_name"],
+                                           "class" => "lighten"
+                                        ) );
+            $output .= '<a href="handle_item.php?item='.$class.'">'.$add_item.'</a>';
+            $output .= '</div>';
+        }
+        
+        $output .= '</div>';
+        return $output;
+    }
 
 }
 ?>

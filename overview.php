@@ -226,17 +226,8 @@ if (!empty($_GET["quantity"]) ){
 }
 
 // Page output begin
+echo NConf_HTML::page_title($class, '', array('add') );
 
-
-echo '<div class="title">';
-  // Get Icon
-  $icon = get_image(array( "type" => "design",
-                           "name" => $class,
-                           "size" => 24,
-                           "class" => "float_left"
-                           ) );
-  echo $icon.'<h1 class="content_header">'.$class.'</h1>';
-echo '</div>';
 echo '<div class="search">';  
 echo '<table border=0 frame=box rules=none style="border-width: 0px">';
 
