@@ -429,10 +429,18 @@ class NConf_HTML{
                                  ) );
         // get friendly name of class, if it exists
         $class_friendly_name   = db_templates('class_friendly_name', $class);
-        if ($class_friendly_name) $title = $class_friendly_name;
-        
+        if ($class_friendly_name){
+            /* TODO: perhaps move the item title also into the main header
+            if ($title) {
+                $title = $class_friendly_name. TITLE_SEPARATOR . $title;
+            }else {
+                $title = $class_friendly_name;
+            }*/
+            $title = $class_friendly_name;
+        }
         $output .= $icon.'<h1 class="content_header">'.$title.'</h1>';
         
+        /* TODO: this toolbar will perhaps not be used */
         if ( !empty($toolbar) ){
             $output .=  '<div id="ui-nconf-icon-bar">';
             $add_item = get_image( array(  "type" => "design",
