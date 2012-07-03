@@ -273,6 +273,19 @@ ICONs ICON BARs etc
     margin-top: -40px;
 }
 
+#ui-nconf-icon-bar fieldset {
+    background: none;
+    border: 0 none;
+}
+
+#ui-nconf-icon-bar fieldset legend {
+    font-weight: bold;
+}
+
+#ui-nconf-icon-bar fieldset > div {
+    text-align: right;
+}
+
 /* multi (assign) vertical and horizontal movers */
 .icon_buttons a{
     margin-bottom: 2px;

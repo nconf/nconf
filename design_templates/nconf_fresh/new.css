@@ -326,7 +326,16 @@ pre{
     text-align: right;
     vertical-align: bottom;
 }
-
+.overview-add {
+    margin: 10px 0;
+}
+.overview-add a{
+    display: block;
+    line-height: 18px;
+}
+.overview-add a img {
+    vertical-align: text-bottom;
+}
 
 /* GLOBAL */
 
@@ -404,6 +413,17 @@ input[disabled], select[disabled], textarea[disabled] {
 }
 .title {
   border-bottom: 1px solid #CCC;
+  margin-bottom: 10px;
+}
+
+.page_action_title {
+  font-weight: normal;
+  font-style: italic;
+}
+
+.item_name {
+  font-weight: bold;
+  font-style: normal;
 }
 
 .search {
@@ -412,4 +432,10 @@ input[disabled], select[disabled], textarea[disabled] {
 
 #checkbox_selectall {
     margin-right: 3px;
+}
+
+.checkbox-small {
+  width: 12px;
+  height: 12px;
+  border-style:none;
 }
