@@ -49,9 +49,12 @@ define("TXT_MENU_ADDITIONAL",       "Additional Items");        # ADMIN MENU
 # OS icons
 #
 define("OS_LOGO_SIZE", "width=18 height=18");
-define("FRIENDLY_NAME_OS_LOGO", "");    // Title above icons in overvuew
+define("FRIENDLY_NAME_OS_LOGO", "");    // Title above icons in overview
 
-
+#
+# Title
+#
+define("TITLE_SEPARATOR", " :: ");
 
 #
 # overview icons
