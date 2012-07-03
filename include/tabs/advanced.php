@@ -6,8 +6,8 @@
 
 <div id="ui-nconf-icon-bar">
     <fieldset>
-      <legend>Multi Actions</legend>
-      <div id="ui-nconf-icon-bar2">
+      <legend>Advanced Actions</legend>
+      <div>
         <?php
           // TODO: General permission check. Could be an option to allow some users to modify on class level.
         
@@ -15,9 +15,9 @@
           $output = '';
           
           // Multi modify
-          $output .= '<input type="image" id="submit_multimodify" src="'.ADVANCED_ICON_MULTIMODIFY.'" value="multimodify" name="multimodify" class="button jQ_tooltip" title="Multimodify">';
+          $output .= '<input type="image" id="submit_multimodify" src="'.ADVANCED_ICON_MULTIMODIFY.'" value="multimodify" name="multimodify" class="ui-button jQ_tooltip" title="Multimodify">';
           // Multi delete
-          $output .= '<input type="image" id="submit_multidelete" src="'.ADVANCED_ICON_DELETE.'" value="multidelete" name="multidelete" class="button jQ_tooltip" title="Delete">';
+          $output .= '<input type="image" id="submit_multidelete" src="'.ADVANCED_ICON_DELETE.'" value="multidelete" name="multidelete" class="ui-button jQ_tooltip" title="Delete">';
           
           // TODO: move parent/child view also into the table ?
           // $output .= ( $item_class == "host" ) ? '<a href="dependency.php?id='.$_GET["id"].'">'.ICON_PARENT_CHILD.'</a>' : '';
