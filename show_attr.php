@@ -48,7 +48,10 @@ if ( isset($_GET["class"]) ) {
 
 // Page output begin
 
-echo NConf_HTML::title('Show attributes: '.$class);
+//echo NConf_HTML::title('Show attributes: '.$class);
+# Title
+echo NConf_HTML::page_title('', 'Show attributes: '.$class);
+
 
 $content = 'This mask allows administrators to modify the data schema of the NConf application.
             There is no need to make any changes to the schema for ordinary operation.

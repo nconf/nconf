@@ -226,7 +226,19 @@ if (!empty($_GET["quantity"]) ){
 }
 
 // Page output begin
-echo NConf_HTML::page_title($class, '', array('add') );
+echo NConf_HTML::page_title($class, '');
+
+// Create link
+    $add_link =  '<div class="overview-add">';
+            $add_item = get_image( array(  "type" => "design",
+                                           "name" => "add",
+                                           "size" => 16,
+                                           "tooltip" => 'Add '.$nav_class["friendly_name"],
+                                           "class" => "lighten"
+                                        ) );
+            $add_link .= '<a href="handle_item.php?item='.$class.'">'.$add_item.' Add new '.$class.'</a>';
+            $add_link .= '</div>';
+    echo $add_link;
 
 echo '<div class="search">';  
 echo '<table border=0 frame=box rules=none style="border-width: 0px">';
@@ -577,7 +589,7 @@ if( ( isset($class) ) AND ($class != "") ){
     }
 
 
-    # overview table in IE 8 will only do correct margin-top when previouse element hast clear:both
+    # overview table in IE 8 will only do correct margin-top when previouse element has clear:both
     # IE 8 also needs more space for advanced box: make the empty diff 7px height
     echo '<div class="clearer" style="height: 7px"></div>';
 
@@ -596,7 +608,7 @@ if( ( isset($class) ) AND ($class != "") ){
         echo '<tr>';
 
         echo '<td width="20%">
-                <h2 class="content_header">&nbsp;Overview</h2>
+                <h2 class="content_header">Overview</h2>
               </td>';
 
         if ( !empty($show_quantity) ){
@@ -825,7 +837,7 @@ if( ( isset($class) ) AND ($class != "") ){
                     echo '<img src="'.$os_icon_path.'" alt="'.$entry["os"].'" '.OS_LOGO_SIZE.'>';
                 }
                 echo '</td>';
-                echo '<td><a href="detail.php?id='.$entry["host_id"].'">'.$entry["hostname"].'</a></td>';
+                echo '<td><a href="detail.php?class='.$class.'&id='.$entry["host_id"].'">'.$entry["hostname"].'</a></td>';
                 echo '<td>'.$entry["IP"].'</td>';
                 echo '<td '.$nocol_style.'>'.$entry["collector"].'</td>';
                 echo '<td>'.$entry["os"].'</td>';
@@ -894,18 +906,18 @@ if( ( isset($class) ) AND ($class != "") ){
 
                 if( ( isset($class) ) AND ($class == "service") ){
 
-                    echo '<td><a href="detail.php?id='.$entry["id_item"].'">'.$entry["hostname"].': '.$entry["entryname"].'</a></td>';
+                    echo '<td><a href="detail.php?class='.$class.'&id='.$entry["id_item"].'">'.$entry["hostname"].': '.$entry["entryname"].'</a></td>';
 
                 }else{
                     if(isset($_GET["xmode"])){
-                        echo '<td><a href="detail.php?id='.$entry["id_item"].'&xmode='.$entry["entryname"].'">'.$entry["entryname"].'</a></td>';
+                        echo '<td><a href="detail.php?class='.$class.'&id='.$entry["id_item"].'&xmode='.$entry["entryname"].'">'.$entry["entryname"].'</a></td>';
                     }else{
-                        echo '<td><a href="detail.php?id='.$entry["id_item"].'">'.$entry["entryname"].'</a></td>';
+                        echo '<td><a href="detail.php?class='.$class.'&id='.$entry["id_item"].'">'.$entry["entryname"].'</a></td>';
                     }
                 }
 
                 if(isset($_GET["xmode"])){
-                    echo '<td style="text-align:center"><a href="handle_item.php?xmode='.$entry["entryname"].'">'.ICON_EDIT.'</a></td>';
+                    echo '<td style="text-align:center"><a href="handle_item.php?item='.$class.'&xmode='.$entry["entryname"].'">'.ICON_EDIT.'</a></td>';
                 }else{
                     echo '<td style="text-align:center"><a href="handle_item.php?item='.$class.'&amp;id='.$entry["id_item"].'">'.ICON_EDIT.'</a></td>';
                     echo '<td style="text-align:center"><a href="delete_item.php?item='.$class.'&amp;ids='.$entry["id_item"].'">'.ICON_DELETE.'</a></td>';
@@ -920,7 +932,7 @@ if( ( isset($class) ) AND ($class != "") ){
                             echo ' display: none;';
                         }
                     echo '">';
-                        echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["id_item"].'" style="width: 12px; height: 12px; border-style:none">';
+                        echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["id_item"].'" class="pointer checkbox-small">';
                     echo '</td>';
                 }
 

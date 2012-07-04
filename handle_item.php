@@ -275,7 +275,7 @@ $item_name  = db_templates("naming_attr", $_GET["id"]);
 echo NConf_HTML::page_title($item_class, ' : ' . $handle_action);
 echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
     echo '<div>';
-        echo '<h2>'.ucfirst($handle_action).' '.$item_name.'</h2>';
+        echo '<h2 class="page_action_title">'.ucfirst($handle_action).' <span class="item_name">'.$item_name.'</span></h2>';
     echo '</div>';
 
 echo '</div>';
