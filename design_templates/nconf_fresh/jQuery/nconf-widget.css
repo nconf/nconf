@@ -119,9 +119,9 @@ th.ui-state-default, td.ui-state-default{
     padding: 5px;
 }
 
-/*.ui-nconf-header div{
+.ui-nconf-header div{
     float: left;
-}*/
+}
 
 /* UI NCONF content */
 .ui-nconf-content{
