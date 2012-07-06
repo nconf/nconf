@@ -115,7 +115,7 @@ th.ui-state-default, td.ui-state-default{
 /* UI NCONF header element*/
 .ui-nconf-header{
     /*padding:4px 4px 4px 5px;*/
-    /*height: 15px;*/
+    height: 15px;
     padding: 5px;
 }
 

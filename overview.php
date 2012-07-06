@@ -843,7 +843,7 @@ if( ( isset($class) ) AND ($class != "") ){
                 echo '<td>'.$entry["os"].'</td>';
                 echo '<td style="text-align:center"><a href="handle_item.php?item='.$class.'&amp;id='.$entry["host_id"].'">'.ICON_EDIT.'</a></td>';
                 echo '<td style="text-align:center"><a href="delete_item.php?item='.$class.'&amp;ids='.$entry["host_id"].'">'.ICON_DELETE.'</a></td>';
-                echo '<td style="text-align:center"><a href="modify_item_service.php?id='.$entry["host_id"].'">';
+                echo '<td style="text-align:center"><a href="modify_item_service.php?item='.$class.'&amp;id='.$entry["host_id"].'">';
                     # if all services are enabled gear-icon will be yellow
                     # red will show that there is a disabled service
                     if ( isset($entry["service_disabled"]) AND $entry["service_disabled"] == "true"){
