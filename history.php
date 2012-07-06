@@ -93,7 +93,7 @@ if ( !empty($_GET["id"]) ){
     <?php
 
     # Set title
-    $title = NConf_HTML::page_title('', "Basic history");
+    $title = NConf_HTML::page_title('history', "Basic history");
     $subtitle   = TXT_HISTORY_SUBTITLE;
     $time_seperation = FALSE;
     $show_item_links = TRUE;
