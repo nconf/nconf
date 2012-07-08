@@ -1406,7 +1406,7 @@ sub write_htpasswd_file {
             $userpass = $1;
         } elsif ($userpass =~ /^{SHA1}(.*)/) {
             # Convert to Apache Compatible SHA1 hashing
-            $userpass = encode_base64(pack ("H*", $userpass));
+            $userpass = encode_base64(pack ("H*", $1));
             chomp($userpass);
             $userpass = '{SHA}' . $userpass;
         } else {
