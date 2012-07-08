@@ -1398,11 +1398,17 @@ sub write_htpasswd_file {
             if($attr->[0] eq "nagios_access"){ $userperm=$attr->[1] }
         }
 
-        $userpass =~s/\{.+\}//;
+        # support SHA encryption
+        if($userpass =~ /\{SHA_RAW\}/i){
+            $userpass =~s/\{.+\}/{SHA}/;
+        }else{
+            $userpass =~s/\{.+\}//;
+        }
+        
         if($username && $userpass && $userperm !~ /disabled/i){
-	    print FILE "$username:$userpass\n";
-	    $usercount++;
-	}
+      	    print FILE "$username:$userpass\n";
+      	    $usercount++;
+      	}
 
     }
     close(FILE);

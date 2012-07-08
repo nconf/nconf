@@ -1618,6 +1618,13 @@ function encrypt_password($password, $EncryptInfoInOutput = TRUE, $existing_pass
         NConf_DEBUG::set("Encrypting password: ".$password, 'DEBUG', "encrypt_password");
         $encryption_Info = "{SHA1}";
         break;
+        
+    // This sha1 raw mode is needed for htpassword encryption
+    case "sha_raw":
+        $password        = base64_encode(sha1($password, TRUE));
+        NConf_DEBUG::set("Encrypting password: ".$password, 'DEBUG', "encrypt_password");
+        $encryption_Info = "{SHA_RAW}";
+        break;
 
     }
 
