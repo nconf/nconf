@@ -28,6 +28,7 @@ use NConf::DB::Read;
 use NConf::Helpers;
 use NConf::Logger;
 use Tie::IxHash;    # preserve hash order
+use MIME::Base64 qw(encode_base64);
 
 ##############################################################################
 ### I N I T ##################################################################
@@ -1368,7 +1369,8 @@ sub class_dependent_processing {
 ########################################################################################
 # SUB write_htpasswd_file
 # Create a .htpasswd file for Apache webservers based on contact entries.
-# Apache requires password encryption in NConf to be set to CRYPT by default.
+# Apache requires password encryption in NConf to be set to a compatible or
+# convertable hashing algorithm. Currently CRYPT and SHA1 are supported.
 # This allows users to manage access to a website based on contacts in NConf.
 
 sub write_htpasswd_file {
@@ -1398,11 +1400,25 @@ sub write_htpasswd_file {
             if($attr->[0] eq "nagios_access"){ $userperm=$attr->[1] }
         }
 
-        $userpass =~s/\{.+\}//;
+        # Convert userpass to Apache Compatible format
+        if ($userpass =~ /^\{CRYPT\}(.*)/) {
+            # Remove the {CRYPT} tag if its there
+            $userpass = $1;
+        } elsif ($userpass =~ /^{SHA1}(.*)/) {
+            # Convert to Apache Compatible SHA1 hashing
+            $userpass = encode_base64(pack ("H*", $userpass));
+            chomp($userpass);
+            $userpass = '{SHA}' . $userpass;
+        } else {
+            # incompatible entry, skip
+            &logger(2,"WARNING: Incompatible password hash for user: $username (skipping)");
+            next;
+        }
+
         if($username && $userpass && $userperm !~ /disabled/i){
-	    print FILE "$username:$userpass\n";
-	    $usercount++;
-	}
+            print FILE "$username:$userpass\n";
+            $usercount++;
+        }
 
     }
     close(FILE);
