@@ -1676,7 +1676,7 @@ function create_menu($result){
             }elseif (!empty($nav_class["config_class"]) ){
                 $icon = $nav_class["config_class"];
             }
-            NConf_DEBUG::set($icon, 'DEBUG', "icon");
+            //NConf_DEBUG::set($icon, 'DEBUG', "icon");
         }
         $nav_icon = get_image( array( "type" => "design",
                                                      "name" => $icon,
@@ -1703,7 +1703,7 @@ function create_menu($result){
                   $url_query = parse_url($nav_link_details[1], PHP_URL_QUERY);
                   $url_query_explode = explode("=", $url_query);
                   $navigation_identifier = $url_query_explode[1];
-                  NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
+                  //NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
                   
                   // if no query identifier found use the script name (like for the history entry)
                   if (empty($navigation_identifier)){
@@ -1748,7 +1748,7 @@ function create_menu($result){
         }elseif(!empty($_SERVER['SCRIPT_NAME'])){
           //$class = $icon;
           $class = basename($_SERVER['SCRIPT_NAME']);
-                  NConf_DEBUG::set($class, 'DEBUG', "nav_icon");
+                  //NConf_DEBUG::set($class, 'DEBUG', "nav_icon");
           
         }
         
