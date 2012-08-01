@@ -102,7 +102,7 @@ $aResultTotal = mysql_fetch_array($rResultTotal);
 $iTotal = $aResultTotal[0];
 
 
-if (function_exists("json_encoded")){
+if (function_exists("json_encode")){
     // If json_ecode we use the php function to encode the array
     // as example code from DataTables
     
