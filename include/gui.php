@@ -37,7 +37,8 @@ define("SELECT_EMPTY_FIELD",        "&nbsp;");
 
 # Navigation: Name of standard user and admin part
 define("TXT_MENU_BASIC",            "Basic Items");             # USER MENU
-define("TXT_MENU_ADDITIONAL",       "Additional Items");        # ADMIN MENU
+define("TXT_MENU_ADDITIONAL",       "Additional Items");        # ADDITIONAL MENU for ADMINS
+define("TXT_MENU_ADMINISTRATION",       "Administration");        # ADMINISTRATION MENU
 
 
 

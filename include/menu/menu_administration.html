@@ -1,39 +1,17 @@
-<h2 id="nav-administration" class="ui-nconf-header ui-widget-header ui-corner-top pointer"><span>Administration</span></h2>
+<?php
+echo '
+    <h2 id="nav-basic-items" class="ui-nconf-header ui-widget-header ui-corner-top pointer"><span>'.TXT_MENU_ADMINISTRATION.'</span></h2>
+    <div class="ui-widget-content box_content">';
 
-<div class="ui-widget-content box_content">
-    <table border=0 width=188>
+        ###
+        # administration menu
+        $admin_menu = array();
+        array_push($admin_menu, array("nav_links" => "::static_file_editor.php", "friendly_name" => "Edit static config files", "grouping" => "", "icon" => ""));
+        array_push($admin_menu, array("nav_links" => "::show_attr.php", "friendly_name" => "Attributes", "grouping" => "", "icon" => ""));
+        array_push($admin_menu, array("nav_links" => "::show_class.php", "friendly_name" => "Classes", "grouping" => "", "icon" => ""));
+        # create output
+        create_menu($admin_menu);
 
-            <tr>
-                <td colspan=2>
-                    <div class="link_with_tag">
-                        <a href="static_file_editor.php" >Edit static config files</a>
-                    </div>
-                </td>
-            </tr>
-    </table>
-    <table border=0 width=188>
-            <tr>
-                <td>
-                    <div class="link_with_tag">Attributes</div>
-                </td>
-                <td align="right">
-                    <div align="right"><b>
-                         <a href="show_attr.php" >Show</a>
-                         / <a href="modify_attr.php" >Add</a>
-                    </b></div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="link_with_tag">Classes</div>
-                </td>
-                <td align="right">
-                    <div align="right"><b>
-                         <a href="show_class.php" >Show</a>
-                         / <a href="modify_class.php" >Add</a>
-                    </b></div>
-                </td>
-            </tr>
+echo '</div>';
 
-    </table>
-</div>
+?>
