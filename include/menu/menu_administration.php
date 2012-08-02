@@ -5,8 +5,9 @@ echo '
 
         ###
         # administration menu
+        ###
         $admin_menu = array();
-        array_push($admin_menu, array("nav_links" => "::static_file_editor.php", "friendly_name" => "Edit static config files", "grouping" => "", "icon" => ""));
+        array_push($admin_menu, array("nav_links" => "::static_file_editor.php", "friendly_name" => "Edit static config files", "grouping" => "", "icon" => "editor-static-files"));
         array_push($admin_menu, array("nav_links" => "::show_attr.php", "friendly_name" => "Attributes", "grouping" => "", "icon" => ""));
         array_push($admin_menu, array("nav_links" => "::show_class.php", "friendly_name" => "Classes", "grouping" => "", "icon" => ""));
         # create output

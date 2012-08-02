@@ -22,6 +22,6 @@
     // FIX menu user end
     include('include/menu/static_content/menu_admin_end.html');
 
-    // FIX administration menu (attributes and classes)
-    include('include/menu/menu_administration.html');
+    // administration menu (editor, attributes and classes)
+    include('include/menu/menu_administration.php');
     ?>
