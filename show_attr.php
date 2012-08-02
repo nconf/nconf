@@ -48,9 +48,8 @@ if ( isset($_GET["class"]) ) {
 
 // Page output begin
 
-//echo NConf_HTML::title('Show attributes: '.$class);
 # Title
-echo NConf_HTML::page_title('', 'Attributes');
+echo NConf_HTML::page_title('', 'Administrate attributes');
 
 
 

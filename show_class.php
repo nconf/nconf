@@ -21,7 +21,7 @@ $request_url = set_page();
 // set width of following divs
 echo '<div style="width: 535px">';
 
-echo NConf_HTML::page_title('', 'Show classes');
+echo NConf_HTML::page_title('', 'Administrate classes');
 echo "<br>";
 
 $content = 'This mask allows administrators to modify the data schema of the NConf application.
