@@ -114,22 +114,9 @@ if (function_exists("json_encode")){
         "iTotalDisplayRecords" => $iFilteredTotal,
         "aaData" => array()
     );
-     
-    while ( $aRow = mysql_fetch_array( $rResult ) )
+    while ( $aRow = mysql_fetch_array($rResult, MYSQL_ASSOC) )
     {
-        $row = array();
-        for ( $i=0 ; $i<count($aColumns) ; $i++ )
-        {
-            if ( $aColumns[$i] == "version" )
-            {
-                $row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
-            }
-            else if ( $aColumns[$i] != ' ' )
-            {
-                $row[] = $aRow[ $aColumns[$i] ];
-            }
-        }
-        # do some stuff bevore generating output
+        # do some stuff before generating output
 
         # if object name contains password, and PASSWD_DISPLAY is 0 (made in called function), do not show password
         if ( stristr($aRow["attr_name"], "password") ){
@@ -146,6 +133,12 @@ if (function_exists("json_encode")){
             }
         }else{
             # entries which are removed, do not have any link
+        }
+        
+        # Move the wanted fields in correct order and using only the values for the rows
+        $row = array();
+        foreach ($aColumns AS $key){
+            $row[] = $aRow[$key];
         }
         $output['aaData'][] = $row;
     }
