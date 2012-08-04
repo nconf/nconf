@@ -1703,7 +1703,7 @@ function create_menu($result){
                   $url_query = parse_url($nav_link_details[1], PHP_URL_QUERY);
                   $url_query_explode = explode("=", $url_query);
                   $navigation_identifier = $url_query_explode[1];
-                  //NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
+                  NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
                   
                   // if no query identifier found use the script name (like for the history entry)
                   if (empty($navigation_identifier)){
@@ -1750,6 +1750,22 @@ function create_menu($result){
           $class = basename($_SERVER['SCRIPT_NAME']);
                   //NConf_DEBUG::set($class, 'DEBUG', "nav_icon");
           
+        }
+        // Allow active menu regarding the class only on several pages:
+        switch (basename($_SERVER['SCRIPT_NAME']) ) {
+            case 'overview.php':
+            case 'handle_item.php':
+            case 'delete_item.php':
+            case 'modify_item_service.php':
+                # do nothing, this allows these pages to set active the current set class    
+                break;
+            
+            // TODO: allow sub pages of an item to set the active navigation point. (also open issue on administration parts)
+            default:
+                // default: set class to the script name
+                unset($class);
+                $class = basename($_SERVER['SCRIPT_NAME']);
+                break;
         }
         
         $active = (!empty($class) AND $class == $navigation_identifier) ? "active" : '';
