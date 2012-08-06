@@ -7,9 +7,19 @@ echo '
         # administration menu
         ###
         $admin_menu = array();
-        array_push($admin_menu, array("nav_links" => "::static_file_editor.php", "friendly_name" => "Edit static config files", "grouping" => "", "icon" => "editor-static-files"));
-        array_push($admin_menu, array("nav_links" => "::show_attr.php", "friendly_name" => "Attributes", "grouping" => "", "icon" => ""));
-        array_push($admin_menu, array("nav_links" => "::show_class.php", "friendly_name" => "Classes", "grouping" => "", "icon" => ""));
+        array_push($admin_menu, array("nav_links" => "static_file_editor.php", "friendly_name" => "Edit static config files", "grouping" => "", "icon" => "editor-static-files"));
+        array_push($admin_menu, array("nav_links" => "show_attr.php",
+                                      "friendly_name" => "Attributes",
+                                      "grouping" => "",
+                                      "icon" => "",
+                                      "nav_alias" => array("modify_attr.php", "delete_attr.php"),
+                                      ));
+        array_push($admin_menu, array("nav_links" => "show_class.php",
+                                      "friendly_name" => "Classes",
+                                      "grouping" => "",
+                                      "icon" => "",
+                                      "nav_alias" => array("modify_class.php", "delete_class.php"),
+                                      ));
         # create output
         create_menu($admin_menu);
 

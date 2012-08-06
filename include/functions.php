@@ -1687,55 +1687,62 @@ function create_menu($result){
                                                      ) );
        
         foreach ($nav_links as $entry){
-
-            $nav_link_details = explode("::", $entry);
-            if ( isset($nav_link_details[1]) ){
-                # set all navigation links in permissions list
-                # current user will have access to all of them
-                global $NConf_PERMISSIONS;
-                $NConf_PERMISSIONS->setURL($nav_link_details[1]);
-                
-                # special handling for the first one
-                if ($link_i == 0){
-                  $friendly_name_link = '<div class="float_left"><a href="'.$nav_link_details[1].'">'.$nav_icon.$nav_class["friendly_name"].'</a></div>';
-                  
-                  // define the navigation identifier for marking nav entry as active
-                  $url_query = parse_url($nav_link_details[1], PHP_URL_QUERY);
-                  $url_query_explode = explode("=", $url_query);
-                  $navigation_identifier = $url_query_explode[1];
-                  NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
-                  
-                  // if no query identifier found use the script name (like for the history entry)
-                  if (empty($navigation_identifier)){
-                    $navigation_identifier = $nav_link_details[1];
-                  }
-                  
-                }else{
-                  // Don't print any actions anymore (no add icon in menu)
-                  continue;
+            $old_link_style = strpos($entry, "::");
+            if ($old_link_style !== FALSE){
+                $nav_link_details = explode("::", $entry);
+                if ( isset($nav_link_details[1]) ){
+                    # set all navigation links in permissions list
+                    # current user will have access to all of them
+                    global $NConf_PERMISSIONS;
+                    $NConf_PERMISSIONS->setURL($nav_link_details[1]);
+                    
+                    # special handling for the first one
+                    if ($link_i == 0){
+                      $friendly_name_link = '<div class="float_left"><a href="'.$nav_link_details[1].'">'.$nav_icon.$nav_class["friendly_name"].'</a></div>';
+                      
+                      // define the navigation identifier for marking nav entry as active
+                      $url_query = parse_url($nav_link_details[1], PHP_URL_QUERY);
+                      $url_query_explode = explode("=", $url_query);
+                      $navigation_identifier = $url_query_explode[1];
+                      NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
+                      
+                      // if no query identifier found use the script name (like for the history entry)
+                      if (empty($navigation_identifier)){
+                        $navigation_identifier = $nav_link_details[1];
+                      }
+                      
+                    }else{
+                      // Don't print any actions anymore (no add icon in menu)
+                      continue;
+                    }
+                    
+                    $link_i++;
+                    
+                    # change "Add" to icon
+                    if ($nav_link_details[0] == "Add"){
+                      $nav_link_text = get_image( array( "type" => "design",
+                                                         "name" => "add",
+                                                         "size" => 16,
+                                                         "tooltip" => 'Add '.$nav_class["friendly_name"],
+                                                         "class" => "lighten"
+                                                         ) );
+                    }elseif($nav_link_details[0] == "Show"){
+                      # do not print the show link anymore, its not linked on the name itself
+                      continue;
+                    }else{
+                      $nav_link_text = $nav_link_details[0];
+                    }
+                    $link = '<a href="'.$nav_link_details[1].'" >'.$nav_link_text.'</a>';
                 }
-                
-                $link_i++;
-                
-                # change "Add" to icon
-                if ($nav_link_details[0] == "Add"){
-                  $nav_link_text = get_image( array( "type" => "design",
-                                                     "name" => "add",
-                                                     "size" => 16,
-                                                     "tooltip" => 'Add '.$nav_class["friendly_name"],
-                                                     "class" => "lighten"
-                                                     ) );
-                }elseif($nav_link_details[0] == "Show"){
-                  # do not print the show link anymore, its not linked on the name itself
-                  continue;
-                }else{
-                  $nav_link_text = $nav_link_details[0];
-                }
-                $link = '<a href="'.$nav_link_details[1].'" >'.$nav_link_text.'</a>';
+                $link_output .= "<li>";
+                $link_output .= $link;
+                $link_output .= "</li>";
+            }else{
+                // the new case when there is no :: in 
+                $friendly_name_link = '<a href="'.$entry.'" >'.$nav_icon.$nav_class["friendly_name"].'</a>';
+                $navigation_identifier = $nav_class["nav_links"];
+                NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
             }
-            $link_output .= "<li>";
-            $link_output .= $link;
-            $link_output .= "</li>";
         }
         
         /* verify that we have a check and can access this variable here and other places */
@@ -1751,16 +1758,18 @@ function create_menu($result){
                   //NConf_DEBUG::set($class, 'DEBUG', "nav_icon");
           
         }
+        //NConf_DEBUG::set(basename($_SERVER['SCRIPT_NAME']), 'DEBUG', "script name");
         // Allow active menu regarding the class only on several pages:
         switch (basename($_SERVER['SCRIPT_NAME']) ) {
             case 'overview.php':
+            case 'detail.php':
+            case 'clone_host.php':
             case 'handle_item.php':
             case 'delete_item.php':
             case 'modify_item_service.php':
                 # do nothing, this allows these pages to set active the current set class    
                 break;
             
-            // TODO: allow sub pages of an item to set the active navigation point. (also open issue on administration parts)
             default:
                 // default: set class to the script name
                 unset($class);
@@ -1770,17 +1779,19 @@ function create_menu($result){
         
         $active = (!empty($class) AND $class == $navigation_identifier) ? "active" : '';
         
-        if ($link_i > 1){
-          $link_output = '<div class="float_right">
-              <ul>'.$link_output.'</ul>
-            </div>';
-          echo '<li class="'.$active.'">'.$friendly_name_link.$link_output.'</li>';
-        }else{
-          /*$link_output = '<div class="float_left">
-              <ul class="nav nav-list">'.$link_output.'</ul>
-            </div>';*/
-          echo '<li class="'.$active.'">'.$friendly_name_link.$link_output2.'</li>';
+        // If not yet active, check for "nav_alias" setting, which allows to have subpages having an active navigation item configured on the menu item.
+        if (!$active AND !empty($nav_class["nav_alias"]) ){
+            foreach ($nav_class["nav_alias"] AS $nav_alias){
+                if ( !empty($nav_alias) AND $nav_alias == $class){
+                    $active = "active";
+                }
+            }
         }
+        
+        // we still need a possibility to allow scripts to mark their "active" menu item, especially for site like :
+        // detail_admin_items.php?type=class&id=1 where also attrs has access to.
+         
+        echo '<li class="'.$active.'">'.$friendly_name_link.'</li>';
     }
     //END foreach
 
