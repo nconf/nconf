@@ -158,7 +158,7 @@ if ( (defined('CMDB_SERVERLIST_COMPARE') AND CMDB_SERVERLIST_COMPARE == 1) AND (
 
         // Multimodify
         $('#submit_multimodify').click(function() {
-            $('#advanced').attr('action', 'handle_item.php?type=multimodify');
+            $('#advanced').attr('action', 'handle_item.php?item=<?php echo $class;?>&type=multimodify');
             $('#advanced').submit();
         });
 
