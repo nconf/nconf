@@ -70,7 +70,13 @@ if (AUTH_ENABLED == 1){
 }else{
     // NO authentication
     $_SESSION['group'] = GROUP_ADMIN;
-    $_SESSION["userinfos"]['username'] = GROUP_ADMIN;
+    # If Apache has set the REMOTE_USER, authentication has happened
+    # So let's go with that, shall we?
+    if( isset($_SERVER['REMOTE_USER']) ){
+    $_SESSION["userinfos"]['username'] = $_SERVER['REMOTE_USER'];
+    }else{
+        $_SESSION["userinfos"]['username'] = GROUP_ADMIN;
+    }
     message($debug, 'authentication is disabled');
     message($debug, $_SESSION["group"].' access granted');
 }
