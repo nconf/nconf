@@ -32,22 +32,23 @@ if ( $_POST["mode"] == "add_service" ){
                 AND config_class="host"
                 AND fk_id_item="'.$host_ID.'"';
 
-    $hosttemplate_id = db_handler($query, "getOne", "Get selected host-preset of added host");
+    $hosttemplate_ids = db_handler($query, "array_direct", "Get selected host-presets of added host");
+    $checkcommand = array();
+    foreach ( $hosttemplate_ids AS $hosttemplate_id ) {
+        if ( !empty($hosttemplate_id) ){
+            // Get checkcommands of selected host-preset
+            $query = 'SELECT ItemLinks.fk_id_item
+                FROM ConfigValues,ConfigAttrs,ItemLinks,ConfigClasses
+                WHERE ItemLinks.fk_id_item=ConfigValues.fk_id_item
+                AND id_attr=ConfigValues.fk_id_attr
+                AND naming_attr="yes"
+                AND id_class=fk_id_class
+                AND config_class="checkcommand"
+                AND fk_item_linked2='.$hosttemplate_id;
 
-    if ( !empty($hosttemplate_id) ){
-        // Get checkcommands of selected host-preset
-        $query = 'SELECT ItemLinks.fk_id_item
-            FROM ConfigValues,ConfigAttrs,ItemLinks,ConfigClasses
-            WHERE ItemLinks.fk_id_item=ConfigValues.fk_id_item
-            AND id_attr=ConfigValues.fk_id_attr
-            AND naming_attr="yes"
-            AND id_class=fk_id_class
-            AND config_class="checkcommand"
-            AND fk_item_linked2='.$hosttemplate_id;
-
-        $checkcommand = db_handler($query, "array_direct", "Get checkcommands of selected host-preset");
+            $checkcommand = array_merge($checkcommand, db_handler($query, "array_direct", "Get checkcommands of selected host-preset"));
+        }
     }
-
 }
 
 
