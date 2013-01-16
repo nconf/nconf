@@ -66,6 +66,7 @@ define('USER_GROUP',       "cn=sysadmin");
 define('AD_LDAP_SERVER',        "ldap://ad-ldaphost.mydomain.com");
 define('AD_LDAP_PORT',          "389");
 define('AD_BASE_DN',            "CN=<username>,OU=All,OU=Users,DC=my,DC=domain,DC=com");
+define('AD_USER_DN',            "<username>@my.domain.com");
 define('AD_USER_REPLACEMENT',   "<username>");
 define('AD_GROUP_ATTRIBUTE',    "memberof");
 define('AD_USERNAME_ATTRIBUTE', "displayname");
