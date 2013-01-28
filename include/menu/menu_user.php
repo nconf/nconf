@@ -50,8 +50,6 @@ echo '
 
 echo '</div>';
 
-// FIX menu user end
-//include('include/menu/static_content/menu_user_end.php');
 include('include/menu/static_content/menu_user_end.html');
 
 ?>
