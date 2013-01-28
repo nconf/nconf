@@ -11,13 +11,13 @@ echo '
         array_push($admin_menu, array("nav_links" => "show_attr.php",
                                       "friendly_name" => "Attributes",
                                       "grouping" => "",
-                                      "icon" => "",
+                                      "icon" => "attributes",
                                       "nav_alias" => array("modify_attr.php", "delete_attr.php"),
                                       ));
         array_push($admin_menu, array("nav_links" => "show_class.php",
                                       "friendly_name" => "Classes",
                                       "grouping" => "",
-                                      "icon" => "",
+                                      "icon" => "classes",
                                       "nav_alias" => array("modify_class.php", "delete_class.php"),
                                       ));
         # create output

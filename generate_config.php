@@ -5,7 +5,7 @@ $lock_file = 'temp/generate.lock';
 $status = check_file('file_exists', $lock_file, TRUE, "File/Directory still exists, please remove it: "); 
 
 # Title
-echo NConf_HTML::page_title('', "Generate Nagios config");
+echo NConf_HTML::page_title('generate-config', "Generate Nagios config");
 
 # Container for dynamic AJAX content
 echo '<div class="ajax_content"></div>';

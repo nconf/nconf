@@ -49,7 +49,7 @@ if ( isset($_GET["class"]) ) {
 // Page output begin
 
 # Title
-echo NConf_HTML::page_title('', 'Administrate attributes');
+echo NConf_HTML::page_title('attributes', 'Administrate attributes');
 
 
 

@@ -219,7 +219,7 @@ if ($xmode == "nagiosview"){
     ###
     # Info/Warning in the top right corner
     ###
-    echo NConf_HTML::page_title('', "Host parent / child relationships");
+    echo NConf_HTML::page_title('dependency', "Host parent / child relationships");
 
     echo '
     <div class="editor_info">';
