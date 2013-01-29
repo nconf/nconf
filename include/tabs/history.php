@@ -30,10 +30,10 @@
         echo '<div>';
 
 
-if ( !empty($_GET["id"]) ){
+if ( !empty($item_id) ){
     # Normal query
     $query = 'SELECT timestamp, action, attr_name FROM History
-            WHERE fk_id_item='.$_GET["id"].'
+            WHERE fk_id_item='.$item_id.'
             AND action <> "edited"
             ORDER BY timestamp DESC, id_hist DESC
             LIMIT '.HISTORY_TAB_LIMIT.';';
@@ -52,7 +52,7 @@ if ( !empty($_GET["id"]) ){
                 <td colspan=2>Last '.HISTORY_TAB_LIMIT.' changes:</td>
                 <td>
                     <div align="right">
-                        <a href="history.php?id='.$_GET["id"].'">show all changes</a>
+                        <a href="history.php?id='.$item_id.'">show all changes</a>
                     </div>
                 </td>
               </tr>';
@@ -84,8 +84,8 @@ if ( !empty($_GET["id"]) ){
                 echo '<td>'.$timestamp.'</td>';
                 echo '<td>'.$entry["action"].'</td>';
                 echo '<td>';
-                    if ( !empty($_GET["id"]) ){
-                        echo '&nbsp<a href="history.php?id='.$_GET["id"].'&amp;filter='.$entry["attr_name"].'">'.$entry["attr_name"].'</a>';
+                    if ( !empty($item_id) ){
+                        echo '&nbsp<a href="history.php?id='.$item_id.'&amp;filter='.$entry["attr_name"].'">'.$entry["attr_name"].'</a>';
                     }else{
                         echo $entry["attr_name"];
                     }

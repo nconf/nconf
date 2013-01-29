@@ -5,7 +5,8 @@ require_once 'include/head.php';
 
 # Get ID
 if ( !empty($_REQUEST["id"]) ){
-    $id = $_REQUEST["id"];
+    // Be sure ID it is an integer - fixes injecting issues
+    $id = (int) $_REQUEST["id"];
 }else{
     NConf_DEBUG::set("No id", 'ERROR');
 }
@@ -125,11 +126,11 @@ echo '<div style="position: absolute; min-width: 350px;">';
 
             if(!isset($_GET["xmode"])){
                 if ($type == "attr"){
-                    echo '<a href="modify_attr.php?id='.$_GET["id"].'">'.ICON_EDIT.'</a>';
-                    echo '<a href="delete_attr.php?id='.$_GET["id"].'">'.ICON_DELETE.'</a>';
+                    echo '<a href="modify_attr.php?id='.$id.'">'.ICON_EDIT.'</a>';
+                    echo '<a href="delete_attr.php?id='.$id.'">'.ICON_DELETE.'</a>';
                 }elseif($type == "class"){
-                    echo '<a href="modify_class.php?id='.$_GET["id"].'">'.ICON_EDIT.'</a>';
-                    echo '<a href="delete_class.php?id='.$_GET["id"].'">'.ICON_DELETE.'</a>';
+                    echo '<a href="modify_class.php?id='.$id.'">'.ICON_EDIT.'</a>';
+                    echo '<a href="delete_class.php?id='.$id.'">'.ICON_DELETE.'</a>';
                 }
             }
         echo '</div>';
