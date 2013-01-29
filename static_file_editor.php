@@ -45,7 +45,17 @@ if (!isset($STATIC_CONFIG)){
 }else{
     # Directory
     if ( !empty($_POST["directory"]) ) {
-        $directory = $_POST["directory"];
+      $directory = $_POST["directory"];
+      // Check if the directory is really in the STATIC_CONFIG array
+      // this prevents hacking some other directories
+      if (!in_array($directory, $STATIC_CONFIG)){
+        NConf_DEBUG::set($directory, "CRITICAL", 'Directory is not in STATIC_CONFIG variable.');
+        $msg_critical = NConf_DEBUG::show_debug('CRITICAL');
+        echo NConf_HTML::show_error('Error', $msg_critical);
+        require_once(NCONFDIR.'/include/foot.php');
+        exit;
+      }
+        
     }else{
         $directory = $STATIC_CONFIG[0];
     }
@@ -54,6 +64,8 @@ if (!isset($STATIC_CONFIG)){
 # Filename
 if ( isset($_POST["filename"]) ) {
     $filename = $_POST["filename"];
+    // Verify that only the filename is taken, no going out of directory should be possible
+    $filename = basename($filename);
     $full_path = $directory.'/'.$filename;
 }
 # new fileContent
