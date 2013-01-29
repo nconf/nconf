@@ -779,14 +779,8 @@ if( ( isset($class) ) AND ($class != "") ){
         }
 
         if ( !isset($_GET["xmode"]) ){
-            # Check cookie, if advanced tab was open, display the checkboxes too (when not, set display: none:)
-            echo '<td id="advanced_box" name="advanced_box" class="center" style="width: 70px;';
-                // TODO no cookies here
-                //if ( !empty($_COOKIE["advanced_box"]) AND $_COOKIE["advanced_box"] == "open" ){
-                //}else{
-                //    echo ' display: none;';
-                //}
-            echo '">'.'<input type="checkbox" id="checkbox_selectall" class="pointer"><a id="text_selectall" href="#selectall">select</a></td>';
+            echo '<td id="advanced_box" name="advanced_box" class="center" style="width: 70px;">';
+            echo '<input type="checkbox" id="checkbox_selectall" class="pointer"><a id="text_selectall" href="#selectall">select</a></td>';
         }
 
     echo "</tr>";
@@ -858,14 +852,8 @@ if( ( isset($class) ) AND ($class != "") ){
                 if ( !isset($_GET["xmode"]) ){
                     # Checkbox will now be shown all the times and it is not possible to disable them. Disabling code for now
                     # TODO: Remove swapable advanced checkboxes if really not needed anymore
-                    # Check cookie, if advanced tab was open, display the checkboxes too (when not, set display: none:)
-                    echo '<td id="advanced_box" name="advanced_box" style="text-align:center;';
-                        //if ( !empty($_COOKIE["advanced_box"]) AND $_COOKIE["advanced_box"] == "open" ){
-                        //}else{
-                        //    echo ' display: none;';
-                        //}
-                    echo '">';
-                        echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["host_id"].'" class="pointer"></td>';
+                    echo '<td id="advanced_box" name="advanced_box" style="text-align:center;">';
+                    echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["host_id"].'" class="pointer"></td>';
                 }
                 echo "</tr>\n";
                 $count++;
@@ -925,13 +913,7 @@ if( ( isset($class) ) AND ($class != "") ){
 
                 if ( !isset($_GET["xmode"]) ){
                     // Advanced checkbox
-                    # Check cookie, if advanced tab was open, display the checkboxes too (when not, set display: none:)
-                    echo '<td id="advanced_box" name="advanced_box" style="text-align:center;';
-                        if ( !empty($_COOKIE["advanced_box"]) AND $_COOKIE["advanced_box"] == "open" ){
-                        }else{
-                            echo ' display: none;';
-                        }
-                    echo '">';
+                    echo '<td id="advanced_box" name="advanced_box" style="text-align:center;">';
                         echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["id_item"].'" class="pointer checkbox-small">';
                     echo '</td>';
                 }
