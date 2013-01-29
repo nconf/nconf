@@ -50,10 +50,6 @@ if (!isset($STATIC_CONFIG)){
       // this prevents hacking some other directories
       if (!in_array($directory, $STATIC_CONFIG)){
         NConf_DEBUG::set($directory, "CRITICAL", 'Directory is not in STATIC_CONFIG variable.');
-        $msg_critical = NConf_DEBUG::show_debug('CRITICAL');
-        echo NConf_HTML::show_error('Error', $msg_critical);
-        require_once(NCONFDIR.'/include/foot.php');
-        exit;
       }
         
     }else{
@@ -62,11 +58,17 @@ if (!isset($STATIC_CONFIG)){
 }
 
 # Filename
-if ( isset($_POST["filename"]) ) {
-    $filename = $_POST["filename"];
-    // Verify that only the filename is taken, no going out of directory should be possible
-    $filename = basename($filename);
-    $full_path = $directory.'/'.$filename;
+if ( isset($_POST["filename"]) ){
+    if (!empty($_POST["filename"])) {
+        $filename = $_POST["filename"];
+        // Verify that only the filename is taken, no going out of directory should be possible
+        $filename = basename($filename);
+        $full_path = $directory.'/'.$filename;
+        // Verify file exists and it is not set to "." or ".."
+        if (!file_exists($full_path) OR (( $filename == '.' ) OR ( $filename == '..' )) ) {
+            NConf_DEBUG::set($filename, "CRITICAL", 'File does not exist');
+        }
+    }
 }
 # new fileContent
 if ( isset($_POST["content"]) ) {
@@ -81,6 +83,13 @@ if ( isset($_POST["action"]) ) {
 }
 
 
+# Check for critical error, continue or abort
+if ( NConf_DEBUG::status('CRITICAL') ){
+    $msg_critical = NConf_DEBUG::show_debug('CRITICAL');
+    echo NConf_HTML::show_error('Error', $msg_critical);
+    require_once(NCONFDIR.'/include/foot.php');
+    exit;
+}
 
 
 
@@ -121,7 +130,6 @@ if( isset($full_path) AND !empty($filename) ){
     # read the config file
     if (isset($saved) AND $saved == FALSE){
         $file_content = $content;
-        #$file_content = $POST["content"];
     }else{
         $file_content = @file_get_contents($full_path);
         if ($file_content === FALSE){
@@ -215,12 +223,7 @@ if ( (!empty($directory) AND !empty($filename) ) AND ($file_content !== FALSE) )
 
     echo '<br><br>';
     echo '<div class="fg-toolbar ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
-        /* old standard form submits
-        echo '<input type="submit" value="Open" name="action" align="middle" style="width:40px">';
-        echo "&nbsp;";
-        echo '<input type="submit" value="Save" name="action" align="middle" style="width:40px">';
-        */
-        /* new buttons */
+        /* buttons */
         echo '<input type="hidden" id="action" name="action" value="">';
         echo '<button id="open" class="jQ_tooltip" title="open file"></button>';
         echo '<button id="save" class="jQ_tooltip" title="save file"></button>';
