@@ -153,7 +153,7 @@ if ( isset($_SESSION["cache"]["use_cache"]) ){
     <?php
     $detail_navigation = '<a class="button_back jQ_tooltip" title="back" href="'.$_SESSION["go_back_page_ok"].'"></a>';
     echo '<div id="ui-nconf-icon-bar">'.$detail_navigation.'</div>';
-    echo "<h2>".$title."</h2>";
+    echo NConf_HTML::page_title('', $title);
 
     $colgroup = '<colgroup>
             <col width="186">

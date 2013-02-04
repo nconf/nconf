@@ -6,11 +6,11 @@ define("VERSION_NUMBER", '1.3.1');
 define("VERSION_STRING", '<img src="design_templates/nconf_fresh/nconf-logo-16.gif" style="vertical-align:bottom" alt="nconf-logo">
                           <b>NConf v. '.VERSION_NUMBER.' (dev)</b>');
 
-define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf 1.3.1, intended FOR TESTING PURPOSES ONLY! 
+define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf '.VERSION_NUMBER.', intended FOR TESTING PURPOSES ONLY! 
                                     <br>Do not use this version in a production environment or to upgrade your productive NConf installation!
                                     <br>Note that we will not provide any update functionality from this pre-release to the next official release.');
 
-define("COPYRIGHT_STRING", '<i>Copyright &copy; 2006 - 2012 <br>Sunrise Communications AG, Zurich, Switzerland</i>
+define("COPYRIGHT_STRING", '<i>Copyright &copy; 2006 - 2013 <br>Sunrise Communications AG, Zurich, Switzerland</i>
                           <br><br>Project homepage: <a href="http://www.nconf.org/" target="_blank">www.nconf.org</a>');
 
 define("DISCLAIMER_STRING", '<b>Developed by:</b>

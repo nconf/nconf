@@ -31,7 +31,7 @@ if (mysql_num_rows($result)){
 }else{
 
     # Entry not existing, lets try to clone...
-    echo "<h2>&nbsp;Clone host</h2>";
+    echo NConf_HTML::page_title('', 'Clone host');
     ?>
     <table>
         <tr>

@@ -1,6 +1,6 @@
 body, html, textarea, table, button, input, select{
 font-family:Arial,sans-serif;
-font-size:11px;
+font-size:12px;
 font-style:normal;
 font-variant:normal;
 font-weight:400;
@@ -104,8 +104,8 @@ input, select, textarea {
 }
 
 h2{
-font-size:12px;
-margin:0;
+  font-size:115%;
+  margin:0;
 }
 
 .left_navigation h2{
@@ -176,6 +176,7 @@ width:22px;
 */
 .content_header, #maincontent > h2{
     margin-bottom: 9px;
+    margin-top: 0px;
 }
 
 /*
@@ -210,7 +211,6 @@ img {
 
 
 /* TABS */
-
 .tab_advanced {
     width: 150px;
     text-align: left;
@@ -229,17 +229,14 @@ img {
     margin: 0 0 0 5px;
     width: 100%;
 }
-
 /*
 .tab_advanced table{
     margin-left: 6px;
 }
 */
-
 .tab_advanced .ui-accordion-header{
     margin-top: 0px !important;
 }
-
 .tab_advanced.services{
     width: 160px;
 }
@@ -254,11 +251,6 @@ img {
 
 .tab_advanced.big {
     width: 250px;
-}
-
-.tab_advanced .independent{
-    position: absolute;
-    width:inherit;
 }
 
 .box_right{
@@ -334,7 +326,15 @@ pre{
     text-align: right;
     vertical-align: bottom;
 }
-
+.overview-add {
+    margin: 10px 0;
+}
+.overview-add a{
+    line-height: 18px;
+}
+.overview-add a img {
+    vertical-align: text-bottom;
+}
 
 /* GLOBAL */
 
@@ -404,4 +404,37 @@ input[disabled], select[disabled], textarea[disabled] {
     opacity: .35;
     filter:Alpha(Opacity=35);
     background-image: none;
+}
+
+/* new page title element */
+.title > img {
+  margin-right: 10px;
+}
+.title {
+  border-bottom: 1px solid #CCC;
+  margin-bottom: 10px;
+}
+
+.page_action_title {
+  font-weight: normal;
+  font-style: italic;
+}
+
+.item_name {
+  font-weight: bold;
+  font-style: normal;
+}
+
+.search {
+  margin-top: 10px;
+}
+
+#checkbox_selectall {
+    margin-right: 3px;
+}
+
+.checkbox-small {
+  width: 12px;
+  height: 12px;
+  border-style:none;
 }
