@@ -1,4 +1,4 @@
-Release 1.4.0 (tbd)
+Release 1.3.1 (tbd)
 
 FIXED   security issue: contents of the config directory were viewable. Added .htaccess file to prevent users from accessing .ini files etc.
 FIXED   compatibility problems with Internet Explorer 8 (and earlier)
