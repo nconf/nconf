@@ -47,7 +47,8 @@ if ( !empty($_GET["id"]) ){
     $show_item_links = FALSE;
 
     # Set title
-    $title = 'History of '.$item_class.': '.$item_name;
+    $title = NConf_HTML::page_title($item_class);
+    $title .= '<h2 class="page_action_title">History of : <span class="item_name">'.$item_name .'</span></h2>';
     if ( !empty($_SESSION["go_back_page"]) ){
         $detail_navigation = '<a class="button_back jQ_tooltip" title="back" href="'.$_SESSION["go_back_page"].'"></a>';
     }
@@ -92,7 +93,7 @@ if ( !empty($_GET["id"]) ){
     <?php
 
     # Set title
-    $title      = 'Basic history';
+    $title = NConf_HTML::page_title('history', "Basic history");
     $subtitle   = TXT_HISTORY_SUBTITLE;
     $time_seperation = FALSE;
     $show_item_links = TRUE;
@@ -111,10 +112,10 @@ echo '<div id="ui-nconf-icon-bar">'
 }
 
 # title
-echo '<h2>'.$title.'</h2>';
 if ( !empty($subtitle) ){
-    echo $subtitle."<br><br>";
+    $title .= $subtitle."<br><br>";
 }
+echo $title;
 
 echo '<img id="loading" src="img/working_small.gif">';
 echo '<div id="hidden_history" style="display: none;">';

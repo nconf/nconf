@@ -144,7 +144,8 @@ if( isset($full_path) AND !empty($filename) ){
 ###
 # Info/Warning in the top right corner
 ###
-echo '<h2>Edit static config files</h2>';
+# Title
+echo NConf_HTML::page_title('editor-static-files', 'Edit static config files');
 
 echo '<div class="editor_info">';
         if ( NConf_DEBUG::status('ERROR') ){
