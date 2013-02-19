@@ -9,7 +9,7 @@ FIXED   bug in Nagios config importer where the first item was being skipped if 
 
 ADDED   icon preview to the OS details page
 ADDED	authentication configuration option LOG_REMOTE_IP_HISTORY
-CHANGED default behavor of multi-modify from "overwrite existing" to "add additional" (only for attributes that allow multiple values)
+CHANGED default behavior of multi-modify from "overwrite existing" to "add additional" (only for attributes that allow multiple values)
 
 Release 1.3.0 (2011-12-11)
 
