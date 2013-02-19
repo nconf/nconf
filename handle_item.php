@@ -239,7 +239,7 @@ if ( !empty($_GET["id"]) ){
 			$replace_mode = 1;
 		}
 	}else{
-		$replace_mode = 1;
+		$replace_mode = 2;
 	}
 
 
