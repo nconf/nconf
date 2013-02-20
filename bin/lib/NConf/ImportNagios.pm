@@ -177,10 +177,18 @@ sub parseNagiosConfigFile {
                 $block_hash{$naming_attr} = $block_naming_attr;
 
             }elsif($input_class eq "advanced-service"){
-                # for advanced-services, set the naming attr to match the service_description, 
+                # for advanced-services, set the naming attr to match the service_description (if available), 
                 # run getUniqueNameCounter() to add a numeric counter, if necessary
-                $block_naming_attr = &getUniqueNameCounter($input_class, $block_hash{'service_description'});
-                $block_hash{$naming_attr} = $block_naming_attr;
+		if($block_hash{'service_description'} ne ""){
+                	$block_naming_attr = &getUniqueNameCounter($input_class, $block_hash{'service_description'});
+	                $block_hash{$naming_attr} = $block_naming_attr;
+		}else{
+			# auto-generate a service_description in case none was defined 
+			# (might be necessary in cases where the service_description is inherited from a service-template)
+			# however, since the service_description attribute is marked as mandatory, the import will fail unless the falg is changed
+                	$block_naming_attr = &getUniqueNameCounter($input_class, "imported_$input_class");
+	                $block_hash{$naming_attr} = $block_naming_attr;
+		}
 
             }else{
                 # in any other case, exit with an error
