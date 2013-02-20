@@ -21,7 +21,7 @@ $request_url = set_page();
 // set width of following divs
 echo '<div style="width: 535px">';
 
-echo NConf_HTML::title('Show classes');
+echo NConf_HTML::page_title('classes', 'Administrate classes');
 echo "<br>";
 
 $content = 'This mask allows administrators to modify the data schema of the NConf application.
@@ -34,7 +34,16 @@ $content = 'This mask allows administrators to modify the data schema of the NCo
 
 echo NConf_HTML::show_error('WARNING', $content);
 
-
+// Create link
+$add_link =  '<div class="overview-add"><br>';
+    $add_item = get_image( array(  "type" => "design",
+                                   "name" => "add",
+                                   "size" => 16,
+                                   "class" => "lighten"
+                                ) );
+    $add_link .= '<a href="modify_class.php">'.$add_item.' Create new class</a>';
+    $add_link .= '</div>';
+echo $add_link;
 
 // Attr manipulation
 if ( isset($_GET["do"]) ){

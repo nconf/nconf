@@ -1,4 +1,4 @@
-    <h2 class="ui-widget-header header"><span><?php echo TXT_MENU_ADDITIONAL;?></span></h2>
+    <h2 id="nav-menu-additional" class="ui-nconf-header ui-widget-header ui-corner-top pointer"><span><?php echo TXT_MENU_ADDITIONAL;?></span></h2>
     <div class="ui-widget-content box_content">
         <?php
         // FIX menu admin begin
@@ -22,6 +22,6 @@
     // FIX menu user end
     include('include/menu/static_content/menu_admin_end.html');
 
-    // FIX administration menu (attributes and classes)
-    include('include/menu/menu_administration.html');
+    // administration menu (editor, attributes and classes)
+    include('include/menu/menu_administration.php');
     ?>

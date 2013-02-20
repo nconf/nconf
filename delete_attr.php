@@ -2,7 +2,7 @@
 
 require_once 'include/head.php';
 
-echo NConf_HTML::title('Delete Attribute');
+echo NConf_HTML::page_title('', 'Delete Attribute');
 
 if (DB_NO_WRITES == 1) {
     message($info, TXT_DB_NO_WRITES);

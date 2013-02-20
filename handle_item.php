@@ -209,15 +209,15 @@ if ( !empty($_GET["id"]) ){
     # check cache
     if ( !empty($_SESSION["cache"]["handle"]) ){
 	    if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
-			$_POST["class"] = $_SESSION["cache"]["handle"]["HIDDEN_config_class"];
-		}
-		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
-			$_POST["ids"] = $_SESSION["cache"]["handle"]["HIDDEN_modify_ids"];
-		}
-		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_selected_attr"]) ){
-			$_POST["attr"] = $_SESSION["cache"]["handle"]["HIDDEN_selected_attr"];
-		}
-	}
+  			$_POST["class"] = $_SESSION["cache"]["handle"]["HIDDEN_config_class"];
+  		}
+  		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
+  			$_POST["ids"] = $_SESSION["cache"]["handle"]["HIDDEN_modify_ids"];
+  		}
+  		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_selected_attr"]) ){
+  			$_POST["attr"] = $_SESSION["cache"]["handle"]["HIDDEN_selected_attr"];
+  		}
+  	}
 
     # check class
     if ( empty($_POST["class"]) ){
@@ -239,7 +239,7 @@ if ( !empty($_GET["id"]) ){
 			$replace_mode = 1;
 		}
 	}else{
-		$replace_mode = 1;
+		$replace_mode = 2;
 	}
 
 
@@ -279,11 +279,16 @@ NConf_DEBUG::set($item_class, 'DEBUG', 'Handle class: ');
 ###
 # Title
 ###
-#header blox
+$item_name  = db_templates("naming_attr", $_GET["id"]);
+echo NConf_HTML::page_title($item_class);
 echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
-
     echo '<div>';
-        echo '<h2>'.ucfirst($handle_action).' '.$item_class.'</h2>';
+        if ($handle_action == "add"){
+            $title = ' Add new '.$item_class;
+        }else{
+            $title = ucfirst($handle_action);
+        }
+        echo '<h2 class="page_action_title">'.$title.' <span class="item_name">'.$item_name.'</span></h2>';
     echo '</div>';
 
 echo '</div>';

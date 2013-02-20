@@ -94,6 +94,7 @@ $NConf_PERMISSIONS = new NConf_PERMISSIONS;
     if ( defined('TEMPLATE_DIR') ){
         echo '<link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/new.css">';
         echo '<link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/main.css">';
+        //echo '<link rel="stylesheet" type="text/css" href="design_templates/'.TEMPLATE_DIR.'/bootstrap_nconf.css">';
         echo '<link rel="shortcut icon" href="design_templates/'.TEMPLATE_DIR.'/favicon.ico">';
     }
     ?>
