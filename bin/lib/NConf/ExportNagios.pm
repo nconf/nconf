@@ -1368,8 +1368,8 @@ sub class_dependent_processing {
 ########################################################################################
 # SUB write_htpasswd_file
 # Create a .htpasswd file for Apache webservers based on contact entries.
-# Apache requires password encryption in NConf to be set to CRYPT by default.
-# This allows users to manage access to a website based on contacts in NConf.
+# Apache requires password encryption in NConf to be set to either "crypt" or "sha_raw".
+# This allows users to manage access to the Nagios website based on contact entries in NConf.
 
 sub write_htpasswd_file {
     &logger(5,"Entered write_htpasswd_file()");
@@ -1398,10 +1398,11 @@ sub write_htpasswd_file {
             if($attr->[0] eq "nagios_access"){ $userperm=$attr->[1] }
         }
 
-        # support SHA encryption
+        # if password contains "{SHA_RAW}" string, rename to "{SHA}" and write to htpasswd file
         if($userpass =~ /\{SHA_RAW\}/i){
             $userpass =~s/\{.+\}/{SHA}/;
         }else{
+        # assume all other passwords are CRYPT; remove the "{CRYPT}" part because Apache doesn't need it
             $userpass =~s/\{.+\}//;
         }
         
