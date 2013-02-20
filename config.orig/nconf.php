@@ -101,6 +101,9 @@ define('SELECT_VALUE_SEPARATOR', "::");
 # Set default password encryption type
 # possible values: [clear|crypt|md5|sha|sha_raw]
 #
+# Use "crypt" if you wish to use passwords for Apache htpasswd based authentication.
+# Alternatively, you can use "sha_raw" mode if you wish to use SHA1 passwords for Apache htpasswd (normal "sha" mode will not work).
+#
 # Will be used when writing passwords to the database, and is also used for authentication. 
 # Used when AUTH_TYPE is "file" or "sql".
 #
@@ -108,8 +111,6 @@ define('SELECT_VALUE_SEPARATOR', "::");
 # If you change this value, you have to manually update all the password attributes already set, 
 # because the old value will remain encrypted with the previous encryption in the database. 
 # You won't be able to log in, if the encryption does not match.
-#
-# Use sha_raw mode if you want to have support for htpasswd file and sha1 encryption
 #
 define('PASSWD_ENC', "clear");
 
