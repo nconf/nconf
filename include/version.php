@@ -14,7 +14,17 @@ define("COPYRIGHT_STRING", '<i>Copyright &copy; 2006 - 2013 <br>Sunrise Communic
                           <br><br>Project homepage: <a href="http://www.nconf.org/" target="_blank">www.nconf.org</a>');
 
 define("DISCLAIMER_STRING", '<b>Developed by:</b>
-                          <br>Fabian Gander, Angelo Gargiulo, Bernhard Waldvogel;
+                          <br>
+                          <ul>
+                            <li>
+                              <a href="https://github.com/Cyclodex" target="_blank">Cyclodex | Fabian Gander</a>
+                            </li>
+                            <li>
+                              <a href="https://github.com/gargiulo" target="_blank">Angelo Gargiulo</a>
+                            </li>
+                          </ul>
+                          <br><b>Supported by:
+                          <br><ul><li>Bernhard Waldvogel</li></ul>
                           <br><br><b>License:</b>
                           <br>This software is distributed under the <a href="http://www.opensource.org/licenses/gpl-2.0.php" target="_blank">
                             GNU General Public License (GPL)</a>.
@@ -22,8 +32,6 @@ define("DISCLAIMER_STRING", '<b>Developed by:</b>
                           <br>NConf is provided as is with NO WARRANTY OF ANY KIND, including the warranty
                           <br>of design, merchantability, and fitness for a particular purpose.
                           <br><br><b>Trademarks:</b>
-                          <br>Sunrise and the Sunrise logo are trademarks, servicemarks, registered trademarks
-                          <br>or registered servicemarks owned by Sunrise Communications AG.<br>
                           <br>Nagios and the Nagios logo are trademarks, servicemarks, registered trademarks
                           <br>or registered servicemarks owned by Nagios Enterprises, LLC.
                           <br><br><b>Additional copyrights:</b>
