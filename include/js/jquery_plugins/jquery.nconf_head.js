@@ -10,6 +10,7 @@ $(document).ready(function(){
         .add('a > img', '#ui-nconf-icon-bar')
         .add('input[type="image"]', '#ui-nconf-icon-bar')
         .add('input.ui-button')
+        .add('img.ui-button')
         .button();
         
     // buttons for images

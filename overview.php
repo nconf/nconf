@@ -234,7 +234,7 @@ echo NConf_HTML::page_title($class, '');
                                            "name" => "add",
                                            "size" => 16,
                                            "tooltip" => 'Add '.$nav_class["friendly_name"],
-                                           "class" => "lighten"
+                                           "class" => "lighten ui-button"
                                         ) );
             $add_link .= '<a href="handle_item.php?item='.$class.'">'.$add_item.' Add new '.$class.'</a>';
             $add_link .= '</div>';

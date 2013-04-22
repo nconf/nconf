@@ -271,7 +271,9 @@ ICONs ICON BARs etc
   right: 10px;
 }
 
-#ui-nconf-icon-bar img, #ui-nconf-icon-bar input {
+#ui-nconf-icon-bar img,
+#ui-nconf-icon-bar input,
+img.ui-button {
   margin-left: 2px;
   padding: 2px;
 }
@@ -298,6 +300,10 @@ ICONs ICON BARs etc
   margin-bottom: 2px;
 }
 
+/**
+ * possible improvement when hovering a link and lighten its image:
+a.ui-state-hover .lighten
+*/
 .lighten:hover, .disabled {
   /* IE compatibility */
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; /* first! (IE8) */
