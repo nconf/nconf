@@ -113,10 +113,11 @@ th.ui-state-default, td.ui-state-default{
 
 
 /* UI NCONF header element*/
+.ui-widget h2,
 .ui-nconf-header{
-    /*padding:4px 4px 4px 5px;*/
     height: 15px;
-    padding: 5px;
+    padding: 3px;
+    padding-left:6px;
 }
 
 .ui-nconf-header div{
@@ -170,7 +171,7 @@ th.ui-state-default, td.ui-state-default{
     border-top: 1px solid #d0d0d0;
 }
 /* define no top border for first line, otherwise the border from the table header is overwritten */
-.ui-nconf-table tbody tr:first-child:not(".ui-state-error"){
+.ui-nconf-table tbody tr:first-child:not(.ui-state-error) {
     border-top: 0px none;
 }
 .ui-nconf-table tbody tr, .ui-nconf-table tbody tr a{
@@ -204,7 +205,7 @@ th.ui-state-default, td.ui-state-default{
     list-style: none outside none;
 }
 #navigation ul.nav-list > li {
-  padding: 2px 6px;
+  padding: 2px 8px;
   height: 18px;
   clear: both;
 }
@@ -237,11 +238,11 @@ th.ui-state-default, td.ui-state-default{
 }
 
 #navigation .box_content {
-  padding: 6px;
+  padding: 0px;
 }
 
 #navigation .logout {
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 /*
