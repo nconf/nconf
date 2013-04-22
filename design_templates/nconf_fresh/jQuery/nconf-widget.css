@@ -153,7 +153,6 @@ th.ui-state-default, td.ui-state-default {
 .ui-nconf-link {
   border: 0 none transparent !important;
   background: transparent none !important;
-  font-weight: inherit !important;
 }
 
 /* UI NCONF TABLE */

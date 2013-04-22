@@ -114,6 +114,7 @@ h2 {
 a {
   color: #585858;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .accordion .box_content {
