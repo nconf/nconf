@@ -10,8 +10,7 @@ define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf '.VE
                                     <br>Do not use this version in a production environment or to upgrade your productive NConf installation!
                                     <br>Note that we will not provide any update functionality from this pre-release to the next official release.');
 
-define("COPYRIGHT_STRING", '<i>Copyright &copy; 2006 - 2013 <br>Sunrise Communications AG, Zurich, Switzerland</i>
-                          <br><br>Project homepage: <a href="http://www.nconf.org/" target="_blank">www.nconf.org</a>');
+define("COPYRIGHT_STRING", 'Project homepage: <a href="http://www.nconf.org/" target="_blank">www.nconf.org</a>');
 
 define("DISCLAIMER_STRING", '<b>Developed by:</b>
                           <br>
