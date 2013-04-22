@@ -6,7 +6,7 @@
 
 <div id="ui-nconf-icon-bar">
     <fieldset>
-      <legend>Advanced Actions</legend>
+      <legend>advanced actions</legend>
       <div>
         <?php
           // TODO: General permission check. Could be an option to allow some users to modify on class level.
