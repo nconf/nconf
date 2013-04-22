@@ -133,8 +133,6 @@ th.ui-state-default, td.ui-state-default {
 #advanced_accordion div {
   /* padding: removes empty space around content */
   padding: 0;
-  /* margin: shows the accordion-header-item border also on the bottom */
-  margin-top: -1px;
 }
 
 .ui-nconf-accordion-list h3 {
@@ -185,11 +183,15 @@ th.ui-state-default, td.ui-state-default {
 
 .ui-nconf-table td, .ui-nconf-table th {
   padding-left: 3px;
-  height: 21px;
+  height: 16px;
 }
 
 .ui-nconf-max-width {
   width: 100%;
+}
+
+#advanced_accordion table.ui-nconf-table {
+  font-size: 11px;
 }
 
 /* NAVIGATION MENU */

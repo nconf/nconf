@@ -18,4 +18,30 @@
 
         });
     };
+
+    // NConf's clever accordion
+    // it saves the state as cookie and can so know the state of an element after refresh or revisiting the page
+    $.fn.nconf_accordion_clever = function(event) {
+        return $(this).each( function() {
+
+            var accordion_id = $(this).attr("id");
+            var cookie_status = readCookie(accordion_id);
+            if (cookie_status && cookie_status == "closed") {
+                $(this).toggleClass("ui-corner-bottom closed").next().hide();
+            }else{
+            }
+
+            // Add a click event to open and close menu parts
+            $(this).click(function() {
+                $(this).toggleClass("ui-corner-bottom closed").next().slideToggle('slow');
+                // Save the state as cookie to have a persistent state
+                if ($(this).hasClass("closed") === false){
+                    createCookie(accordion_id, "open", 365);
+                }else{
+                    createCookie(accordion_id, "closed", 365);
+                }
+                return false;
+            });
+        });
+    };
 })(jQuery);

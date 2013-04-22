@@ -6,10 +6,8 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-        $("#advanced_accordion").accordion({
-            collapsible: true,
-            active: false
-        });
+      // Attach the clever accordion to history tab
+      $("#advanced_accordion h2").nconf_accordion_clever();
     });
 
 </script>
@@ -18,16 +16,14 @@
 
 <div class="tab_advanced big">
     <div id="advanced_accordion">
-        <h3>
-            <a href="#">
-                History
-            </a>
-        </h3>
+        <h2 id="advanced_history" class="ui-nconf-header ui-widget-header ui-corner-top pointer">
+            History
+        </h2>
     
         <?php
 
         # movable content
-        echo '<div>';
+        echo '<div class="ui-widget-content box_content">';
 
 
 if ( !empty($item_id) ){
