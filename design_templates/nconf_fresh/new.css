@@ -84,6 +84,9 @@ body {
   text-align: left;
   width: 200px;
 }
+#navigation a {
+  font-weight: bold;
+}
 
 #centercontent {
   margin: 0 auto;
@@ -114,7 +117,7 @@ h2 {
 a {
   color: #585858;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .accordion .box_content {
