@@ -387,23 +387,29 @@ class NConf_HTML{
 
 
     // UI Box Header
-    public static function ui_box_header($content = ''){
-        $output = '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
+    public static function ui_box_header($content = '', $id = ''){
+        if (!empty($id)){
+            $id = 'id="'.$id.'" ';
+        }
+        $output = '<div '.$id.'class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
         if ( !empty($content) ){
             $output .= $content;
-            $output .= '</div>';
         }
+        $output .= '</div>';
 
         return $output;
     }
 
     // UI Box Content
-    public static function ui_box_content($content = ''){
-        $output = '<div class="ui-nconf-content ui-widget-content ui-corner-bottom">';
+    public static function ui_box_content($content = '', $id = ''){
+        if (!empty($id)){
+            $id = 'id="'.$id.'" ';
+        }
+        $output = '<div '.$id.'class="ui-nconf-content ui-widget-content ui-corner-bottom">';
         if ( !empty($content) ){
             $output .= $content;
-            $output .= '</div>';
         }
+        $output .= '</div>';
 
         return $output;
     }
