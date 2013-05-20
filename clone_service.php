@@ -185,8 +185,8 @@ $host_id = $_GET["id"];
 $item_name = db_templates("naming_attr", $host_id);
 
 
-echo '<h2>&nbsp;Clone Service from host '.$item_name.'</h2>';
-
+$title = 'Clone Service from host '.$item_name;
+echo NConf_HTML::page_title("service", $title);
 
 echo '
   <br>
@@ -197,42 +197,41 @@ echo '
       <tr><td class="middle"><br>services to clone
           </td>
           <td colspan=3>
-            <?php
-            echo '<input id="host_ID" type="hidden" name="source_host_id" value="'.$host_id.'">';
-            ?>
-            <select multiple name="all_services[]" id="services_fromBox">
-            <?php
-            $services = db_templates("get_services_from_host_id", $host_id);
-            foreach ($services as $service_id => $service_name){
-                    echo '<option value="'.$service_id.'">'.$service_name.'</option>';
-            }
-            ?>
-            </select>
+              <div class="select-container">
 
-            <select multiple name="destination_service_ids[]" id="services_toBox">
-            </select>
+                <?php
+                echo '<input id="host_ID" type="hidden" name="source_host_id" value="'.$host_id.'">';
+                ?>
+                <select multiple name="all_services[]" id="services_fromBox">
+                <?php
+                $services = db_templates("get_services_from_host_id", $host_id);
+                foreach ($services as $service_id => $service_name){
+                        echo '<option value="'.$service_id.'">'.$service_name.'</option>';
+                }
+                ?>
+                </select>
 
-            <script type="text/javascript">
-            createMovableOptions("services_fromBox","services_toBox",500,145,'Available services','Selected services',"livesearch");
-            </script>
+                <select multiple name="destination_service_ids[]" id="services_toBox">
+                </select>
 
-            <!-- needed for IE7, otherwise the select will be cut on the bottom -->
-            <br>
+                <script type="text/javascript">
+                createMovableOptions("services_fromBox","services_toBox",500,145,'Available services','Selected services',"livesearch");
+                </script>
 
+              </div>
           </td>
           <td valign="top" class="middle attention">*</td>
           <td class="desc">You move elements by clicking on the buttons or by double clicking on select box items</td>
 
         </tr>
 
-
-      <tr><td class="middle">name of cloned service</td>
-          <td><input id ="new_service_name" name="new_service_name" type=text maxlength=250
-                value="<?php if (!empty($cache["new_service_name"])) echo $cache["new_service_name"];?>"></td>
-          <td valign="top" class="middle attention"></td>
-          <td></td>
-          <td></td>
-          <td class="desc">
+      <tr class="assign_many">
+          <td class="middle">name of cloned service</td>
+          <td>
+              <input id ="new_service_name" name="new_service_name" type=text maxlength=250
+                value="<?php if (!empty($cache["new_service_name"])) echo $cache["new_service_name"];?>">
+          </td>
+          <td colspan="4" class="desc">
             set a new service name (only when cloning 1 service)
           </td>
       </tr>
@@ -241,24 +240,23 @@ echo '
       <tr><td class="middle"><br>clone service to
           </td>
           <td colspan=3>
-            <select multiple name="all_hosts[]" id="fromBox">
-            <?php
-            foreach ($hosts as $host_id => $host_name){
-                    echo '<option value="'.$host_id.'">'.$host_name.'</option>';
-            }
-            ?>
-            </select>
+              <div class="select-container">
+                <select multiple name="all_hosts[]" id="fromBox">
+                <?php
+                foreach ($hosts as $host_id => $host_name){
+                        echo '<option value="'.$host_id.'">'.$host_name.'</option>';
+                }
+                ?>
+                </select>
 
-            <select multiple name="destination_host_ids[]" id="toBox">
-            </select>
+                <select multiple name="destination_host_ids[]" id="toBox">
+                </select>
 
-            <!--</form>-->
-            <script type="text/javascript">
-            createMovableOptions("fromBox","toBox",500,145,'Available hosts','Selected hosts',"livesearch");
-            </script>
-
-            <!-- needed for IE7, otherwise the select will be cut on the bottom -->
-            <br>
+                <!--</form>-->
+                <script type="text/javascript">
+                createMovableOptions("fromBox","toBox",500,145,'Available hosts','Selected hosts',"livesearch");
+                </script>
+               </div>
 
           </td>
           <td valign="top" class="middle attention">*</td>
