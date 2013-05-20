@@ -7,7 +7,7 @@
 
     $(document).ready(function(){
         $("#advanced_accordion").accordion({
-            collapsible: true,
+            collapsible: true
         });
     });
 
