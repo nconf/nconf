@@ -114,13 +114,14 @@ th.ui-state-default, td.ui-state-default {
 /* UI NCONF header element*/
 .ui-widget h2,
 .ui-nconf-header {
-  height: 15px;
+  height: 17px;
   padding: 3px;
   padding-left: 6px;
 }
 
 .ui-nconf-header div {
   float: left;
+  top: -1px;
 }
 
 /* UI NCONF content */

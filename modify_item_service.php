@@ -360,7 +360,7 @@ echo NConf_HTML::ui_box_header($box1.$detail_navigation);
 
     ////
     // Place for service list
-    $output .= '<br><div id="service_list" style="display:none"></div><br>';
+    $output .= '<br><div id="service_list" style="display:none"></div>';
 
     // Finish button removed, link now in toolbar
     //$output .= '<br><br>';
@@ -411,7 +411,7 @@ unset($output);
     $service_names = db_handler($query, "array", "get all advanced services"); 
 
 
-    $output .= '<br><select id="fromBox_advanced_services" name="from_advanced_services[]" style="'.CSS_SELECT_MULTI.'" multiple >';
+    $output .= '<select id="fromBox_advanced_services" name="from_advanced_services[]" style="'.CSS_SELECT_MULTI.'" multiple >';
 
     $services = db_templates("get_services_from_host_id", $host_ID, "advanced-service");
 
@@ -446,22 +446,15 @@ unset($output);
             $output .= $selected_menu["service_name"].'</option>';
         }
     }
-    $output .= '</select><br>';
+    $output .= '</select>';
 
     $output .= '
                 <script type="text/javascript">
-                    createMovableOptions("fromBox_advanced_services","toBox_advanced_services",500,145,"available items","selected items","livesearch");
+                    createMovableOptions("fromBox_advanced_services","toBox_advanced_services",490,145,"available items","selected items","livesearch");
                 </script>
                 ';
 
-
-//    $output .= '<div class="loading"><img id="advanced_services_loading" src="img/working_small.gif" alt="loading" style="display:none"></div>';
-
-
-
-
-
-    echo NConf_HTML::ui_box_content($output);
+    echo NConf_HTML::ui_box_content($output, "advanced-service-direct");
     unset($output);
 
 
@@ -482,9 +475,9 @@ unset($output);
     $output .= '<img id="hostgroup_service_loading" src="img/working_small.gif" alt="loading" style="display:none">';
 
     // Place for hostgroup service list
-    $output .= '<br><div id="hostgroup_service_list" style="display:none"></div><br>';
+    $output .= '<div id="hostgroup_service_list" style="display:none"></div>';
 
-    echo NConf_HTML::ui_box_content($output);
+    echo NConf_HTML::ui_box_content($output, "advanced-service-inherit");
 
 
 echo '</div>';

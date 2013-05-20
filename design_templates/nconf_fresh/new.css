@@ -430,3 +430,8 @@ input[disabled], select[disabled], textarea[disabled] {
   height: 12px;
   border-style: none;
 }
+
+/* ADVANCED SERVICES HOST OVERVIEW */
+#advanced-service-direct {
+  padding-top: 30px;
+}
