@@ -436,7 +436,10 @@ class NConf_HTML{
             }else {
                 $title = $class_friendly_name;
             }*/
-            $title = $class_friendly_name;
+            // use friendly name only when title is not set
+            if (empty($title)){
+                $title = $class_friendly_name;
+            }
         }
         $output .= $icon.'<h1 class="content_header">'.$title.'</h1>';
         
