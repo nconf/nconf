@@ -63,7 +63,10 @@ $status = flock($generate_lock_handle, LOCK_EX | LOCK_NB); //lock the file
             autoOpen: true,
             title: "Generating config",
             closeOnEscape: false,
-            open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+            open: function(event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+                $(".ui-dialog-titlebar").toggleClass("ui-corner-all ui-corner-top");
+            },
             modal: true,
             draggable: false,
             resizable: false,

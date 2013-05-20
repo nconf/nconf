@@ -30,10 +30,18 @@ input.ui-button {
   padding: 0;
 }
 
+.ui-dialog {
+  padding: 0;
+}
+.ui-dialog .ui-dialog-title {
+  font-size: 115%;
+}
 /* Set the titlebar of boxes smaller than standard */
 .ui-dialog .ui-dialog-titlebar {
-  padding: 0 0.5em 0;
   position: relative;
+  height: 17px;
+  line-height: 14px;
+  padding: 3px 3px 3px 6px;
 }
 
 /* error messages */
@@ -153,8 +161,9 @@ th.ui-state-default, td.ui-state-default {
   border: 0 none transparent !important;
   background: transparent none !important;
 }
-.ui-state-hover, .ui-widget-content .ui-state-hover {
-  font-weight: inherit;
+
+.ui-nconf-link:hover {
+  color: #000;
 }
 
 /* UI NCONF TABLE */
