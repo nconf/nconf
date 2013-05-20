@@ -168,8 +168,9 @@ a {
 #maincontent h2{
 */
 .content_header, #maincontent > h2 {
-  margin-bottom: 9px;
+  margin-bottom: 5px;
   margin-top: 0;
+  font-size: 20px;
 }
 
 /*
