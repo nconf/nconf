@@ -34,9 +34,9 @@ $(document).ready(function(){
     // tooltip
     $.nconf_tooltip();
 
-    // link hovers (a litle bit complex because no simple theme css available)
+    // link hovers (a little bit complex because no simple theme css available)
     $( "a" ).live('hover', function () {
-        $(this).not(".ui-button").not("[role=button]").toggleClass("ui-state-hover ui-nconf-link");
+        $(this).not(".ui-button").not("[role=button]").toggleClass("ui-nconf-link");
     });
 
     // all image links should contain lighten class, for mouseover effect, expect the new toolbar icons
