@@ -152,6 +152,9 @@ th.ui-state-default, td.ui-state-default {
   border: 0 none transparent !important;
   background: transparent none !important;
 }
+.ui-state-hover, .ui-widget-content .ui-state-hover {
+  font-weight: inherit;
+}
 
 /* UI NCONF TABLE */
 
