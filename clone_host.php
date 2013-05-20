@@ -16,7 +16,13 @@ if ( isset($_SESSION["cache"]["clone"]) ){
 
 
 # Title
-echo NConf_HTML::page_title('', 'Clone host');
+echo NConf_HTML::page_title('host', 'Clone host');
+$title = "Clone a host";
+echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
+    echo '<h2 class="page_action_title">'.$title.' <span class="item_name">'.$item_name.'</span></h2>';
+echo '</div>';
+# content block
+echo '<div class="ui-nconf-content ui-widget-content ui-corner-bottom">';
 ?>
 
 <form name="clone_item" action="clone_host_write2db.php" method="post">

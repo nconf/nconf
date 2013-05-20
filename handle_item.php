@@ -293,7 +293,7 @@ echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-
 
 echo '</div>';
 
-# content blox
+# content block
 echo '<div class="ui-nconf-content ui-widget-content ui-corner-bottom">';
 
 

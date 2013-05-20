@@ -425,7 +425,7 @@ class NConf_HTML{
     }
 
     // page title including icon of the class and optional actions
-    public static function page_title($class, $title, $toolbar = array()){
+    public static function page_title($class, $title = '', $toolbar = array()){
         $output = '<div class="title">';
         // Get Icon
         $icon = get_image(array( "type" => "design",
