@@ -1236,9 +1236,9 @@ if(
 
             # handle the size for the information box containing the items it writes on
             if ( ($entry["datatype"] == "assign_many") OR ($entry["datatype"] == "assign_cust_order") ){
-                $content .= '<div style="overflow: auto; width: 350px; max-height: 235px;">';
+                $content .= '<div style="overflow: auto; width: 380px; max-height: 235px;">';
             }else{
-                $content .= '<div style="overflow: auto; width: 350px; max-height: 400px;">';
+                $content .= '<div style="overflow: auto; width: 380px; max-height: 400px;">';
             }
                 $content .= '<ul>';
 
