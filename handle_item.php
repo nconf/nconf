@@ -172,7 +172,7 @@ if ( !empty($_GET["id"]) ){
 
     }
 
-    if ($item_class == "service" OR $item_class == "advanced-service"){
+    if ($item_class == "service" OR $item_class == "advanced-service" OR $item_class == "service-template"){
         # get id of attr check_command
         $check_command_attr_id = db_templates("get_attr_id", $item_class, "check_command");
         $host_name_attr_id = db_templates("get_attr_id", $item_class, "host_name");
@@ -466,7 +466,7 @@ if(
 
             
             # set special Fieldset for check_params
-            if ( ($item_class == "service" OR $item_class == "advanced-service") AND $entry["attr_name"] == "check_params"){
+            if ( ($item_class == "service" OR $item_class == "advanced-service" OR $item_class == "service-template") AND $entry["attr_name"] == "check_params"){
                 #do nothing here, print title later if really needed
             }else{
                 echo '<td class="middle">'.$entry["friendly_name"].'</td>';
@@ -483,7 +483,7 @@ if(
             ### process "text" fields
             if ($entry["datatype"] == "text"){
                 # check special case for check_params
-                if ( ($item_class == "service" OR $item_class == "advanced-service") AND $entry["attr_name"] == "check_params"){
+                if ( ($item_class == "service" OR $item_class == "advanced-service" OR $item_class == "service-template") AND $entry["attr_name"] == "check_params"){
                     # check_param stuff
 
                     NConf_DEBUG::open_group("params for check command (service parameters)");
