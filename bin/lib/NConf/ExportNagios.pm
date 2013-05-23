@@ -732,7 +732,10 @@ $fattr,$fval
                 }
             }
 
-            if($is_trap_service == 1){next}
+            if($is_trap_service == 1){
+                &logger(4,"Removing $class '$id_item->[0]' from collector config because the $class seems to be a TRAP service");
+		next;
+	    }
 
             # fetch all linked items (assign_one, assign_many etc.)
             my @item_links = &getItemsLinked($id_item->[0]);
@@ -967,7 +970,10 @@ $fattr,$fval
             if($class eq "advanced-service"){
                 # don't write adv. services that contain the string "TRAP" in "advanced service name" to collector config, if a monitor server is present
                 my $srvname = &getItemName($id_item->[0]);
-                if($srvname =~ /trap/i && defined($id_item->[1]) && $mon_count > 0){next}
+                if($srvname =~ /trap/i && defined($id_item->[1]) && $mon_count > 0){
+                    &logger(4,"Removing $class '$id_item->[0]' from collector config because the $class seems to be a TRAP service");
+		    next;
+		}
             }
 
             ##### (1) fetch all linked items (assign_one, assign_many etc.)
