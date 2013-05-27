@@ -13,6 +13,7 @@ ADDED   php-mysql check with proper message on INSTALL.php when not having mysql
 ADDED   sha1 password support for htpasswd file -> see sha_raw encryption mode
 
 CHANGED default behavior of multi-modify from "overwrite existing" to "add additional" (only for attributes that allow multiple values)
+CHANGED the pattern used to parse for SNMP TRAP services within the collector configuration: services ending on "*TRAP" (caps) will be removed.
 
 Release 1.3.0 (2011-12-11)
 
