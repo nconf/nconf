@@ -719,7 +719,7 @@ $fattr,$fval
             foreach my $attr (@item_attrs){
                 if($attr->[0] eq "service_description"){$srvname=$attr->[1]}
                 if($attr->[0] eq "service_description" && $attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){
-                    if($attr->[1] =~ /trap/i && $path =~ /\Q$collector_path\E/ && $mon_count > 0){
+                    if($attr->[1] =~ /TRAP$/ && $path =~ /\Q$collector_path\E/ && $mon_count > 0){
                         # don't write "TRAP" services to collector config, if a monitor server is present
                         $is_trap_service = 1;
                     }else{
@@ -734,8 +734,8 @@ $fattr,$fval
 
             if($is_trap_service == 1){
                 &logger(4,"Removing $class '$id_item->[0]' from collector config because the $class seems to be a TRAP service");
-		next;
-	    }
+                next;
+            }
 
             # fetch all linked items (assign_one, assign_many etc.)
             my @item_links = &getItemsLinked($id_item->[0]);

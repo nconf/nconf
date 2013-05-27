@@ -18,6 +18,8 @@ The following (optional) configuration options have been added:
 ##              Additional changes                ##
 ##------------------------------------------------##
 
+Changed the pattern used to parse for SNMP TRAP services within the 
+collector configuration: services ending on "*TRAP" (caps) will be removed.
 
 ####################################################
 ##           End of update information            ##
