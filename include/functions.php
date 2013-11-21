@@ -1852,7 +1852,7 @@ function get_image(array $options) {
   }
   
   # output
-  if ($options["output"] == "path"){
+  if (isset($options["output"]) && $options["output"] == "path"){
     return $path;
   }else{
     $class = (!empty($options["class"])) ? $options["class"] : '';
