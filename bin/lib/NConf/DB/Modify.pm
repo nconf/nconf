@@ -220,7 +220,8 @@ sub addItem {
             unless(($class_name eq "service-dependency" && ($attr eq "host_name" || $attr eq "dependent_host_name"))
                 || ($class_name eq "host" && $attr eq "hostgroups")
                 || ($class_name eq "service" && $attr eq "servicegroups")
-                || ($class_name eq "contact" && $attr eq "contactgroups")){
+                || ($class_name eq "contact" && $attr eq "contactgroups")
+		|| ($class_name eq "hostgroup" && $attr eq "advanced-services")){
 
                 &logger(2, "Could not find attribute '$attr' belonging to class '$class_name'. Skipping import of this attribute.");
                 $main_hash{$attr} = undef;
@@ -480,15 +481,18 @@ sub insertValue {
     # invoke insertValue() recursively to link items to multiple groups
     if(($class_name eq "host" && $attr eq "hostgroups") 
     || ($class_name eq "service" && $attr eq "servicegroups") 
-    || ($class_name eq "contact" && $attr eq "contactgroups")){
+    || ($class_name eq "contact" && $attr eq "contactgroups")
+    || ($class_name eq "hostgroup" && $attr eq "advanced-services")) {
 
         # change the class we're working with
         if($class_name eq "host"){$class_name="hostgroup"}
         elsif($class_name eq "service"){$class_name="servicegroup"}
         elsif($class_name eq "contact"){$class_name="contactgroup"}
+	elsif($class_name eq "hostgroup"){$class_name="advanced-service"}
 
         # change the attr name we're working with
-        $attr = "members";
+	if($class_name eq "advanced-service"){$attr = "hostgroup_name"}
+	else{$attr = "members"}
 
         # fetch the name of the item to which we're linking our group(s)
         my $item_name = &getItemName($id_item);

@@ -334,7 +334,7 @@ sub parseHostServiceCsv {
                 # add each item to the host-hash according to the specified host syntax
                 my $value = shift @$row;
                 if ($value || length $value) {
-                    $line_hash{$attr} = $value;
+                    $host_hash{$attr} = $value;
                 }
 
                 # fetch and store some values separately
