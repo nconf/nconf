@@ -229,7 +229,7 @@ sub addItem {
 
         # special, class-specific attribute manipulation:
         # process "check_command" attrs of services & advanced-services
-        if(($class_name eq "service" || $class_name eq "advanced-service") && $attr eq "check_command" && $main_hash{$attr} =~ /\!/){
+        if(($class_name eq "service" || $class_name eq "advanced-service" || $class_name eq "service-template") && $attr eq "check_command" && $main_hash{$attr} =~ /\!/){
             # separate checkcommand from params
             $main_hash{$attr} =~ /^([^!]+)(!.*)$/;
             $main_hash{$attr} = $1;
