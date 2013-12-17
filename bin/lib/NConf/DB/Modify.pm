@@ -367,7 +367,7 @@ sub addItem {
 
     # check if all mandatory attributes have been supplied
     foreach my $man_attr (@class_mandatory_attrs){
-        if((!$main_hash{$man_attr} && $main_hash{$man_attr} != 0) || $main_hash{$man_attr} eq ""){
+        if((!$main_hash{$man_attr} && $main_hash{$man_attr} != 0) || $main_hash{$man_attr} eq "" || !length $main_hash{$man_attr}){
 
             # ignore NConf-specific mandatory attributes (set to default value)
             if($class_attrs_hash{$class_name}->{$man_attr}->{'write_to_conf'} ne "yes"){
