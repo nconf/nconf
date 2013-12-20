@@ -1132,6 +1132,23 @@ $fattr,$fval
 
                 # consolidate multi-line attributes into one line
                 @item_links = &makeValuesDistinct(@item_links);
+		
+                foreach my $attr (@item_links){
+                if($class eq "service-template"){
+                        if($attr->[0] eq "check_command"){
+                            # add a dummy check_command to all services of a monitor server, if stale_service_command attr is set
+                            if($monitor_path && $path =~ /\Q$monitor_path\E/ && $stale_service_command){
+                                $attr->[1] = $stale_service_command;
+                            }
+                            else{
+                                # add check_params to check_command attr
+                                my $cmd_params = &fetch_cmd_params($id_item->[0]);
+                                $cmd_params = &replaceMacros($cmd_params);
+                                $attr->[1] = $attr->[1].$cmd_params;
+                            }
+                        }
+                    }
+                }
             }
 
             ##### (1C) skip writing items to config, which are linked to objects that don't exist on the current collector (as evaluated above)
