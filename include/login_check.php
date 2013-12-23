@@ -373,5 +373,12 @@ if (!empty($_SESSION["group"]) ){
 }else{
     history_add("general", "login", "access denied (user: ".$user_loginname.")");
 }
+if ( defined("LOG_REMOTE_IP_HISTORY") AND LOG_REMOTE_IP_HISTORY == 1 ){
+    if ( !empty($_SERVER['REMOTE_HOST']) ){
+        history_add("general", "login-info", "REMOTE_HOST: (".$_SERVER['REMOTE_HOST'].")");
+    }elseif( !empty($_SERVER['REMOTE_ADDR']) ){
+        history_add("general", "login-info", "REMOTE_ADDR: (".$_SERVER['REMOTE_ADDR'].")");
+    }
+}
 NConf_DEBUG::close_group();
 ?>

@@ -82,18 +82,21 @@ sub parseNagiosConfigFile {
 
     # unset input record separator (read whole file at once!)
 	$/ = undef;
-	my @blocks = split(/[^#\s]\s*\n\s*define\s+/, <LIST>);
+	#my @blocks = split(/[^#\s]\s*\n\s*define\s+/, <LIST>); # 20120131 A. Gargiulo changed this regex
+	my @blocks = split(/\n[ \r\t\f]*define[ \r\t\f]*/, <LIST>); # CAUTION: changing this regex might mess up the linecount mechanism! 
+
 	foreach (@blocks){
 
         # count amount of lines in current block
-        my $linecount = 0;
+        my $linecount = 1;
         while($_ =~ /\n/g){$linecount++}
+        my $filepos_new = $filepos + $linecount;
 
         # skip empty blocks and commented blocks
         chomp $_;
-        unless($_){next}
-        if($_ =~ /^\s*$/){next}
-        if($_ =~ /^\s*#/){next}
+        unless($_){$filepos=$filepos_new;next}
+        if($_ =~ /^\s*$/){$filepos=$filepos_new;next}
+        if($_ =~ /^\s*#/){$filepos=$filepos_new;next}
         my $block = $_;
 
         # check if more than one class type is defined within the input file
@@ -205,7 +208,7 @@ sub parseNagiosConfigFile {
             $main_hash{$block_naming_attr} = \%block_hash;
         }
 
-        $filepos += $linecount;
+        $filepos = $filepos_new;
     }
 
     close(LIST);
