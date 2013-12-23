@@ -48,7 +48,7 @@ unless($loglevel =~ /^[1245]$/){$loglevel=3}
 
 # global vars
 use vars qw($fattr $fval); # Superglobals
-my ($root_path, $output_path, $global_path, $test_path, $monitor_path, $collector_path, $check_static_cfg);
+my ($root_path, $output_path, $global_path, $test_path, $monitor_path, $collector_path, $check_static_cfg, $force_contactgroups_append);
 my (@superadmins, @oncall_groups, @global_cfg_files, @server_cfg_files, @static_cfg);
 my (%class_info, %checkcommand_info, %files_written);
 
@@ -59,6 +59,8 @@ $root_path        = &readNConfConfig(NC_CONFDIR."/nconf.php","NCONFDIR","scalar"
 @static_cfg       = &readNConfConfig(NC_CONFDIR."/nconf.php","STATIC_CONFIG","array");
 $check_static_cfg = &readNConfConfig(NC_CONFDIR."/nconf.php","CHECK_STATIC_SYNTAX","scalar",1);
 if($check_static_cfg ne 0){$check_static_cfg=1}
+$force_contactgroups_append = &readNConfConfig(NC_CONFDIR."/nconf.php","FORCE_CONTACTGROUPS_APPEND","scalar",1);
+if($force_contactgroups_append ne 0){$force_contactgroups_append=1}
 
 # fetch and cache all classes in ConfigClasses table
 %class_info = &getConfigClasses();
@@ -652,6 +654,11 @@ $fattr,$fval
                         if($attr->[1]){$attr->[1] = join(",", @superadmins).",".$attr->[1]}
                         else{$attr->[1] = join(",", @superadmins)}
 		            }
+
+                    if($force_contactgroups_append eq 1 && not $attr->[1] =~ /^\+/){
+                        $attr->[1]="+".$attr->[1];
+                    }
+
                 }
 
                 if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){$fattr=$attr->[0];$fval=$attr->[1];write FILE}
@@ -697,6 +704,7 @@ $fattr,$fval
             if($has_contactgroup == 0 && defined($superadmins[0])){
                 $fattr = "contact_groups";
                 $fval = join(",",@superadmins);
+                if($force_contactgroups_append eq 1 && not $fval =~ /^\+/){$fval="+".$fval;}
                 write FILE;
             }
             print FILE "}\n\n";
@@ -830,6 +838,11 @@ $fattr,$fval
                         if($attr->[1]){$attr->[1] = join(",", @superadmins).",".$attr->[1]}
                         else{$attr->[1] = join(",", @superadmins)}
 		            }
+
+                    if($force_contactgroups_append eq 1 && not $attr->[1] =~ /^\+/){
+                        $attr->[1]="+".$attr->[1];
+                    }
+
                 }
 
                 if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){ $fattr=$attr->[0];$fval=$attr->[1];write FILE}
@@ -947,6 +960,7 @@ $fattr,$fval
             if($has_contactgroup == 0 && defined($superadmins[0])){
                 $fattr = "contact_groups";
                 $fval = join(",",@superadmins);
+                if($force_contactgroups_append eq 1 && not $fval =~ /^\+/){$fval="+".$fval;}
                 write FILE;
             }
 
@@ -1074,6 +1088,11 @@ $fattr,$fval
                                 if($attr->[1]){$attr->[1] = join(",", @superadmins).",".$attr->[1]}
                                 else{$attr->[1] = join(",", @superadmins)}
 		                    }
+
+                            if($force_contactgroups_append eq 1 && not $attr->[1] =~ /^\+/){
+                                $attr->[1]="+".$attr->[1];
+                            }
+
                         }
                     }
                 }
@@ -1130,6 +1149,12 @@ $fattr,$fval
                 if($class eq "advanced-service"){
                     # don't write templates to config yet, store them separately to be processed later on
                     if($attr->[0] eq "use"){push(@service_templates1, $attr->[1]);next}
+                }
+
+                if($class eq "host-template" || $class eq "service-template" || $class eq "advanced-service"){
+                    if($attr->[0] eq "contact_groups" && $force_contactgroups_append eq 1 && not $attr->[1] =~ /^\+/){
+                        $attr->[1]="+".$attr->[1];
+                    }
                 }
 
                 if($attr->[0] ne "" && $attr->[1] ne "" && $attr->[2] ne "no"){ $fattr=$attr->[0];$fval=$attr->[1];write FILE}
