@@ -127,6 +127,11 @@ echo '<div style="width: 500px;" class="relative">';
         array_push($basic_result, $attributes);
     }
 
+    # print an overview of the icon if available
+    if ($item_class == "os" and $basic_result[1]["attr_value"] != "" and is_readable(OS_LOGO_PATH."/".$basic_result[1]["attr_value"])) {
+        array_push($basic_result, array('friendly_name' => 'icon preview', 'attr_value' => "<img src=".OS_LOGO_PATH."/".$basic_result[1]["attr_value"].">"));
+    }
+
     echo table_output($basic_result, $item_class);
 
 

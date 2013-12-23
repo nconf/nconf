@@ -305,40 +305,29 @@ if (AUTH_TYPE == "file"){
         }
         NConf_DEBUG::set($admin_group_dn, 'DEBUG', 'admin_group_dn');
 
+        //patch for where all your users aren't in a single OU.
+        $user = ldap_search($ldapconnection, AD_BASE_DN, "(samaccountname=".$user_loginname.")" );
+        $user_result = ldap_get_entries($ldapconnection,$user);
+
         if (AD_ADMIN_GROUP == "" AND AD_USER_GROUP == ""){
-            $userattrs = ldap_search($ldapconnection, $ldap_user_dn, "(objectclass=*)" );
-            $userattrs_result = ldap_get_entries($ldapconnection, $userattrs);
+            //$userattrs = ldap_search($ldapconnection, $ldap_user_dn, "(objectclass=*)" );
+            //$userattrs_result = ldap_get_entries($ldapconnection, $userattrs);
             NConf_DEBUG::set($userattrs_result, 'DEBUG', 'user authenticated (limited)' );
             NConf_DEBUG::set("please have a look at the content in the previous message to get more information about the user (look for the memberof attribute to get the groups of the authenticated user)", 'DEBUG', "information for the admin");
         }else{
-            $userattrs = ldap_search($ldapconnection, $ldap_user_dn, '('.AD_GROUP_ATTRIBUTE.'='.$admin_group_dn.')' );
-            $userattrs_result = ldap_get_entries($ldapconnection, $userattrs);
-            NConf_DEBUG::set($userattrs_result, 'DEBUG', 'check "admin" group permission');
-            if ($userattrs_result["count"] == 1){
-                # user identified as admin
-                $_SESSION['group'] = GROUP_ADMIN;
-                NConf_DEBUG::set('', 'INFO', $_SESSION["group"].' access granted');
-
-            }else{
-                # check if user is member of admin group
-                $user_group_dn = AD_USER_GROUP;
-                if ( AD_GROUP_DN != "" ){
-                    $user_group_dn .= ','.AD_GROUP_DN;
-                }
-                NConf_DEBUG::set($user_group_dn, 'DEBUG', 'user_group_dn');
-
-                # user was not in admin group, check for user membership
-                $userattrs = ldap_search($ldapconnection, $ldap_user_dn, '('.AD_GROUP_ATTRIBUTE.'='.$user_group_dn.')' );
-                $userattrs_result = ldap_get_entries($ldapconnection, $userattrs);
-                NConf_DEBUG::set($userattrs_result, 'DEBUG', 'check "user" group permission');
-                if ($userattrs_result["count"] == 1){
-                    $_SESSION['group'] = GROUP_USER;
-                    NConf_DEBUG::set('', 'INFO', $_SESSION["group"].' access granted');
-                }else{
-                    NConf_DEBUG::set(TXT_LOGIN_NOT_AUTHORIZED, 'ERROR');
-                }
-            }
-
+            
+            //patch cont'd
+             if (in_array($admin_group_dn,$user_result[0][AD_GROUP_ATTRIBUTE])) {
+                 $_SESSION['group'] = GROUP_ADMIN;
+                 NConf_DEBUG::set('', 'INFO', $_SESSION["group"].' access granted');
+             }
+             elseif (in_array($user_group_dn,$user_result[0][AD_GROUP_ATTRIBUTE])) {
+                 $_SESSION['group'] = GROUP_USER;
+                 NConf_DEBUG::set('', 'INFO', $_SESSION["group"].' access granted');
+             }
+             else {
+                 NConf_DEBUG::set(TXT_LOGIN_NOT_AUTHORIZED, 'ERROR');
+             }
         }
 
         # Users Infos
@@ -372,6 +361,13 @@ if (!empty($_SESSION["group"]) ){
     history_add("general", "login", "access granted (".$_SESSION['group'].")");
 }else{
     history_add("general", "login", "access denied (user: ".$user_loginname.")");
+}
+if ( defined("LOG_REMOTE_IP_HISTORY") AND LOG_REMOTE_IP_HISTORY == 1 ){
+    if ( !empty($_SERVER['REMOTE_HOST']) ){
+        history_add("general", "login-info", "REMOTE_HOST: (".$_SERVER['REMOTE_HOST'].")");
+    }elseif( !empty($_SERVER['REMOTE_ADDR']) ){
+        history_add("general", "login-info", "REMOTE_ADDR: (".$_SERVER['REMOTE_ADDR'].")");
+    }
 }
 NConf_DEBUG::close_group();
 ?>

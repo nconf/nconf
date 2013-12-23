@@ -28,9 +28,15 @@ define('BASICAUTH_REALM',  "NConf Basic Auth");
 
 #
 # Defines the user name in the history table and in the welcome message.
-#If set to "0", the username will be used. If set to "1", the real name will be fetched, depending on which AUTH_TYPE you selected. 
+# If set to "0", the username will be used. If set to "1", the real name will be fetched, depending on which AUTH_TYPE you selected. 
 #
 define('AUTH_FEEDBACK_AS_WELCOME_NAME', '1');
+
+#
+# Enable / disable logging of the remote-IP / hostname to the history.
+# If set to "1", the remote-IP is written to the history after a user logs in. 
+# In case "HostnameLookups" is set to On in the apache config, the hostname will be used instead.
+define('LOG_REMOTE_IP_HISTORY', 1);
 
 # Groups
 define('GROUP_USER',       "user");
@@ -60,6 +66,7 @@ define('USER_GROUP',       "cn=sysadmin");
 define('AD_LDAP_SERVER',        "ldap://ad-ldaphost.mydomain.com");
 define('AD_LDAP_PORT',          "389");
 define('AD_BASE_DN',            "CN=<username>,OU=All,OU=Users,DC=my,DC=domain,DC=com");
+define('AD_USER_DN',            "<username>@my.domain.com");
 define('AD_USER_REPLACEMENT',   "<username>");
 define('AD_GROUP_ATTRIBUTE',    "memberof");
 define('AD_USERNAME_ATTRIBUTE', "displayname");

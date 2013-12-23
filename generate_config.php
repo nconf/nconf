@@ -83,7 +83,7 @@ $status = flock($generate_lock_handle, LOCK_EX | LOCK_NB); //lock the file
                 success: function(data){
                     // create bar if not exist
                     $( "#progressbar" ).not(".ui-progressbar").progressbar({
-                        value: 0,
+                        value: 0
                     });
 
                     // move bar

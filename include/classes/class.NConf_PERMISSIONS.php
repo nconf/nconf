@@ -133,17 +133,19 @@ class NConf_PERMISSIONS{
 
         # check group permission
         if ( empty($GROUPS) OR in_array($this->group, $GROUPS) ){
+            $regex_open_end_message = $REGEX_OPEN_END ? "Yes" : "No";
+            $this->debug .= NConf_HTML::status_text("<br>will use open end regex (REGEX_OPEN_END):", $regex_open_end_message, " @ ".$URL);
             if ($REGEX_OPEN_END){
-                if ( !preg_match('/^'.preg_quote($URL).'\w*/', $this->current_script) ){
+                if ( !preg_match('/(^|\/)'.preg_quote($URL).'\w*/', $this->current_script) ){
                     return;
                 }
             }else{
-                if ( !preg_match('/^'.preg_quote($URL).'$/', $this->current_script) ){
+                if ( !preg_match('/(^|\/)'.preg_quote($URL).'$/', $this->current_script) ){
                     return;
                 }
             }
-            $this->debug .=  NConf_HTML::text("URL matched: $URL", TRUE);
-
+            $this->debug .= NConf_HTML::text("URL matched: $URL", TRUE);
+            $this->debug .= NConf_HTML::swap_content($REQUEST, "REQUEST debug", FALSE, TRUE);
             # check for request limitations
             if ( !empty($REQUEST) ){
                 # check if needed request items match
@@ -156,10 +158,13 @@ class NConf_PERMISSIONS{
                     $this->debug .= NConf_HTML::swap_content($REQUEST, "REQUEST items matched", FALSE, TRUE);
                 }
                 //NConf_DEBUG::set($REQUEST, 'DEBUG', "REQUEST matched");
+            }else{
+                $this->debug .= NConf_HTML::text("No REQUEST data", TRUE);
             }
-
+            
             # all checks passed, URL is fine
             $this->url_check_status = TRUE;
+            $this->debug .= NConf_HTML::text("status: $this->url_check_status", TRUE);
             return;
         }
 
