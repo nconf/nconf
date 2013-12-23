@@ -15,7 +15,8 @@ if ( !empty($_REQUEST["class"]) ){
 # delete item count
 $deleted_items = 0;
 
-echo NConf_HTML::title('Delete Items');
+# Title
+echo NConf_HTML::page_title('', 'Delete Items');
 
 if(  ( ( isset($_POST["delete"]) ) AND ($_POST["delete"] == "yes") ) AND
      ( ( isset($_POST["ids"]) ) AND ($_POST["ids"] != "") )

@@ -6,10 +6,8 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-        $("#advanced_accordion").accordion({
-            collapsible: true,
-            active: false
-        });
+      // Attach the clever accordion to history tab
+      $("#advanced_accordion h2").nconf_accordion_clever();
     });
 
 </script>
@@ -18,22 +16,20 @@
 
 <div class="tab_advanced big">
     <div id="advanced_accordion">
-        <h3>
-            <a href="#">
-                History
-            </a>
-        </h3>
+        <h2 id="advanced_history" class="ui-nconf-header ui-widget-header ui-corner-top pointer">
+            History
+        </h2>
     
         <?php
 
         # movable content
-        echo '<div>';
+        echo '<div class="ui-widget-content box_content">';
 
 
-if ( !empty($_GET["id"]) ){
+if ( !empty($item_id) ){
     # Normal query
     $query = 'SELECT timestamp, action, attr_name FROM History
-            WHERE fk_id_item='.$_GET["id"].'
+            WHERE fk_id_item='.$item_id.'
             AND action <> "edited"
             ORDER BY timestamp DESC, id_hist DESC
             LIMIT '.HISTORY_TAB_LIMIT.';';
@@ -52,7 +48,7 @@ if ( !empty($_GET["id"]) ){
                 <td colspan=2>Last '.HISTORY_TAB_LIMIT.' changes:</td>
                 <td>
                     <div align="right">
-                        <a href="history.php?id='.$_GET["id"].'">show all changes</a>
+                        <a href="history.php?id='.$item_id.'">show all changes</a>
                     </div>
                 </td>
               </tr>';
@@ -84,8 +80,8 @@ if ( !empty($_GET["id"]) ){
                 echo '<td>'.$timestamp.'</td>';
                 echo '<td>'.$entry["action"].'</td>';
                 echo '<td>';
-                    if ( !empty($_GET["id"]) ){
-                        echo '&nbsp<a href="history.php?id='.$_GET["id"].'&amp;filter='.$entry["attr_name"].'">'.$entry["attr_name"].'</a>';
+                    if ( !empty($item_id) ){
+                        echo '&nbsp<a href="history.php?id='.$item_id.'&amp;filter='.$entry["attr_name"].'">'.$entry["attr_name"].'</a>';
                     }else{
                         echo $entry["attr_name"];
                     }

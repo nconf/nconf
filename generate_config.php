@@ -4,6 +4,12 @@ require_once 'include/head.php';
 $lock_file = 'temp/generate.lock';
 $status = check_file('file_exists', $lock_file, TRUE, "File/Directory still exists, please remove it: "); 
 
+# Title
+echo NConf_HTML::page_title('generate-config', "Generate Nagios config");
+
+# Container for dynamic AJAX content
+echo '<div class="ajax_content"></div>';
+
 
 if ( $status ){
     # lock file exists
@@ -57,7 +63,10 @@ $status = flock($generate_lock_handle, LOCK_EX | LOCK_NB); //lock the file
             autoOpen: true,
             title: "Generating config",
             closeOnEscape: false,
-            open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+            open: function(event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+                $(".ui-dialog-titlebar").toggleClass("ui-corner-all ui-corner-top");
+            },
             modal: true,
             draggable: false,
             resizable: false,
@@ -83,7 +92,7 @@ $status = flock($generate_lock_handle, LOCK_EX | LOCK_NB); //lock the file
                 success: function(data){
                     // create bar if not exist
                     $( "#progressbar" ).not(".ui-progressbar").progressbar({
-                        value: 0,
+                        value: 0
                     });
 
                     // move bar
@@ -123,7 +132,7 @@ $status = flock($generate_lock_handle, LOCK_EX | LOCK_NB); //lock the file
 
 
 
-        $("#maincontent").load("call_file.php", {
+        $("#maincontent > .ajax_content").load("call_file.php", {
             'ajax_file': "exec_generate_config.php" ,
             'debug': "yes",
             'username': "<?php echo $_SESSION['userinfos']['username'];?>"

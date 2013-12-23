@@ -1014,6 +1014,8 @@ $fattr,$fval
                 my $has_members = 0;
                 my $has_hg_members = 0;
                 my $has_sg_members = 0;
+                my $assigned_to_host = 0;
+                my $assigned_to_hostgroup = 0;
 
                 foreach my $attr (@item_links){
 
@@ -1075,6 +1077,11 @@ $fattr,$fval
                                 else{$attr->[1] = join(",", @superadmins)}
 		                    }
                         }
+                        
+                        # verify that the advanced-service is well linked to at least one host / hostgroup
+                        if($attr->[0] eq "host_name" && $attr->[1] ne ""){$assigned_to_host=1}
+                        if($attr->[0] eq "hostgroup_name" && $attr->[1] ne ""){$assigned_to_hostgroup=1}
+                        
                     }
                 }
 
@@ -1098,6 +1105,14 @@ $fattr,$fval
 
                     if($has_members != 1 && $has_sg_members != 1 && $is_used_by_as != 1){
                         &logger(4,"Removing $class '$id_item->[0]' from config because the attributes 'members' and 'servicegroup_members' were empty and no advanced-service was linked");
+                        $has_empty_linking_attrs = 1;
+                    }
+                }
+                
+                # special processing for advanced-service: remove it if not assigned to any host / hostgroup
+                if($class eq "advanced-service"){
+                    if($assigned_to_host != 1 && $assigned_to_hostgroup != 1){
+                        &logger(4,"Removing $class '$id_item->[0]' from config because the attributes 'host_name' and 'hostgroup_name' were empty");
                         $has_empty_linking_attrs = 1;
                     }
                 }
@@ -1353,8 +1368,8 @@ sub class_dependent_processing {
 ########################################################################################
 # SUB write_htpasswd_file
 # Create a .htpasswd file for Apache webservers based on contact entries.
-# Apache requires password encryption in NConf to be set to CRYPT by default.
-# This allows users to manage access to a website based on contacts in NConf.
+# Apache requires password encryption in NConf to be set to either "crypt" or "sha_raw".
+# This allows users to manage access to the Nagios website based on contact entries in NConf.
 
 sub write_htpasswd_file {
     &logger(5,"Entered write_htpasswd_file()");
@@ -1383,11 +1398,18 @@ sub write_htpasswd_file {
             if($attr->[0] eq "nagios_access"){ $userperm=$attr->[1] }
         }
 
-        $userpass =~s/\{.+\}//;
+        # if password contains "{SHA_RAW}" string, rename to "{SHA}" and write to htpasswd file
+        if($userpass =~ /\{SHA_RAW\}/i){
+            $userpass =~s/\{.+\}/{SHA}/;
+        }else{
+        # assume all other passwords are CRYPT; remove the "{CRYPT}" part because Apache doesn't need it
+            $userpass =~s/\{.+\}//;
+        }
+        
         if($username && $userpass && $userperm !~ /disabled/i){
-	    print FILE "$username:$userpass\n";
-	    $usercount++;
-	}
+      	    print FILE "$username:$userpass\n";
+      	    $usercount++;
+      	}
 
     }
     close(FILE);
@@ -1416,7 +1438,7 @@ sub create_test_cfg {
     &logger(4,"Writing file '$testfile'");
 
     # write header
-    print FILE "### nagios.cfg file - FOR TESTING ONLY ###\n\n";
+    print FILE "### nagios.cfg file - FOR SYNTAX CHECKING ONLY ###\n\n";
     print FILE "# OBJECT CONFIGURATION FILE(S)\n";
 
     # write global cfg files

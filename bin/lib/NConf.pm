@@ -37,7 +37,7 @@ BEGIN {
     @EXPORT_OK   = qw();
     $VERSION     = 0.3;
     $AUTHOR      = "A. Gargiulo";
-    $COPYRIGHT   = "(c) 2006 - 2012 Sunrise Communications AG, Zurich, Switzerland";
+    $COPYRIGHT   = "(c) 2006 - 2013 Sunrise Communications AG, Zurich, Switzerland";
 }
 
 print STDERR "\n";

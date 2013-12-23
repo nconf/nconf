@@ -68,7 +68,7 @@ if ( isset($_SESSION["submited"]) AND !empty($_POST["check_command_changed"]) ){
 
 # Content of Page
 
-echo NConf_HTML::title('Add '.$config_class, '', 'class="content_header"');
+echo NConf_HTML::page_title($config_class, 'Add '.$config_class);
 
 if ( !empty($_POST["check_command_changed"]) ){
     # do nothing, just go back
@@ -81,10 +81,10 @@ if ( !empty($_POST["check_command_changed"]) ){
     // the step2 in url is only for not working session users...
     $url = 'modify_item_service.php?id='.$id.'&step2=true';
     echo '<meta http-equiv="refresh" content="'.REDIRECTING_DELAY.'; url='.$url.'">';
-    // add extra line (br) for more space
-    
+
     echo NConf_DEBUG::show_debug('INFO', TRUE);
 
+    // add extra line (br) for more space
     // after echo because we want the redirect only in the footer
     NConf_DEBUG::set('<a href="'.$url.'"> add services </a>', 'INFO', "<br>redirecting to");
 

@@ -147,13 +147,18 @@ if ( (defined('CMDB_SERVERLIST_COMPARE') AND CMDB_SERVERLIST_COMPARE == 1) AND (
         // Clone
         $('#submit_clone').click(function() {
             var first_id = $('input:checked:first').val();
-            $('#advanced').attr('action', 'clone_host.php?id=' + first_id);
+            // Check if there was a checkbox clicked
+            if (first_id){
+                $('#advanced').attr('action', 'clone_host.php?id=' + first_id);
+            }else{
+                $('#advanced').attr('action', 'clone_host.php');
+            }
             $('#advanced').submit();
         });
 
         // Multimodify
         $('#submit_multimodify').click(function() {
-            $('#advanced').attr('action', 'handle_item.php?type=multimodify');
+            $('#advanced').attr('action', 'handle_item.php?item=<?php echo $class;?>&type=multimodify');
             $('#advanced').submit();
         });
 
@@ -221,12 +226,21 @@ if (!empty($_GET["quantity"]) ){
 }
 
 // Page output begin
+echo NConf_HTML::page_title($class, '');
 
+// Create link
+    $add_link =  '<div class="overview-add">';
+            $add_item = get_image( array(  "type" => "design",
+                                           "name" => "add",
+                                           "size" => 16,
+                                           "tooltip" => 'Add '.$nav_class["friendly_name"],
+                                           "class" => "lighten ui-button"
+                                        ) );
+            $add_link .= '<a href="handle_item.php?item='.$class.'">'.$add_item.' Add new '.$class.'</a>';
+            $add_link .= '</div>';
+    echo $add_link;
 
-echo '<div style="width: 500px; float: left;">';
-
-echo '<h2 class="content_header">Show: '.$class.'</h2>';
-
+echo '<div class="search">';  
 echo '<table border=0 frame=box rules=none style="border-width: 0px">';
 
 
@@ -575,7 +589,7 @@ if( ( isset($class) ) AND ($class != "") ){
     }
 
 
-    # overview table in IE 8 will only do correct margin-top when previouse element hast clear:both
+    # overview table in IE 8 will only do correct margin-top when previouse element has clear:both
     # IE 8 also needs more space for advanced box: make the empty diff 7px height
     echo '<div class="clearer" style="height: 7px"></div>';
 
@@ -594,7 +608,7 @@ if( ( isset($class) ) AND ($class != "") ){
         echo '<tr>';
 
         echo '<td width="20%">
-                <h2 class="content_header">&nbsp;Overview</h2>
+                <h2 class="content_header">Overview</h2>
               </td>';
 
         if ( !empty($show_quantity) ){
@@ -757,7 +771,7 @@ if( ( isset($class) ) AND ($class != "") ){
         }
 
         if ($class == "host") {
-            echo '<td colspan="3" class="center">'.FRIENDLY_NAME_ACTIONS.'</td>';
+            echo '<td colspan="4" class="center">'.FRIENDLY_NAME_ACTIONS.'</td>';
         }elseif(!isset($_GET["xmode"])){
             echo '<td colspan="2" class="center">'.FRIENDLY_NAME_ACTIONS.'</td>';
         }else{
@@ -765,13 +779,8 @@ if( ( isset($class) ) AND ($class != "") ){
         }
 
         if ( !isset($_GET["xmode"]) ){
-            # Check cookie, if advanced tab was open, display the checkboxes too (when not, set display: none:)
-            echo '<td id="advanced_box" name="advanced_box" class="center" style="width: 46px;';
-                if ( !empty($_COOKIE["advanced_box"]) AND $_COOKIE["advanced_box"] == "open" ){
-                }else{
-                    echo ' display: none;';
-                }
-            echo '">select</td>';
+            echo '<td id="advanced_box" name="advanced_box" class="center" style="width: 70px;">';
+            echo '<input type="checkbox" id="checkbox_selectall" class="pointer"><a id="text_selectall" href="#selectall">select</a></td>';
         }
 
     echo "</tr>";
@@ -822,13 +831,13 @@ if( ( isset($class) ) AND ($class != "") ){
                     echo '<img src="'.$os_icon_path.'" alt="'.$entry["os"].'" '.OS_LOGO_SIZE.'>';
                 }
                 echo '</td>';
-                echo '<td><a href="detail.php?id='.$entry["host_id"].'">'.$entry["hostname"].'</a></td>';
+                echo '<td><a href="detail.php?class='.$class.'&id='.$entry["host_id"].'">'.$entry["hostname"].'</a></td>';
                 echo '<td>'.$entry["IP"].'</td>';
                 echo '<td '.$nocol_style.'>'.$entry["collector"].'</td>';
                 echo '<td>'.$entry["os"].'</td>';
                 echo '<td style="text-align:center"><a href="handle_item.php?item='.$class.'&amp;id='.$entry["host_id"].'">'.ICON_EDIT.'</a></td>';
                 echo '<td style="text-align:center"><a href="delete_item.php?item='.$class.'&amp;ids='.$entry["host_id"].'">'.ICON_DELETE.'</a></td>';
-                echo '<td style="text-align:center"><a href="modify_item_service.php?id='.$entry["host_id"].'">';
+                echo '<td style="text-align:center"><a href="modify_item_service.php?item='.$class.'&amp;id='.$entry["host_id"].'">';
                     # if all services are enabled gear-icon will be yellow
                     # red will show that there is a disabled service
                     if ( isset($entry["service_disabled"]) AND $entry["service_disabled"] == "true"){
@@ -837,16 +846,14 @@ if( ( isset($class) ) AND ($class != "") ){
                         echo ICON_SERVICES;
                     }
                     echo '</a></td>';
+                // clone button
+                echo ( $class == "host" ) ? '<td style="text-align:center"><a href="clone_host.php?class='.$class.'&amp;id='.$entry["host_id"].'">'.ICON_CLONE.'</a></td>' : '';
 
                 if ( !isset($_GET["xmode"]) ){
-                    # Check cookie, if advanced tab was open, display the checkboxes too (when not, set display: none:)
-                    echo '<td id="advanced_box" name="advanced_box" style="text-align:center;';
-                        if ( !empty($_COOKIE["advanced_box"]) AND $_COOKIE["advanced_box"] == "open" ){
-                        }else{
-                            echo ' display: none;';
-                        }
-                    echo '">';
-                        echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["host_id"].'" style="width: 12px; height: 12px; border-style:none"></td>';
+                    # Checkbox will now be shown all the times and it is not possible to disable them. Disabling code for now
+                    # TODO: Remove swapable advanced checkboxes if really not needed anymore
+                    echo '<td id="advanced_box" name="advanced_box" style="text-align:center;">';
+                    echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["host_id"].'" class="pointer"></td>';
                 }
                 echo "</tr>\n";
                 $count++;
@@ -887,18 +894,18 @@ if( ( isset($class) ) AND ($class != "") ){
 
                 if( ( isset($class) ) AND ($class == "service") ){
 
-                    echo '<td><a href="detail.php?id='.$entry["id_item"].'">'.$entry["hostname"].': '.$entry["entryname"].'</a></td>';
+                    echo '<td><a href="detail.php?class='.$class.'&id='.$entry["id_item"].'">'.$entry["hostname"].': '.$entry["entryname"].'</a></td>';
 
                 }else{
                     if(isset($_GET["xmode"])){
-                        echo '<td><a href="detail.php?id='.$entry["id_item"].'&xmode='.$entry["entryname"].'">'.$entry["entryname"].'</a></td>';
+                        echo '<td><a href="detail.php?class='.$class.'&id='.$entry["id_item"].'&xmode='.$entry["entryname"].'">'.$entry["entryname"].'</a></td>';
                     }else{
-                        echo '<td><a href="detail.php?id='.$entry["id_item"].'">'.$entry["entryname"].'</a></td>';
+                        echo '<td><a href="detail.php?class='.$class.'&id='.$entry["id_item"].'">'.$entry["entryname"].'</a></td>';
                     }
                 }
 
                 if(isset($_GET["xmode"])){
-                    echo '<td style="text-align:center"><a href="handle_item.php?xmode='.$entry["entryname"].'">'.ICON_EDIT.'</a></td>';
+                    echo '<td style="text-align:center"><a href="handle_item.php?item='.$class.'&xmode='.$entry["entryname"].'">'.ICON_EDIT.'</a></td>';
                 }else{
                     echo '<td style="text-align:center"><a href="handle_item.php?item='.$class.'&amp;id='.$entry["id_item"].'">'.ICON_EDIT.'</a></td>';
                     echo '<td style="text-align:center"><a href="delete_item.php?item='.$class.'&amp;ids='.$entry["id_item"].'">'.ICON_DELETE.'</a></td>';
@@ -906,14 +913,8 @@ if( ( isset($class) ) AND ($class != "") ){
 
                 if ( !isset($_GET["xmode"]) ){
                     // Advanced checkbox
-                    # Check cookie, if advanced tab was open, display the checkboxes too (when not, set display: none:)
-                    echo '<td id="advanced_box" name="advanced_box" style="text-align:center;';
-                        if ( !empty($_COOKIE["advanced_box"]) AND $_COOKIE["advanced_box"] == "open" ){
-                        }else{
-                            echo ' display: none;';
-                        }
-                    echo '">';
-                        echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["id_item"].'" style="width: 12px; height: 12px; border-style:none">';
+                    echo '<td id="advanced_box" name="advanced_box" style="text-align:center;">';
+                        echo '<input type="checkbox" name="advanced_items[]" value="'.$entry["id_item"].'" class="pointer checkbox-small">';
                     echo '</td>';
                 }
 

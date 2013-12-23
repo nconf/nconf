@@ -8,6 +8,9 @@ $(document).ready(function(){
     // button style
     $( "#buttons > input, input:submit, input:button, :button" )
         .add('a > img', '#ui-nconf-icon-bar')
+        .add('input[type="image"]', '#ui-nconf-icon-bar')
+        .add('input.ui-button')
+        .add('img.ui-button')
         .button();
         
     // buttons for images
@@ -31,9 +34,9 @@ $(document).ready(function(){
     // tooltip
     $.nconf_tooltip();
 
-    // link hovers (a litle bit complex because no simple theme css available)
+    // link hovers (a little bit complex because no simple theme css available)
     $( "a" ).live('hover', function () {
-        $(this).not(".ui-button").not("[role=button]").toggleClass("ui-state-hover ui-nconf-link");
+        $(this).not(".ui-button").not("[role=button]").toggleClass("ui-nconf-link");
     });
 
     // all image links should contain lighten class, for mouseover effect, expect the new toolbar icons
@@ -66,6 +69,47 @@ $(document).ready(function(){
         });
     */
 
+    /* for the moment we save this navigation handling here
+    * perhaps we have to move this to an other place, and improve it further with cookie saving !
+    */
+   /*
+    var cookie_status = readCookie('advanced_box');
+    if (cookie_status && cookie_status == "open") {
+        cookie_status = 0;
+    }else{
+        cookie_status = false;
+    }
+    $('.accordion h2').click(function() {
+        $(this).toggleClass("ui-corner-bottom closed").next().slideToggle('slow');
+        createCookie($(this).attr("id"), "closed", 365);
+        return false;
+    });
+    
+    */
+    
+    
+    $('.accordion h2').each(function() {
+        var accordion_id = $(this).attr("id");
+        var cookie_status = readCookie(accordion_id);
+        if (cookie_status && cookie_status == "closed") {
+            $(this).toggleClass("ui-corner-bottom closed").next().hide();
+        }else{
+        }
+        
+        // Add a click event to open and close menu parts
+        $(this).click(function() {
+            $(this).toggleClass("ui-corner-bottom closed").next().slideToggle('slow');
+            // Save the state as cookie to have a persistent state
+            if ($(this).hasClass("closed") === false){
+                createCookie(accordion_id, "open", 365);
+            }else{
+                createCookie(accordion_id, "closed", 365);
+            }
+            return false;
+        });
+        
+    });
+    
 
 
 });

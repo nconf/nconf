@@ -30,6 +30,14 @@ set_page();
                 });
             }
         });
+    
+        /* resizable feature */    
+        $('div.multipleSelectBoxControl.ui-nconf-content').each(function () {
+            $(this).resizable({
+                handles: "e",
+                minWidth: 530
+            });
+        });
     });
 
 </script>
@@ -164,7 +172,7 @@ if ( !empty($_GET["id"]) ){
 
     }
 
-    if ($item_class == "service" OR $item_class == "advanced-service"){
+    if ($item_class == "service" OR $item_class == "advanced-service" OR $item_class == "service-template"){
         # get id of attr check_command
         $check_command_attr_id = db_templates("get_attr_id", $item_class, "check_command");
         $host_name_attr_id = db_templates("get_attr_id", $item_class, "host_name");
@@ -201,15 +209,15 @@ if ( !empty($_GET["id"]) ){
     # check cache
     if ( !empty($_SESSION["cache"]["handle"]) ){
 	    if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
-			$_POST["class"] = $_SESSION["cache"]["handle"]["HIDDEN_config_class"];
-		}
-		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
-			$_POST["ids"] = $_SESSION["cache"]["handle"]["HIDDEN_modify_ids"];
-		}
-		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_selected_attr"]) ){
-			$_POST["attr"] = $_SESSION["cache"]["handle"]["HIDDEN_selected_attr"];
-		}
-	}
+  			$_POST["class"] = $_SESSION["cache"]["handle"]["HIDDEN_config_class"];
+  		}
+  		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_config_class"]) ){
+  			$_POST["ids"] = $_SESSION["cache"]["handle"]["HIDDEN_modify_ids"];
+  		}
+  		if ( isset($_SESSION["cache"]["handle"]["HIDDEN_selected_attr"]) ){
+  			$_POST["attr"] = $_SESSION["cache"]["handle"]["HIDDEN_selected_attr"];
+  		}
+  	}
 
     # check class
     if ( empty($_POST["class"]) ){
@@ -231,7 +239,7 @@ if ( !empty($_GET["id"]) ){
 			$replace_mode = 1;
 		}
 	}else{
-		$replace_mode = 1;
+		$replace_mode = 2;
 	}
 
 
@@ -271,16 +279,21 @@ NConf_DEBUG::set($item_class, 'DEBUG', 'Handle class: ');
 ###
 # Title
 ###
-#header blox
+$item_name  = db_templates("naming_attr", $_GET["id"]);
+echo NConf_HTML::page_title($item_class);
 echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
-
     echo '<div>';
-        echo '<h2>'.ucfirst($handle_action).' '.$item_class.'</h2>';
+        if ($handle_action == "add"){
+            $title = ' Add new '.$item_class;
+        }else{
+            $title = ucfirst($handle_action);
+        }
+        echo '<h2 class="page_action_title">'.$title.' <span class="item_name">'.$item_name.'</span></h2>';
     echo '</div>';
 
 echo '</div>';
 
-# content blox
+# content block
 echo '<div class="ui-nconf-content ui-widget-content ui-corner-bottom">';
 
 
@@ -453,7 +466,7 @@ if(
 
             
             # set special Fieldset for check_params
-            if ( ($item_class == "service" OR $item_class == "advanced-service") AND $entry["attr_name"] == "check_params"){
+            if ( ($item_class == "service" OR $item_class == "advanced-service" OR $item_class == "service-template") AND $entry["attr_name"] == "check_params"){
                 #do nothing here, print title later if really needed
             }else{
                 echo '<td class="middle">'.$entry["friendly_name"].'</td>';
@@ -470,7 +483,7 @@ if(
             ### process "text" fields
             if ($entry["datatype"] == "text"){
                 # check special case for check_params
-                if ( ($item_class == "service" OR $item_class == "advanced-service") AND $entry["attr_name"] == "check_params"){
+                if ( ($item_class == "service" OR $item_class == "advanced-service" OR $item_class == "service-template") AND $entry["attr_name"] == "check_params"){
                     # check_param stuff
 
                     NConf_DEBUG::open_group("params for check command (service parameters)");
@@ -848,7 +861,9 @@ if(
                 }
 
                 $result2 = db_handler($query2, "result", "assign_many");
-                echo '<td colspan=3><select id="fromBox_'.$entry["id_attr"].'" name="from_'.$entry["id_attr"].'[]" style="'.CSS_SELECT_MULTI.'" multiple ';
+                echo '<td colspan=3>
+                        <div class="select-container">
+                          <select id="fromBox_'.$entry["id_attr"].'" name="from_'.$entry["id_attr"].'[]" style="'.CSS_SELECT_MULTI.'" multiple ';
                     /*# Load ajax info for PRIO's
                     if ($entry["id_attr"] == $contact_groups_attribute_id){
                         echo ' onmouseover="attachInfo(this, \'contacts\')"';
@@ -922,12 +937,12 @@ if(
                     }
                 }
                 echo '</select>';
-                
+                echo '</div>';
                 # assign_cust_order handling
                 $assign_cust_order = ($entry["datatype"] == "assign_cust_order") ? 1 : 0;
                 echo '
                 <script type="text/javascript">
-                    createMovableOptions("fromBox_'.$entry["id_attr"].'","toBox_'.$entry["id_attr"].'",500,145,"available items","selected items","livesearch",'.$assign_cust_order.','.$replace_mode.');
+                    createMovableOptions("fromBox_'.$entry["id_attr"].'","toBox_'.$entry["id_attr"].'",530,145,"available items","selected items","livesearch",'.$assign_cust_order.','.$replace_mode.');
                 </script>
                 ';
                 
@@ -1065,7 +1080,9 @@ if(
                 }
 
                 # generate base options
-                echo '<td colspan=3><select id="fromBox_'.$entry["id_attr"].'" name="from_'.$entry["id_attr"].'[]" style="'.CSS_SELECT_MULTI.'" multiple ';
+                echo '<td colspan=3>
+                    <div class="select-container">
+                        <select id="fromBox_'.$entry["id_attr"].'" name="from_'.$entry["id_attr"].'[]" style="'.CSS_SELECT_MULTI.'" multiple ';
                     /*# Load ajax info for PRIO's
                     if ($entry["id_attr"] == $contact_groups_attribute_id){
                         echo ' onmouseover="attachInfo(this, \'contacts\')"';
@@ -1106,7 +1123,7 @@ if(
                     }
                 }
                 echo '</select>';
-                
+                echo '</div>';
                 # assign_cust_order handling
                 $assign_cust_order = ($entry["datatype"] == "assign_cust_order") ? 1 : 0;
                 echo '
@@ -1219,9 +1236,9 @@ if(
 
             # handle the size for the information box containing the items it writes on
             if ( ($entry["datatype"] == "assign_many") OR ($entry["datatype"] == "assign_cust_order") ){
-                $content .= '<div style="overflow: auto; width: 350px; max-height: 235px;">';
+                $content .= '<div style="overflow: auto; width: 380px; max-height: 235px;">';
             }else{
-                $content .= '<div style="overflow: auto; width: 350px; max-height: 400px;">';
+                $content .= '<div style="overflow: auto; width: 380px; max-height: 400px;">';
             }
                 $content .= '<ul>';
 

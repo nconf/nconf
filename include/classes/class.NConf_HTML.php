@@ -176,11 +176,19 @@ class NConf_HTML{
                 case "TRUE":
                     $output .= '<span class="status_ok">OK</span>';
                 break;
+                
+                case "Yes":
+                    $output .= '<span class="status_ok">'.$status.'</span>';
+                break;
 
                 case "FAILED":
                 case "ERROR":
                 case "FALSE":
                     $output .= '<span class="status_failed">FAILED</span>';
+                break;
+                
+                case "No":
+                    $output .= '<span class="status_failed">'.$status.'</span>';
                 break;
 
                 default:
@@ -379,23 +387,29 @@ class NConf_HTML{
 
 
     // UI Box Header
-    public static function ui_box_header($content = ''){
-        $output = '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
+    public static function ui_box_header($content = '', $id = ''){
+        if (!empty($id)){
+            $id = 'id="'.$id.'" ';
+        }
+        $output = '<div '.$id.'class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
         if ( !empty($content) ){
             $output .= $content;
-            $output .= '</div>';
         }
+        $output .= '</div>';
 
         return $output;
     }
 
     // UI Box Content
-    public static function ui_box_content($content = ''){
-        $output = '<div class="ui-nconf-content ui-widget-content ui-corner-bottom">';
+    public static function ui_box_content($content = '', $id = ''){
+        if (!empty($id)){
+            $id = 'id="'.$id.'" ';
+        }
+        $output = '<div '.$id.'class="ui-nconf-content ui-widget-content ui-corner-bottom">';
         if ( !empty($content) ){
             $output .= $content;
-            $output .= '</div>';
         }
+        $output .= '</div>';
 
         return $output;
     }
@@ -410,7 +424,47 @@ class NConf_HTML{
         return $output;
     }
 
-
+    // page title including icon of the class and optional actions
+    public static function page_title($class, $title = '', $toolbar = array()){
+        $output = '<div class="title">';
+        // Get Icon
+        $icon = get_image(array( "type" => "design",
+                                 "name" => $class,
+                                 "size" => 24,
+                                 "class" => "float_left"
+                                 ) );
+        // get friendly name of class, if it exists
+        $class_friendly_name   = db_templates('class_friendly_name', $class);
+        if ($class_friendly_name){
+            /* TODO: perhaps move the item title also into the main header
+            if ($title) {
+                $title = $class_friendly_name. TITLE_SEPARATOR . $title;
+            }else {
+                $title = $class_friendly_name;
+            }*/
+            // use friendly name only when title is not set
+            if (empty($title)){
+                $title = $class_friendly_name;
+            }
+        }
+        $output .= $icon.'<h1 class="content_header">'.$title.'</h1>';
+        
+        /* TODO: this toolbar will perhaps not be used */
+        if ( !empty($toolbar) ){
+            $output .=  '<div id="ui-nconf-icon-bar">';
+            $add_item = get_image( array(  "type" => "design",
+                                           "name" => "add",
+                                           "size" => 16,
+                                           "tooltip" => 'Add '.$nav_class["friendly_name"],
+                                           "class" => "lighten"
+                                        ) );
+            $output .= '<a href="handle_item.php?item='.$class.'">'.$add_item.'</a>';
+            $output .= '</div>';
+        }
+        
+        $output .= '</div>';
+        return $output;
+    }
 
 }
 ?>

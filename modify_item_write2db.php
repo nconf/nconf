@@ -86,7 +86,11 @@ if ( isset($_POST["modify"]) ){
 
 
 
-    echo "<h2>Modify $config_class</h2>";
+    echo NConf_HTML::page_title($config_class);
+    
+    // Get name of the modified item
+    $item_name  = db_templates("naming_attr", $_POST["HIDDEN_modify_id"]);
+    echo '<h2 class="page_action_title">Modify <span class="item_name">'.$item_name.'</span></h2>';
 
 
     $id_naming_attr = db_templates("get_naming_attr_from_class", $config_class);

@@ -188,6 +188,10 @@ $NConf_PERMISSIONS = new NConf_PERMISSIONS;
         require_once(NCONFDIR."/include/menu/menu_install.php");
         require_once(NCONFDIR."/include/menu/menu_end.php");
 
+        # check for mysql support before calling any DB functions
+        $mysql_status = function_exists('mysql_connect');
+        if (!$mysql_status) message ($critical, 'Could not find function "mysql_connect()"<br>You must configure PHP with mysql support.');
+        
         echo '<div id="maincontent">';
     }elseif ( ( isset($_SERVER["REQUEST_URI"]) AND preg_match( '/'.preg_quote('UPDATE.php').'/', $_SERVER['REQUEST_URI']) )
             AND (file_exists('config/nconf.php')) ){
