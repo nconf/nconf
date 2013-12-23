@@ -224,40 +224,42 @@ if (  ( is_array($checkcommand) ) AND !empty($checkcommand)  ){
             ////
             // Link contactgroups of service with same as his host
 
-            // Link service with same contactgroups as host
-            $query = 'SELECT fk_item_linked2
-                        FROM ItemLinks,ConfigAttrs 
-                        WHERE id_attr=fk_id_attr
-                        AND attr_name="contact_groups"
-                        AND fk_id_item="'.$host_ID.'"
-                     ';
-
-            $result = db_handler($query, "result", "Link service with same contactgroups as host (select)");
-            if ($result){
-                if ( mysql_num_rows($result) > 0 ){
-                    while ($contactgroup_ID = mysql_fetch_row($result)){
-                        // get contact_groups attr id
-                        $contact_groups_id = db_templates("get_attr_id", "service", "contact_groups");
-                        //remove from attrs_visible_yes
-                        unset($attrs_visible_yes[$contact_groups_id]);
-                        
-
-                        $query = 'INSERT INTO ItemLinks (fk_id_item,fk_item_linked2,fk_id_attr) 
-                                    VALUES ( '.$new_service_ID.'
-                                            ,'.$contactgroup_ID[0].'
-                                            ,'.$contact_groups_id.'
-                                           )
-                                 ';
-
-                        $status = db_handler($query, "insert", "Link service with same contactgroups as host (insert)");
-                        if ($status) {
-                            history_add("assigned", $contact_groups_id, $contactgroup_ID[0], $new_service_ID, "resolve_assignment");
-                        }
-                    } // END while
-                }
-
-            }else{
-                message ($debug, '[ FAILED ]');
+            if (COPY_HOST_CONTACTGROUPS_TO_NEW_SERVICES == 1){
+                // Link service with same contactgroups as host
+                $query = 'SELECT fk_item_linked2
+                            FROM ItemLinks,ConfigAttrs
+                            WHERE id_attr=fk_id_attr
+                            AND attr_name="contact_groups"
+                            AND fk_id_item="'.$host_ID.'"
+                        ';
+    
+                $result = db_handler($query, "result", "Link service with same contactgroups as host (select)");
+                if ($result){
+                    if ( mysql_num_rows($result) > 0 ){
+                        while ($contactgroup_ID = mysql_fetch_row($result)){
+                            // get contact_groups attr id
+                            $contact_groups_id = db_templates("get_attr_id", "service", "contact_groups");
+                            //remove from attrs_visible_yes
+                            unset($attrs_visible_yes[$contact_groups_id]);
+    
+    
+                            $query = 'INSERT INTO ItemLinks (fk_id_item,fk_item_linked2,fk_id_attr)
+                                        VALUES ( '.$new_service_ID.'
+                                                ,'.$contactgroup_ID[0].'
+                                                ,'.$contact_groups_id.'
+                                            )
+                                    ';
+    
+                            $status = db_handler($query, "insert", "Link service with same contactgroups as host (insert)");
+                            if ($status) {
+                                history_add("assigned", $contact_groups_id, $contactgroup_ID[0], $new_service_ID, "resolve_assignment");
+                            }
+                        } // END while
+                    }
+    
+                }else{
+                    message ($debug, '[ FAILED ]');
+                }            // Link service with same contactgroups as host
             }
 
 

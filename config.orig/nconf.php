@@ -124,4 +124,10 @@ define('PASSWD_DISPLAY', 0);
 #
 define('PASSWD_HIDDEN_STRING', "********");
 
+#
+# CONTRIBUTIONS
+#
+# Enable/disable the automatic propagation of host contactgroups to a newly created service associated to this host.
+define('COPY_HOST_CONTACTGROUPS_TO_NEW_SERVICES',1);
+
 ?>
