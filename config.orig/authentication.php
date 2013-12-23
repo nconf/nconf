@@ -28,9 +28,15 @@ define('BASICAUTH_REALM',  "NConf Basic Auth");
 
 #
 # Defines the user name in the history table and in the welcome message.
-#If set to "0", the username will be used. If set to "1", the real name will be fetched, depending on which AUTH_TYPE you selected. 
+# If set to "0", the username will be used. If set to "1", the real name will be fetched, depending on which AUTH_TYPE you selected. 
 #
 define('AUTH_FEEDBACK_AS_WELCOME_NAME', '1');
+
+#
+# Enable / disable logging of the remote-IP / hostname to the history.
+# If set to "1", the remote-IP is written to the history after a user logs in. 
+# In case "HostnameLookups" is set to On in the apache config, the hostname will be used instead.
+define('LOG_REMOTE_IP_HISTORY', 1);
 
 # Groups
 define('GROUP_USER',       "user");

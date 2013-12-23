@@ -171,6 +171,14 @@ input[type=text], input[type=password], select, textarea {
 /*  CSS for functions from dhtmlgoodies.com  */
 
 /* style for multiple_select boxes (dhtmlgoodies.com) */
+    .multipleSelectBoxControl.ui-nconf-content.ui-widget-content {
+        padding-bottom: 10px;
+    }
+    /* show a dashed right border if it is resizable */
+    .multipleSelectBoxControl.ui-nconf-content.ui-widget-content.ui-resizable:hover {
+        border-right: 1px dashed #dddddd;
+    }
+
     .multipleSelectBoxControl span{ /* Labels above select boxes*/
         font-family:arial;
         font-size:11px;
@@ -191,6 +199,12 @@ input[type=text], input[type=password], select, textarea {
 .assign_many td{
     padding-top: 1em;
     padding-bottom: 1em;
+}
+
+.select-container {
+  position: relative;
+  width: 500px;
+  height: 180px;
 }
 
 

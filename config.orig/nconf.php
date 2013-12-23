@@ -123,5 +123,4 @@ define('PASSWD_DISPLAY', 0);
 # Any passwords will be represented as the following string (in the detail view).
 #
 define('PASSWD_HIDDEN_STRING', "********");
-
 ?>

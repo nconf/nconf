@@ -147,7 +147,12 @@ if ( (defined('CMDB_SERVERLIST_COMPARE') AND CMDB_SERVERLIST_COMPARE == 1) AND (
         // Clone
         $('#submit_clone').click(function() {
             var first_id = $('input:checked:first').val();
-            $('#advanced').attr('action', 'clone_host.php?id=' + first_id);
+            // Check if there was a checkbox clicked
+            if (first_id){
+                $('#advanced').attr('action', 'clone_host.php?id=' + first_id);
+            }else{
+                $('#advanced').attr('action', 'clone_host.php');
+            }
             $('#advanced').submit();
         });
 

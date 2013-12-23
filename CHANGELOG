@@ -1,3 +1,14 @@
+Release 1.3.1 (tbd)
+
+FIXED   security issue: contents of the config directory were viewable. Added .htaccess file to prevent users from accessing .ini files etc.
+FIXED   compatibility problems with Internet Explorer 8 (and earlier)
+FIXED   compatibility issue with some Icinga versions: generating the config would fail if advanced-services were not assigned to either a host or hostgroup.
+FIXED   issue when importing items that are linked to other items which contain special characters in their names (e.g. service 'C:\ Drive')
+FIXED   bug in Nagios config importer where the first item was being skipped if there was a comment above it
+
+ADDED   icon preview to the OS details page
+ADDED	authentication configuration option LOG_REMOTE_IP_HISTORY
+
 Release 1.3.0 (2011-12-11)
 
 FIXED   a bug with the $SUPERADMIN_GROUPS array (array couldn't be unset). Also, superadmin groups are now listed first in the 'contact_groups' attr,
