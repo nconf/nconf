@@ -52,7 +52,7 @@ if ( defined("AUTH_METHOD") AND AUTH_METHOD == "basic" && !isset($_SESSION['grou
 
 // Authenticate
 if (AUTH_ENABLED == 1){
-    if ( isset($_POST["authenticate"]) AND empty($auth_logout)){
+    if (((AUTH_TYPE == 'http') AND !isset($_SESSION["group"])) OR (isset($_POST["authenticate"]) AND empty($auth_logout))){
         # check credentials
         require_once(NCONFDIR.'/include/login_check.php');
     }

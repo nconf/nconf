@@ -185,6 +185,62 @@ if (AUTH_TYPE == "file"){
 
     # needed database reload, otherwise the connection is lost
     relaod_nconf_db_connection();
+##############################################################################################
+}elseif (AUTH_TYPE == "http"){
+    $user_loginname = $_SERVER['REMOTE_USER'];
+    NConf_DEBUG::set("success", 'DEBUG', 'http auth as '.$user_loginname);
+    // User is already authenticated, now we just need to do authorization
+    $sql_get_permission = 'SELECT attr_name, attr_value AS nc_permission, fk_id_item AS user_id
+                FROM ConfigAttrs, ConfigValues, ConfigClasses
+                WHERE id_attr = fk_id_attr
+                AND id_class = fk_id_class
+                AND config_class = "contact"
+                HAVING fk_id_item = (
+                    SELECT fk_id_item
+                    FROM ConfigAttrs, ConfigValues, ConfigClasses
+                    WHERE id_attr = fk_id_attr
+                    AND id_class = fk_id_class
+                    AND config_class = "contact"
+                    AND fk_id_item = user_id
+                    AND attr_name = "contact_name"
+                    AND attr_value = "'.escape_string($user_loginname).'" )';
+    $result = db_handler($sql_get_permission, 'array_2fieldsTOassoc', "Search for HTTP User in Contacts");
+    if (!$result){
+        $_SESSION["userinfos"]['username']   = $user_loginname;
+        // Not in DB -> User Permission
+	$empty_contact = db_templates("get_attributes_with_bidirectional", 'contact');
+	foreach($empty_contact as $attr){
+		switch($attr['attr_name']){
+			case 'contact_name':
+			case 'alias':
+				$_POST[$attr['id_attr']] = $user_loginname;
+				break;
+			case 'members':
+				$id_of_contact_group = db_templates('get_id_of_item', db_templates('get_naming_attr_from_class', 'contactgroup'), 'admins');
+				$_POST[$attr['id_attr']] = array( $id_of_contact_group);
+				break;
+			case 'nc_permission':
+				$_POST[$attr['id_attr']] = GROUP_AUTOADD;
+			        $_SESSION['group'] = GROUP_AUTOADD; 
+				break;
+			default:
+				break;
+		}
+	}
+	$_POST['config_class'] = 'contact';
+	$config_class = 'contact';
+	require_once('include/add_item_write2db.php');	
+    } else {
+	NConf_DEBUG::set("success", 'DEBUG', 'user already in db');
+        if ( (AUTH_FEEDBACK_AS_WELCOME_NAME == 1) AND !empty($result["alias"]) ){
+            $_SESSION["userinfos"]['username']   = $result["alias"];
+        }else{
+            $_SESSION["userinfos"]['username']   = $user_loginname;
+        }
+        $_SESSION['group'] = $result['nc_permission'];
+    }
+    # needed database reload, otherwise the connection is lost
+    relaod_nconf_db_connection();
 
 ##############################################################################################
 

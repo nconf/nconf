@@ -11,7 +11,7 @@ define('AUTH_ENABLED', "0");
 
 #
 # How to authenticate, if authentication is enabled. 
-# possible values: [file|sql|ldap|ad_ldap]
+# possible values: [file|sql|ldap|ad_ldap|http]
 #
 define('AUTH_TYPE', "file");
 
@@ -35,6 +35,7 @@ define('AUTH_FEEDBACK_AS_WELCOME_NAME', '1');
 # Groups
 define('GROUP_USER',       "user");
 define('GROUP_ADMIN',      "admin");
+define('GROUP_AUTOADD',	   "user"); // When using http, to which group a user is automatically added
 define('GROUP_NOBODY',     "0");
 
 ###
