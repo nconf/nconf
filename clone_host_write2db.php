@@ -17,21 +17,39 @@ $query = 'SELECT fk_id_item,attr_value FROM ConfigValues,ConfigAttrs,ConfigClass
             AND attr_value = "'.$_POST["hostname"].'"';
 
 $result = mysql_query($query);
-        
+
+# Entry not existing, lets try to clone...
+echo NConf_HTML::page_title('host', 'Clone host');
+
 #############
 # Entry exists ?
 if (mysql_num_rows($result)){
-    echo 'Entry with name &quot;'.$_POST["hostname"].'&quot; already exists!';
-    echo '<br><br>Click for details: ';
+    NConf_DEBUG::set('An item with the name &quot;'.$_POST["hostname"].'&quot; already exists!', 'ERROR');
+    NConf_DEBUG::set('For its details click the link below or go back:', 'ERROR');
+    $list_items = '';
     while($entry = mysql_fetch_assoc($result)){
-        echo '<a href="detail.php?id='.$entry["fk_id_item"].'">'.$entry["attr_value"].'</a>';
+        $list_items .= '<li><a href="detail.php?id='.$entry["fk_id_item"].'">'.$entry["attr_value"].'</a></li>';
     }
-    echo '<br><br>or go <a href="javascript:history.go(-1)">back</a>';
+    $list = '<ul>'.$list_items.'</ul>';
+    NConf_DEBUG::set($list, 'ERROR');
+
+    if ( NConf_DEBUG::status('ERROR') ) {
+        echo '<table><tr><td>';
+            echo NConf_HTML::show_error();
+            echo "<br><br>";
+            echo NConf_HTML::back_button($_SESSION["go_back_page"]);
+
+            // Cache
+            // TODO: cache handling
+            $_SESSION["cache"]["use_cache"] = TRUE;
+            foreach ($_POST as $key => $value) {
+                $_SESSION["cache"]["handle"][$key] = $value;
+            }
+        echo '</td></tr></table>';
+    }
 
 }else{
 
-    # Entry not existing, lets try to clone...
-    echo "<h2>&nbsp;Clone host</h2>";
     ?>
     <table>
         <tr>
@@ -48,13 +66,13 @@ if (mysql_num_rows($result)){
         if ( ( isset($_POST[$mandatory]) ) AND ( $_POST[$mandatory] != "") ){
             message($debug, "$mandatory: ok");
         }else{
-            message($error, "$mandatory: mandatory field");
+            $message = "$mandatory: mandatory field";
+            NConf_DEBUG::set($message, "ERROR", "");
             message($info, SELECT_EMPTY_FIELD, "overwrite");
             $write2db = "no";
-
-
         }
     }
+
 
 #############
     # write to DB
@@ -320,7 +338,18 @@ if (mysql_num_rows($result)){
         } 
 
         // Error message
-        echo NConf_DEBUG::show_debug('ERROR', TRUE, $_SESSION["go_back_page"]);
+        if ( NConf_DEBUG::status('ERROR') ) {
+            echo NConf_HTML::show_error();
+            echo "<br><br>";
+            echo NConf_HTML::back_button($_SESSION["go_back_page"]);
+
+            // Cache
+            // TODO: cache handling on clone host
+            $_SESSION["cache"]["use_cache"] = TRUE;
+            foreach ($_POST as $key => $value) {
+                $_SESSION["cache"]["handle"][$key] = $value;
+            }
+        }
 
     }# end of write2db
 

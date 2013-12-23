@@ -7,14 +7,12 @@ if ( !empty($_GET["id"]) ){
     # Get History of a Item
     $basic_query = ' fk_id_item='.$_GET["id"].'
                 AND action <> "edited"';
-//            ORDER BY timestamp DESC, id_hist DESC';
 
     $show_item_links = FALSE;
 
 }else{
     $show_item_links = TRUE;
     # Show all entries but still with sql filters (basic history entries, no details about services)
-        //'SELECT SQL_CALC_FOUND_ROWS * FROM History WHERE'
     $basic_query = 
               ' (action="created"'
             . ' OR action="removed"'
@@ -103,46 +101,98 @@ $rResultTotal = mysql_query( $sQuery, $dbh ) or die(mysql_error());
 $aResultTotal = mysql_fetch_array($rResultTotal);
 $iTotal = $aResultTotal[0];
 
-$sOutput = '{';
-$sOutput .= '"sEcho": '.intval($_GET['sEcho']).', ';
-$sOutput .= '"iTotalRecords": '.$iTotal.', ';
-$sOutput .= '"iTotalDisplayRecords": '.$iFilteredTotal.', ';
-$sOutput .= '"aaData": [ ';
-while ( $aRow = mysql_fetch_array( $rResult ) )
-{
-    # do some stuff bevore generating output
 
-    # if object name contains password, and PASSWD_DISPLAY is 0 (made in called function), do not show password
-    if ( stristr($aRow["attr_name"], "password") ){
-        $aRow["attr_value"] = show_password($aRow["attr_value"]);
-    }
-    # item linking
-    if ( !empty($aRow["fk_id_item"]) AND $show_item_links ){
-        if ($aRow["action"] == "removed" AND $aRow["attr_name"] == "service"){
-            # removed services will link to hosts service list view
-            $aRow['attr_value'] = '<a href="modify_item_service.php?id='.$aRow["fk_id_item"].'">'.$aRow["attr_value"].'</a>';
-        }else{
-            # all other entries will link to its detail view
-            $aRow['attr_value'] = '<a href="detail.php?id='.$aRow["fk_id_item"].'">'.$aRow["attr_value"].'</a>';
+if (function_exists("json_encode")){
+    // If json_ecode we use the php function to encode the array
+    // as example code from DataTables
+    
+    $aColumns = array( 'timestamp', 'user_str', 'action', 'attr_name', 'attr_value', 'id_hist' );
+    
+    $output = array(
+        "sEcho" => intval($_GET['sEcho']),
+        "iTotalRecords" => $iTotal,
+        "iTotalDisplayRecords" => $iFilteredTotal,
+        "aaData" => array()
+    );
+    while ( $aRow = mysql_fetch_array($rResult, MYSQL_ASSOC) )
+    {
+        # do some stuff before generating output
+
+        # if object name contains password, and PASSWD_DISPLAY is 0 (made in called function), do not show password
+        if ( stristr($aRow["attr_name"], "password") ){
+            $aRow["attr_value"] = show_password($aRow["attr_value"]);
         }
-    }else{
-        # entries which are removed, do not have any link
+        # item linking
+        if ( !empty($aRow["fk_id_item"]) AND $show_item_links ){
+            if ($aRow["action"] == "removed" AND $aRow["attr_name"] == "service"){
+                # removed services will link to hosts service list view
+                $aRow['attr_value'] = '<a href="modify_item_service.php?id='.$aRow["fk_id_item"].'">'.$aRow["attr_value"].'</a>';
+            }else{
+                # all other entries will link to its detail view
+                $aRow['attr_value'] = '<a href="detail.php?id='.$aRow["fk_id_item"].'">'.$aRow["attr_value"].'</a>';
+            }
+        }else{
+            # entries which are removed, do not have any link
+        }
+        
+        # Move the wanted fields in correct order and using only the values for the rows
+        $row = array();
+        foreach ($aColumns AS $key){
+            $row[] = $aRow[$key];
+        }
+        $output['aaData'][] = $row;
     }
-
-    # create output (JSON)
-    $sOutput .= "[";
-    $sOutput .= '"'.addslashes($aRow['timestamp']).'",';
-    $sOutput .= '"'.addslashes($aRow['user_str']).'",';
-    $sOutput .= '"'.addslashes($aRow['action']).'",';
-    $sOutput .= '"'.addslashes($aRow['attr_name']).'",';
-    $sOutput .= '"'.addslashes($aRow['attr_value']).'",';
-    $sOutput .= '"'.addslashes($aRow['id_hist']).'"';
-    $sOutput .= "],";
+     
+    echo json_encode( $output );
+    
+}else{
+    // else we have a manual process to create JSON data
+    $sOutput = '{';
+    $sOutput .= '"sEcho": '.intval($_GET['sEcho']).', ';
+    $sOutput .= '"iTotalRecords": '.$iTotal.', ';
+    $sOutput .= '"iTotalDisplayRecords": '.$iFilteredTotal.', ';
+    $sOutput .= '"aaData": [ ';
+    
+    
+    while ( $aRow = mysql_fetch_array( $rResult ) )
+    {
+        # do some stuff bevore generating output
+    
+        # if object name contains password, and PASSWD_DISPLAY is 0 (made in called function), do not show password
+        if ( stristr($aRow["attr_name"], "password") ){
+            $aRow["attr_value"] = show_password($aRow["attr_value"]);
+        }
+        # item linking
+        if ( !empty($aRow["fk_id_item"]) AND $show_item_links ){
+            if ($aRow["action"] == "removed" AND $aRow["attr_name"] == "service"){
+                # removed services will link to hosts service list view
+                $aRow['attr_value'] = '<a href="modify_item_service.php?id='.$aRow["fk_id_item"].'">'.$aRow["attr_value"].'</a>';
+            }else{
+                # all other entries will link to its detail view
+                $aRow['attr_value'] = '<a href="detail.php?id='.$aRow["fk_id_item"].'">'.$aRow["attr_value"].'</a>';
+            }
+        }else{
+            # entries which are removed, do not have any link
+        }
+    
+        # create output (JSON)
+        $sOutput .= "[";
+        $sOutput .= '"'.addslashes($aRow['timestamp']).'",';
+        $sOutput .= '"'.addslashes($aRow['user_str']).'",';
+        $sOutput .= '"'.addslashes($aRow['action']).'",';
+        $sOutput .= '"'.addslashes($aRow['attr_name']).'",';
+        $sOutput .= '"'.addslashes($aRow['attr_value']).'",';
+        $sOutput .= '"'.addslashes($aRow['id_hist']).'"';
+        $sOutput .= "],";
+    }
+    
+    $sOutput = substr_replace( $sOutput, "", -1 );
+    $sOutput .= '] }';
+    // This should fix a json problem
+    $sOutput = str_replace("\'", "'", $sOutput);
+    
+    echo $sOutput;
 }
-$sOutput = substr_replace( $sOutput, "", -1 );
-$sOutput .= '] }';
-
-echo $sOutput;
 
 
 function fnColumnToField( $i )

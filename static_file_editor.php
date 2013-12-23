@@ -45,16 +45,30 @@ if (!isset($STATIC_CONFIG)){
 }else{
     # Directory
     if ( !empty($_POST["directory"]) ) {
-        $directory = $_POST["directory"];
+      $directory = $_POST["directory"];
+      // Check if the directory is really in the STATIC_CONFIG array
+      // this prevents hacking some other directories
+      if (!in_array($directory, $STATIC_CONFIG)){
+        NConf_DEBUG::set($directory, "CRITICAL", 'Directory is not in STATIC_CONFIG variable.');
+      }
+        
     }else{
         $directory = $STATIC_CONFIG[0];
     }
 }
 
 # Filename
-if ( isset($_POST["filename"]) ) {
-    $filename = $_POST["filename"];
-    $full_path = $directory.'/'.$filename;
+if ( isset($_POST["filename"]) ){
+    if (!empty($_POST["filename"])) {
+        $filename = $_POST["filename"];
+        // Verify that only the filename is taken, no going out of directory should be possible
+        $filename = basename($filename);
+        $full_path = $directory.'/'.$filename;
+        // Verify file exists and it is not set to "." or ".."
+        if (!file_exists($full_path) OR (( $filename == '.' ) OR ( $filename == '..' )) ) {
+            NConf_DEBUG::set($filename, "CRITICAL", 'File does not exist');
+        }
+    }
 }
 # new fileContent
 if ( isset($_POST["content"]) ) {
@@ -69,6 +83,13 @@ if ( isset($_POST["action"]) ) {
 }
 
 
+# Check for critical error, continue or abort
+if ( NConf_DEBUG::status('CRITICAL') ){
+    $msg_critical = NConf_DEBUG::show_debug('CRITICAL');
+    echo NConf_HTML::show_error('Error', $msg_critical);
+    require_once(NCONFDIR.'/include/foot.php');
+    exit;
+}
 
 
 
@@ -83,6 +104,7 @@ if ( ($action == "Save") AND (isset($content) AND isset($full_path) ) ){
         $saved = FALSE;
     }else{
         #write to file
+        $content = str_replace("\r\n", "\n", $content); #remove carriage returns
         if ( fwrite($fh, $content) == FALSE){
             # could not write to file
             message($info, "The config directory and all its content must be writable for your webserver user.", "overwrite");
@@ -108,7 +130,6 @@ if( isset($full_path) AND !empty($filename) ){
     # read the config file
     if (isset($saved) AND $saved == FALSE){
         $file_content = $content;
-        #$file_content = $POST["content"];
     }else{
         $file_content = @file_get_contents($full_path);
         if ($file_content === FALSE){
@@ -123,7 +144,8 @@ if( isset($full_path) AND !empty($filename) ){
 ###
 # Info/Warning in the top right corner
 ###
-echo '<h2>Edit static config files</h2>';
+# Title
+echo NConf_HTML::page_title('editor-static-files', 'Edit static config files');
 
 echo '<div class="editor_info">';
         if ( NConf_DEBUG::status('ERROR') ){
@@ -202,12 +224,7 @@ if ( (!empty($directory) AND !empty($filename) ) AND ($file_content !== FALSE) )
 
     echo '<br><br>';
     echo '<div class="fg-toolbar ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
-        /* old standard form submits
-        echo '<input type="submit" value="Open" name="action" align="middle" style="width:40px">';
-        echo "&nbsp;";
-        echo '<input type="submit" value="Save" name="action" align="middle" style="width:40px">';
-        */
-        /* new buttons */
+        /* buttons */
         echo '<input type="hidden" id="action" name="action" value="">';
         echo '<button id="open" class="jQ_tooltip" title="open file"></button>';
         echo '<button id="save" class="jQ_tooltip" title="save file"></button>';

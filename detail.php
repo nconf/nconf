@@ -45,9 +45,10 @@ set_page();
 if ( empty($_GET["id"]) ){
     NConf_DEBUG::set("No id", 'ERROR');
 }else{
-    $item_id = $_GET["id"];
-    $item_class = db_templates("class_name", $_GET["id"]);
-    $item_name = db_templates("naming_attr", $_GET["id"]);
+    // Be sure ID it is an integer - fixes injecting issues
+    $item_id = (int) $_GET["id"];
+    $item_class = db_templates("class_name", $item_id);
+    $item_name = db_templates("naming_attr", $item_id);
 }
 // end / exit page if error
 if ( NConf_DEBUG::status('ERROR') ) {
@@ -63,30 +64,30 @@ $template_cache_local = array();
 require_once 'include/tabs/history.php';
 
 
-
 # Normal detail page
 echo '<div style="width: 500px;" class="relative">';
+echo NConf_HTML::page_title($item_class, $item_name);
 
-    echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">';
+    echo '<div class="ui-nconf-header ui-widget-header ui-corner-tl ui-corner-tr">';
 
-        echo '<div><h2>Details of '.$item_class.': '.$item_name.'</h2></div>';
+        echo '<div><h2 class="page_action_title">Details of <span class="item_name">'.$item_name.'</span></h2></div>';
         echo '<div id="ui-nconf-icon-bar">';
 		
 			// tool bar of details view
 			$output = '';
 			
 			// Edit
-			$output .= ( !isset($_GET["xmode"]) ) ?  '<a href="handle_item.php?item='.$item_class.'&amp;id='.$_GET["id"].'">'.ICON_EDIT.'</a>' : '';
+			$output .= ( !isset($_GET["xmode"]) ) ?  '<a href="handle_item.php?item='.$item_class.'&amp;id='.$item_id.'">'.ICON_EDIT.'</a>' : '';
 			// Clone
-			$output .= ( $item_class == "host" ) ? '<a href="clone_host.php?class='.$item_class.'&amp;id='.$_GET["id"].'">'.ICON_CLONE.'</a>' : '';
+			$output .= ( $item_class == "host" ) ? '<a href="clone_host.php?class='.$item_class.'&amp;id='.$item_id.'">'.ICON_CLONE.'</a>' : '';
 			// Delete
-			$output .= ( !isset($_GET["xmode"]) ) ?  '<a href="delete_item.php?item='.$item_class.'&amp;ids='.$_GET["id"].'&amp;from='.$from_url.'">'.ICON_DELETE.'</a>' : '';
+			$output .= ( !isset($_GET["xmode"]) ) ?  '<a href="delete_item.php?item='.$item_class.'&amp;ids='.$item_id.'&amp;from='.$from_url.'">'.ICON_DELETE.'</a>' : '';
 			// Services
-			$output .= ( $item_class == "host" ) ? '<a href="modify_item_service.php?id='.$_GET["id"].'">'.ICON_SERVICES.'</a>' : '';
+			$output .= ( $item_class == "host" ) ? '<a href="modify_item_service.php?id='.$item_id.'">'.ICON_SERVICES.'</a>' : '';
 			// History
-			$output .= '<a href="history.php?item='.$item_class.'&amp;id='.$_GET["id"].'&amp;from='.$from_url.'">'.ICON_HISTORY.'</a>';
+			$output .= '<a href="history.php?item='.$item_class.'&amp;id='.$item_id.'&amp;from='.$from_url.'">'.ICON_HISTORY.'</a>';
 			// Parent child
-			$output .= ( $item_class == "host" ) ? '<a href="dependency.php?id='.$_GET["id"].'">'.ICON_PARENT_CHILD.'</a>' : '';
+			$output .= ( $item_class == "host" ) ? '<a href="dependency.php?id='.$item_id.'">'.ICON_PARENT_CHILD.'</a>' : '';
 			
 			echo $output;
 			
@@ -112,7 +113,7 @@ echo '<div style="width: 500px;" class="relative">';
                             WHERE id_attr=fk_id_attr
                             AND id_item=fk_id_item
                             AND ConfigAttrs.visible="yes" 
-                            AND id_item='.$_GET["id"].'
+                            AND id_item='.$item_id.'
                             ORDER BY ConfigAttrs.ordering';
 
     $result = db_handler($query, "array", "get basic entries");
@@ -125,6 +126,11 @@ echo '<div style="width: 500px;" class="relative">';
             $attributes["attr_value"] = show_password($attributes["attr_value"]);
         }
         array_push($basic_result, $attributes);
+    }
+
+    # print an overview of the icon if available
+    if ($item_class == "os" and $basic_result[1]["attr_value"] != "" and is_readable(OS_LOGO_PATH."/".$basic_result[1]["attr_value"])) {
+        array_push($basic_result, array('friendly_name' => 'icon preview', 'attr_value' => "<img src=".OS_LOGO_PATH."/".$basic_result[1]["attr_value"].">"));
     }
 
     echo table_output($basic_result, $item_class);
@@ -140,7 +146,7 @@ echo '<div style="width: 500px;" class="relative">';
                                 AND ConfigAttrs.visible="yes"
                                 AND fk_id_class=id_class
                                 AND (SELECT naming_attr FROM ConfigAttrs WHERE id_attr=ConfigValues.fk_id_attr)="yes"
-                                AND ItemLinks.fk_id_item='.$_GET["id"].'
+                                AND ItemLinks.fk_id_item='.$item_id.'
                             ORDER BY
                                 ConfigAttrs.friendly_name DESC,
                                 ItemLinks.cust_order,
@@ -151,7 +157,7 @@ echo '<div style="width: 500px;" class="relative">';
 
 
     # get entries
-    $result = db_templates("linked_as_child", $_GET["id"], '', '', 'array');
+    $result = db_templates("linked_as_child", $item_id, '', '', 'array');
     echo table_output($result, $item_class, "Child items linked");
 
 
@@ -286,11 +292,11 @@ we want all linked items in one group
 if we want to change that, we have to get all normal types, and then group the child or bidirectionals as follows:
 
 # get entries linked as child
-$result = db_templates("linked_as_child", $_GET["id"], "link_as_child");
+$result = db_templates("linked_as_child", $item_id, "link_as_child");
 table_output($result, $item_class, "Child items linked");
 
 # get bidirectional entries
-$result = db_templates("linked_as_child", $_GET["id"], "link_bidirectional");
+$result = db_templates("linked_as_child", $item_id, "link_bidirectional");
 table_output($result, $item_class, "Bidirectional items");
 
 */

@@ -1,0 +1,5 @@
+#
+# NConf configuration directory protection (config/)
+# Do not allow access to config files
+#
+Deny from All

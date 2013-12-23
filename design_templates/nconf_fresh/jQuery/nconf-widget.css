@@ -10,37 +10,47 @@
   margin: 20px 0 0 10px;
 }
 
-
 /* jquery buttons , icon and text combination */
 
-.ui-button-text-icon-primary .ui-button-text{
-    padding-left:2.1em;
-    padding-right: 5px;
-}
-.ui-button-text-icon-secondary .ui-button-text{
-    padding-left: 6px;
-    padding-right: 2.1em;
+.ui-button-text-icon-primary .ui-button-text {
+  padding-left: 2.1em;
+  padding-right: 5px;
 }
 
-.ui-button .ui-button-text{
-    display: inline;
+.ui-button-text-icon-secondary .ui-button-text {
+  padding-left: 6px;
+  padding-right: 2.1em;
 }
 
-input.ui-button{
-    padding: 0;
+.ui-button .ui-button-text {
+  display: inline;
 }
 
+input.ui-button {
+  padding: 0;
+}
 
+.ui-dialog {
+  padding: 0;
+}
+.ui-dialog .ui-dialog-title {
+  font-size: 115%;
+}
 /* Set the titlebar of boxes smaller than standard */
-.ui-dialog .ui-dialog-titlebar { padding: 0 0.5em 0; position: relative;  }
-
+.ui-dialog .ui-dialog-titlebar {
+  position: relative;
+  height: 17px;
+  line-height: 14px;
+  padding: 3px 3px 3px 6px;
+}
 
 /* error messages */
 .fg-error {
-    padding: 0.7em;
+  padding: 0.7em;
 }
-.fg-error h2{
-    margin-bottom: 5px;
+
+.fg-error h2 {
+  margin-bottom: 5px;
 }
 
 /* progress bar animated */
@@ -48,184 +58,278 @@ input.ui-button{
 .ui-progressbar-value { background-image: url(images/pbar-ani.gif); }
 */
 
-
 /* history table parts */
 
-#history tbody tr td.highlighted{
-    background-color: #D0D0D0;
-}
-#history{
-    border-collapse:collapse;
-}
-#history_wrapper select{
-    width: 50px;
+#history tbody tr td.highlighted {
+  background-color: #D0D0D0;
 }
 
-.DataTables_sort_wrapper .css_right{
-    float: right;
+#history {
+  border-collapse: collapse;
 }
 
-th.ui-state-default, td.ui-state-default{
-    padding-left: 3px;
+#history_wrapper select {
+  width: 50px;
 }
 
+.DataTables_sort_wrapper .css_right {
+  float: right;
+}
 
+th.ui-state-default, td.ui-state-default {
+  padding-left: 3px;
+}
+
+/* Floatings */
 
 /* GLOBAL definitions */
-
-
-.inline{
-    display: inline;
-}
-.inline-block{
-    display: inline-block;
+.float_left {
+  float: left;
 }
 
+.float_right {
+  float: right;
+}
+
+.clear_both {
+  clear: both;
+}
+
+.inline {
+  display: inline;
+}
+
+.inline-block {
+  display: inline-block;
+}
 
 /* input fields */
 /* focus used for inputs with jquery ui ui-state-focus, but do not use the background */
-.ui-nconf-input, .no-background{
-    background: transparent none !important;
-    font-weight: normal !important;
-    background-color: white !important;
+.ui-nconf-input, .no-background {
+  background: transparent none !important;
+  font-weight: normal !important;
+  background-color: white !important;
 }
-
-
-
-
-
 
 /* COLOR definitions */
 
 /* hover on not monitored rows */
-.ui-state-error.highlight:hover{
-    background-image: none;
-    background-color: #FFCFC2;
+.ui-state-error.highlight:hover {
+  background-image: none;
+  background-color: #FFCFC2;
 }
-
 
 /* UI NCONF header element*/
-.ui-nconf-header{
-    /*padding:4px 4px 4px 5px;*/
-    height: 15px;
-    padding: 5px;
+.ui-widget h2,
+.ui-nconf-header {
+  height: 17px;
+  padding: 3px;
+  padding-left: 6px;
 }
 
-.ui-nconf-header div{
-    float: left;
+.ui-nconf-header div {
+  float: left;
+  top: -1px;
 }
 
 /* UI NCONF content */
-.ui-nconf-content{
-    padding: 5px;
-    margin-bottom:10px;
+.ui-nconf-content {
+  padding: 5px;
+  margin-bottom: 10px;
 }
 
 /* UI NCONF advanced accordion */
-#advanced_accordion div{
-    /* padding: removes empty space around content */
-    padding: 0;
-    /* margin: shows the accordion-header-item border also on the bottom */
-    margin-top: -1px;
+#advanced_accordion div {
+  /* padding: removes empty space around content */
+  padding: 0;
 }
 
-.ui-nconf-accordion-list h3{
-    margin-top: 2px !important;
+.ui-nconf-accordion-list h3 {
+  margin-top: 2px !important;
 }
 
 /* overwrite header in box */
-.ui-widget h2{
-    margin-bottom: 0;
+.ui-widget h2 {
+  margin-bottom: 0;
 }
 
-.ui-nconf-link{
-    border: 0px none transparent !important;
-    background: transparent none !important;
-    font-weight: inherit !important;
+.ui-widget h3 {
+  margin: 0;
+}
+
+.ui-nconf-link {
+  border: 0 none transparent !important;
+  background: transparent none !important;
+}
+
+.ui-nconf-link:hover {
+  color: #000;
 }
 
 /* UI NCONF TABLE */
 
-.ui-nconf-table{
-    border-collapse: collapse;
+.ui-nconf-table {
+  border-collapse: collapse;
 }
 
-.ui-nconf-table thead{
-    height: 26px;
+.ui-nconf-table thead {
+  height: 26px;
 }
 
 /* lines between table rows */
-.ui-nconf-table tbody tr{
-    border-top: 1px solid #d0d0d0;
+.ui-nconf-table tbody tr {
+  border-top: 1px solid #d0d0d0;
 }
+
 /* define no top border for first line, otherwise the border from the table header is overwritten */
-.ui-nconf-table tbody tr:first-child:not(.ui-state-error){
-    border-top: 0px none;
-}
-.ui-nconf-table tbody tr, .ui-nconf-table tbody tr a{
-    color: #585858;
-}
-.ui-nconf-table .ui-widget-content{
-     border-color: #c0b1b3;
+.ui-nconf-table tbody tr:first-child:not(.ui-state-error) {
+  border-top: 0 none;
 }
 
-.ui-nconf-table td, .ui-nconf-table th{
-    padding-left: 3px;
-    height: 21px;
+.ui-nconf-table tbody tr, .ui-nconf-table tbody tr a {
+  color: #585858;
 }
 
-
-
-.ui-nconf-max-width{
-    width: 100%;
+.ui-nconf-table .ui-widget-content {
+  border-color: #c0b1b3;
 }
 
+.ui-nconf-table td, .ui-nconf-table th {
+  padding-left: 3px;
+  height: 16px;
+}
+
+.ui-nconf-max-width {
+  width: 100%;
+}
+
+#advanced_accordion table.ui-nconf-table {
+  font-size: 11px;
+}
 
 /* NAVIGATION MENU */
-.ui-state-default.box_content{
-    border-top-width: 0px;
+.ui-state-default.box_content {
+  border-top-width: 0;
 }
 
+#navigation .ui-widget {
+  font-size: 101%;
+}
 
+#navigation ul.nav-list ul li {
+  float: left;
+  list-style: none outside none;
+}
+
+#navigation ul.nav-list > li {
+  padding: 2px 8px;
+  height: 18px;
+  clear: both;
+}
+
+#navigation ul.nav-list ul.nav-list > li {
+  padding: 0;
+}
+
+#navigation ul.nav-list > li:hover {
+  background-color: #DBDDE2;
+}
+
+#navigation ul.nav-list > li.active {
+  background-color: #8C96A5;
+}
+
+#navigation ul.nav-list > li.active a {
+  color: #FFFFFF;
+}
+
+#navigation ul.nav-list > li > div:first-child {
+  padding-top: 1px;
+}
+
+#navigation img.nav-icon {
+  padding-right: 5px;
+}
+
+.nav-list {
+  padding: 0;
+  margin: 0;
+  list-style: none outside none;
+}
+
+#navigation .box_content {
+  padding: 0;
+}
+
+#navigation .logout {
+  margin-top: 2px;
+}
 
 /*
 ICONs ICON BARs etc
 */
 
 /* all icon bars, like back on modify attr */
-#ui-nconf-icon-bar{
-    position: absolute;
-    right: 0px;
+#ui-nconf-icon-bar {
+  position: absolute;
+  right: 0;
 }
 
 /* icon bar in box header, like detail view */
-.ui-widget-header > #ui-nconf-icon-bar{
-    right: 10px;
-    top: 3px;
+.ui-widget-header > #ui-nconf-icon-bar {
+  right: 10px;
+  top: 3px;
 }
 
-.ui-widget-header > #ui-nconf-icon-bar img{
-    margin-left: 2px;
-    padding: 2px;
+.title #ui-nconf-icon-bar {
+  top: 10px;
+  right: 10px;
+}
+
+#ui-nconf-icon-bar img,
+#ui-nconf-icon-bar input,
+img.ui-button {
+  margin-left: 2px;
+  padding: 2px;
+}
+
+#advanced #ui-nconf-icon-bar {
+  margin-top: -40px;
+}
+
+#ui-nconf-icon-bar fieldset {
+  background: none;
+  border: 0 none;
+}
+
+#ui-nconf-icon-bar fieldset legend {
+  font-weight: bold;
+}
+
+#ui-nconf-icon-bar fieldset > div {
+  text-align: right;
 }
 
 /* multi (assign) vertical and horizontal movers */
-.icon_buttons a{
-    margin-bottom: 2px;
+.icon_buttons a {
+  margin-bottom: 2px;
 }
 
-.lighten:hover, .disabled{
-    /* IE compatibility */
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";   /* first! (IE8) */
-    filter: alpha(opacity=50);                                          /* second!(IE5-7) */
+/**
+ * possible improvement when hovering a link and lighten its image:
+a.ui-state-hover .lighten
+*/
+.lighten:hover, .disabled {
+  /* IE compatibility */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; /* first! (IE8) */
+  filter: alpha(opacity = 50); /* second!(IE5-7) */
 
-    /* Firefox and all other browsers */
-    opacity: .5;
+  /* Firefox and all other browsers */
+  opacity: .5;
 
 }
 
-
-/* more button like height, but not standard in nconf 
+/* more button like height, but not standard in nconf
 #detail_navigation a{
     height: 18px;
 }
@@ -233,10 +337,11 @@ ICONs ICON BARs etc
 
 /* special image background for optimize selected style on error lines */
 #toBox_advanced_services option.ui-state-error:checked {
-    background-image: url("nconf/images/ui-bg_flat_100_D05353_40x100.png");
+  background-image: url("nconf/images/ui-bg_flat_100_D05353_40x100.png");
 }
+
 /* select fields: remove border around error lines if element is select field */
 select option.ui-state-error.ui-state-error.highlight {
-    border-style: none;
+  border-style: none;
 }
 

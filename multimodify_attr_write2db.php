@@ -266,9 +266,10 @@ foreach ($array_ids as $id){
 
 $_SESSION["go_back_page"] = str_replace("&goto=multimodify", "", $_SESSION["go_back_page"]);
 
-# bevore inheritance was here...
 
 // Content of this page
+echo NConf_HTML::page_title($config_class, '');
+
 echo '<div style="width: 510px;">';
 
 #
@@ -305,10 +306,12 @@ if ( !empty($info_summary["ignored"]) ){
 # ok
 if ( !empty($info_summary["ok"]) ){
     if ( isset($_POST["vererben"]) ){
-        echo "<h2>Successfully inherited attribute &quot;$HIDDEN_selected_attr&quot; to selected services on $config_class(s):</h2><ul>";
+        echo "<h2>Successfully inherited attribute &quot;$HIDDEN_selected_attr&quot; to selected services on $config_class(s):</h2>";
     }else{
-        echo "<h2>Successfully modified attribute &quot;$HIDDEN_selected_attr&quot; of $config_class(s):</h2><ul>";
+        echo NConf_HTML::text("Successfully modified attribute &quot;$HIDDEN_selected_attr&quot; of $config_class(s):", FALSE);
+        
     }
+    echo "<ul>";
     foreach ($info_summary["ok"] as $item){
         echo "<li>$item</li>";
     }

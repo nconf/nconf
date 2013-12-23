@@ -99,7 +99,10 @@ define('SELECT_VALUE_SEPARATOR', "::");
 # PASSWORD ATTRIBUTES 
 #
 # Set default password encryption type
-# possible values: [clear|crypt|md5|sha]
+# possible values: [clear|crypt|md5|sha|sha_raw]
+#
+# Use "crypt" if you wish to use passwords for Apache htpasswd based authentication.
+# Alternatively, you can use "sha_raw" mode if you wish to use SHA1 passwords for Apache htpasswd (normal "sha" mode will not work).
 #
 # Will be used when writing passwords to the database, and is also used for authentication. 
 # Used when AUTH_TYPE is "file" or "sql".
@@ -123,5 +126,4 @@ define('PASSWD_DISPLAY', 0);
 # Any passwords will be represented as the following string (in the detail view).
 #
 define('PASSWD_HIDDEN_STRING', "********");
-
 ?>

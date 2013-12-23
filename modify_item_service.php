@@ -255,7 +255,7 @@ echo '<input id="host_ID" type="hidden" value="'.$host_ID.'">';
 
 
 
-// Prevent re-adding the host preset services when browser refreshin
+// Prevent re-adding the host preset services when browser refreshing
 if ( !empty($_SESSION["created_id"]) AND $_SESSION["created_id"] == $host_ID){
 // If there are problems, comment out the line bevore and use instead the next one: (uncomment it)
 #if( !empty($_GET["step2"]) ){
@@ -271,7 +271,6 @@ echo '<input id="step2" type="hidden" value="'.$step2.'">';
 
 
 
-
 # load advanced tab for services
 require_once 'include/tabs/service.php';
 
@@ -281,11 +280,19 @@ require_once 'include/tabs/service.php';
 echo '<div style="width: 510px;" class="relative">';
 
 
+// Page output begin
+echo NConf_HTML::page_title("service", '');
+
 ////
 // Title 
 $item_name = db_templates("naming_attr", $host_ID);
-$title = '<div>&nbsp;Services &amp; advanced services of '.$item_name.'</div>';
+$title = '<div>
+  <h3 class="page_action_title">
+    Services & advanced services of <span class="item_name">'.$item_name.'</span>
+  </h3>
+</div>';
 
+echo $title;
 
 # nav buttons
 $detail_navigation =  '<a class="button_back jQ_tooltip" title="host details" href="detail.php?id='.$host_ID.'"></a>';
@@ -297,14 +304,14 @@ $detail_navigation = '<div id="ui-nconf-icon-bar">'
 }
 
 
-echo NConf_HTML::ui_box_header($title.$detail_navigation);
-
 # box for direct host services
-    $output = '<div style="float: left; margin-right: 5px;">';
-        $output .= NConf_HTML::title('Services (directly linked)');
-    $output .= '</div>';
-    $output .= '<div name="help_services"></div>';
-    $output .= '<div style="clear: both"></div>';
+    $box1 = '<div style="float: left; margin-right: 5px;">';
+        $box1 .= NConf_HTML::title('Services (directly linked)');
+    $box1 .= '</div>';
+    $box1 .= '<div name="help_services"></div>';
+    $box1 .= '<div style="clear: both"></div>';
+    
+echo NConf_HTML::ui_box_header($box1.$detail_navigation);
 
     $output .= '<div>';
     // Service select field
@@ -343,9 +350,9 @@ echo NConf_HTML::ui_box_header($title.$detail_navigation);
         $output .= '</table>';
 
     $output .= '</fieldset>';
+    $output .= '<div><img id="service_loading" src="img/working_small.gif" alt="loading"></div>';
     $output .= '</div>';
 
-    $output .= '<div><img id="service_loading" src="img/working_small.gif" alt="loading"></div>';
 
     // place for help box (only distance from top)
     $output .= '<div id="page_content"></div>';
@@ -353,7 +360,7 @@ echo NConf_HTML::ui_box_header($title.$detail_navigation);
 
     ////
     // Place for service list
-    $output .= '<br><div id="service_list" style="display:none"></div><br>';
+    $output .= '<br><div id="service_list" style="display:none"></div>';
 
     // Finish button removed, link now in toolbar
     //$output .= '<br><br>';
@@ -368,8 +375,15 @@ unset($output);
 ###
 
 
+    $box2 = '<div style="float: left; margin-right: 5px;">';
+        $box2 .= NConf_HTML::title('Advanced services (directly linked)');
+    $box2 .= '</div>';
+    $box2 .= '<div name="help_advanced_services"></div>';
+    $box2 .= '<div style="clear: both"></div>';
+    echo NConf_HTML::ui_box_header($box2);
+    
     # save button
-    $output = '<div style="position: absolute; right: 10px;">
+    $advanced_save_button = '<div style="position: absolute; right: 10px; padding-top: 5px;">
                     <div style="float: left">
                         <img id="advanced_services_loading" src="img/working_small.gif" alt="loading" style="display:none; margin-right: 5px;">
                     </div>
@@ -377,12 +391,7 @@ unset($output);
                         <button id="save"></button>
                     </div>
                 </div>';
-    $output .= '<div style="float: left; margin-right: 5px;">';
-        $output .= NConf_HTML::title('Advanced services (directly linked)');
-    $output .= '</div>';
-    $output .= '<div name="help_advanced_services"></div>';
-    $output .= '<div style="clear: both"></div>';
-
+    echo $advanced_save_button;
     // get all advanced services
     $query = 'SELECT id_item,
                 attr_value AS service_name,
@@ -402,7 +411,7 @@ unset($output);
     $service_names = db_handler($query, "array", "get all advanced services"); 
 
 
-    $output .= '<br><select id="fromBox_advanced_services" name="from_advanced_services[]" style="'.CSS_SELECT_MULTI.'" multiple >';
+    $output .= '<select id="fromBox_advanced_services" name="from_advanced_services[]" style="'.CSS_SELECT_MULTI.'" multiple >';
 
     $services = db_templates("get_services_from_host_id", $host_ID, "advanced-service");
 
@@ -437,22 +446,15 @@ unset($output);
             $output .= $selected_menu["service_name"].'</option>';
         }
     }
-    $output .= '</select><br>';
+    $output .= '</select>';
 
     $output .= '
                 <script type="text/javascript">
-                    createMovableOptions("fromBox_advanced_services","toBox_advanced_services",500,145,"available items","selected items","livesearch");
+                    createMovableOptions("fromBox_advanced_services","toBox_advanced_services",490,145,"available items","selected items","livesearch");
                 </script>
                 ';
 
-
-//    $output .= '<div class="loading"><img id="advanced_services_loading" src="img/working_small.gif" alt="loading" style="display:none"></div>';
-
-
-
-
-
-    echo NConf_HTML::ui_box_content($output);
+    echo NConf_HTML::ui_box_content($output, "advanced-service-direct");
     unset($output);
 
 
@@ -462,19 +464,20 @@ unset($output);
 
 
     # box for direct host services
-    $output = '<div style="float: left; margin-right: 5px;">';
-        $output .= NConf_HTML::title('Advanced services (inherited over hostgroups)');
-    $output .= '</div>';
-    $output .= '<div name="help_hostgroup_services"></div>';
-    $output .= '<div style="clear: both"></div>';
+    $box3 = '<div style="float: left; margin-right: 5px;">';
+        $box3 .= NConf_HTML::title('Advanced services (inherited over hostgroups)');
+    $box3 .= '</div>';
+    $box3 .= '<div name="help_hostgroup_services"></div>';
+    $box3 .= '<div style="clear: both"></div>';
+    echo NConf_HTML::ui_box_header($box3);
     
     // progress indicator / loading
     $output .= '<img id="hostgroup_service_loading" src="img/working_small.gif" alt="loading" style="display:none">';
 
     // Place for hostgroup service list
-    $output .= '<br><div id="hostgroup_service_list" style="display:none"></div><br>';
+    $output .= '<div id="hostgroup_service_list" style="display:none"></div>';
 
-    echo NConf_HTML::ui_box_content($output);
+    echo NConf_HTML::ui_box_content($output, "advanced-service-inherit");
 
 
 echo '</div>';
