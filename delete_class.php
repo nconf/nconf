@@ -2,7 +2,7 @@
 require_once 'include/head.php';
 //set_page();
 
-echo NConf_HTML::title('Delete class');
+echo NConf_HTML::page_title('', 'Delete class');
 
 if(  ( ( isset($_POST["delete"]) ) AND ($_POST["delete"] == "yes") ) AND
      ( ( isset($_POST["id"]) ) AND ($_POST["id"] != "") )

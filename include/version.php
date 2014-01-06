@@ -2,20 +2,28 @@
 #
 # File for Version number and info
 #
-define("VERSION_NUMBER", '1.3.0');
+define("VERSION_NUMBER", '1.3.1');
 define("VERSION_STRING", '<img src="design_templates/nconf_fresh/nconf-logo-16.gif" style="vertical-align:bottom" alt="nconf-logo">
-                          <b>NConf v. '.VERSION_NUMBER.' (final)</b>');
+                          <b>NConf '.VERSION_NUMBER.' (dev)</b>');
 
-define("VERSION_NOT_FINAL_WARNING", '');
-// define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf 1.3.0, intended FOR TESTING PURPOSES ONLY! 
-//                                    <br>Do not use this version in a production environment or to upgrade your productive NConf installation!
-//                                    <br>Note that we will not provide any update functionality from this pre-release to the next official release.');
+define("VERSION_NOT_FINAL_WARNING", 'This is a pre-release version of NConf '.VERSION_NUMBER.', intended FOR TESTING PURPOSES ONLY! 
+                                    <br>Do not use this version in a production environment or to upgrade your productive NConf installation!
+                                    <br>Note that we will not provide any update functionality from this pre-release to the next official release.');
 
-define("COPYRIGHT_STRING", '<i>Copyright &copy; 2006 - 2012 <br>Sunrise Communications AG, Zurich, Switzerland</i>
-                          <br><br>Project homepage: <a href="http://www.nconf.org/" target="_blank">www.nconf.org</a>');
+define("COPYRIGHT_STRING", 'Project homepage: <a href="http://www.nconf.org/" target="_blank">www.nconf.org</a>');
 
 define("DISCLAIMER_STRING", '<b>Developed by:</b>
-                          <br>Fabian Gander, Angelo Gargiulo, Bernhard Waldvogel;
+                          <br>
+                          <ul>
+                            <li>
+                              <a href="https://github.com/Cyclodex" target="_blank">Cyclodex | Fabian Gander</a>
+                            </li>
+                            <li>
+                              <a href="https://github.com/gargiulo" target="_blank">Angelo Gargiulo</a>
+                            </li>
+                          </ul>
+                          <br><b>Supported by:
+                          <br><ul><li>Bernhard Waldvogel</li></ul>
                           <br><br><b>License:</b>
                           <br>This software is distributed under the <a href="http://www.opensource.org/licenses/gpl-2.0.php" target="_blank">
                             GNU General Public License (GPL)</a>.
@@ -23,8 +31,6 @@ define("DISCLAIMER_STRING", '<b>Developed by:</b>
                           <br>NConf is provided as is with NO WARRANTY OF ANY KIND, including the warranty
                           <br>of design, merchantability, and fitness for a particular purpose.
                           <br><br><b>Trademarks:</b>
-                          <br>Sunrise and the Sunrise logo are trademarks, servicemarks, registered trademarks
-                          <br>or registered servicemarks owned by Sunrise Communications AG.<br>
                           <br>Nagios and the Nagios logo are trademarks, servicemarks, registered trademarks
                           <br>or registered servicemarks owned by Nagios Enterprises, LLC.
                           <br><br><b>Additional copyrights:</b>

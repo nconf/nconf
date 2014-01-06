@@ -95,10 +95,14 @@
     # Hosts Service view
     $NConf_PERMISSIONS->setURL('modify_item_service.php', FALSE, array('user') );
 
-    # clone
-    $NConf_PERMISSIONS->setURL('clone_host', TRUE, array('user') );
-    $NConf_PERMISSIONS->setURL('clone_service.php', FALSE, array('user') );
+    # Clone host/service
+    $NConf_PERMISSIONS->setURL('clone_host.php',              FALSE, array('user') );
+    $NConf_PERMISSIONS->setURL('clone_host_write2db.php',     FALSE, array('user') );
+    $NConf_PERMISSIONS->setURL('clone_service.php',           FALSE, array('user') );
+    $NConf_PERMISSIONS->setURL('clone_service_write2db.php',  FALSE, array('user') );
 
+    # Config deployment
+    $NConf_PERMISSIONS->setURL('call_file.php', FALSE, array('user') );
     
 
     # id_wrapper

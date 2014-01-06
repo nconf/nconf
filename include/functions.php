@@ -432,6 +432,12 @@ function db_templates($template, $value = '', $search = '', $filter = '', $outpu
                         AND id_item = "'.$value.'"';
             $output = db_handler($query, 'getOne', "select class name");
             break;
+        case "class_friendly_name":
+            $query = 'SELECT friendly_name
+                        FROM ConfigClasses
+                        WHERE config_class = "'.$value.'"';
+            $output = db_handler($query, 'getOne', "select class name");
+            break;
         case "get_value":
             $query = 'SELECT attr_value
                         FROM ConfigAttrs,ConfigValues,ConfigItems
@@ -1618,6 +1624,13 @@ function encrypt_password($password, $EncryptInfoInOutput = TRUE, $existing_pass
         NConf_DEBUG::set("Encrypting password: ".$password, 'DEBUG', "encrypt_password");
         $encryption_Info = "{SHA1}";
         break;
+        
+    // this sha1 "raw" mode is needed for Apache htpasswd files. It is an alternative to "crypt"
+    case "sha_raw":
+        $password        = base64_encode(sha1($password, TRUE));
+        NConf_DEBUG::set("Encrypting password: ".$password, 'DEBUG', "encrypt_password");
+        $encryption_Info = "{SHA_RAW}";
+        break;
 
     }
 
@@ -1633,32 +1646,24 @@ return $password;
 
 function create_menu($result){
   if ($result){
-    echo '<table border=0 width=188>';
-    echo '<colgroup>
-            <col width="65">
-            <col width="55">
-            <col width="68">
-          </colgroup>';
-
+    NConf_DEBUG::set( $result
+                    ,'DEBUG'
+                    ,"Menu creation debug" );
+                    
+    echo '<ul class="nav nav-list">';
     // Generate Menu
     $group_bevore = "";
     $block_i = 0;
     foreach ($result as $nav_class){
         if ($nav_class["grouping"] != $group_bevore){
 
-            echo '</table>
+            echo '</ul>
                 </div>';
 
             // New Block for Group
-            echo '<h2 class="ui-widget-header header"><span>'.$nav_class["grouping"].'</span></h2>';
+            echo '<h2 id="nav-'.$nav_class["config_class"].'" class="ui-nconf-header ui-widget-header ui-corner-top pointer"><span>'.$nav_class["grouping"].'</span></h2>';
             echo '<div class="ui-widget-content box_content">';
-            echo '<table border=0 width=188>';
-            echo '<colgroup>
-                    <col width="55">
-                    <col width="65">
-                    <col width="68">
-                  </colgroup>';
-            echo "<tr><td></td><td></td><td></td></tr>";
+            echo '<ul class="nav nav-list">';
         }
         $group_bevore = $nav_class["grouping"];
 
@@ -1666,59 +1671,209 @@ function create_menu($result){
         $nav_links = explode(";;", $nav_class["nav_links"]);
         $link_i = 0;
         $link_output = "";
-        foreach ($nav_links as $entry){
-            $link_i++;
-            if ($link_i != "1"){
-                $link_output .= ' / ';
-            }
-
-            $nav_link_details = explode("::", $entry);
-            if ( isset($nav_link_details[1]) ){
-                # set all navigation links in permissions list
-                # current user will have access to all of them
-                global $NConf_PERMISSIONS;
-                $NConf_PERMISSIONS->setURL($nav_link_details[1]);
-                $link_output .= '<a href="'.$nav_link_details[1].'" >'.$nav_link_details[0].'</a>';
-            }
-        }
-
-
-        // filled or empty "friendly_name" will choose the print style of the link
-        if($nav_class["friendly_name"] == ""){
-            // empty/without friendly_name style
-            echo '<tr><td colspan=3><div class="link_with_tag">'.$link_output.'</div></td></tr>';
-        }else{
-            // filled friendly name makes other style  (< 10 characters should work fine)
-            if ( strlen($nav_class["friendly_name"]) < 10){
-                $td1_colspan = 1;
-                $td2_colspan = 2;
-            }else{
-                $td1_colspan = 2;
-                $td2_colspan = 1;
-            }
-
-            echo '<tr>
-                <td colspan="'.$td1_colspan.'" style="vertical-align:top">
-                    <div class="link_with_tag">'.$nav_class["friendly_name"].'
-                    </div>
-                </td>
-                <td colspan="'.$td2_colspan.'" align="right">
-                    <div align="right"><b>'.$link_output.'</b></div>
-                </td>
-              </tr>';
+        /* perhaps change this to icons ? */
         
+        # class icon lookup
+        $nav_icon = '';
+        $icon = '';
+        if ( defined('TEMPLATE_DIR') ){
+            /* Icon only if available ? */
+            if (!empty($nav_class["icon"]) ){
+                $icon = $nav_class["icon"];
+            }elseif (!empty($nav_class["config_class"]) ){
+                $icon = $nav_class["config_class"];
+            }
+            //NConf_DEBUG::set($icon, 'DEBUG', "icon");
         }
+        $nav_icon = get_image( array( "type" => "design",
+                                                     "name" => $icon,
+                                                     "size" => 16,
+                                                     "tooltip" => $icon,
+                                                     "class" => "lighten nav-icon",
+                                                     "alt" => ''
+                                                     ) );
+       
+        foreach ($nav_links as $entry){
+            $old_link_style = strpos($entry, "::");
+            if ($old_link_style !== FALSE){
+                $nav_link_details = explode("::", $entry);
+                if ( isset($nav_link_details[1]) ){
+                    # set all navigation links in permissions list
+                    # current user will have access to all of them
+                    global $NConf_PERMISSIONS;
+                    $NConf_PERMISSIONS->setURL($nav_link_details[1]);
+                    
+                    # special handling for the first one
+                    if ($link_i == 0){
+                      $friendly_name_link = '<div class="float_left"><a href="'.$nav_link_details[1].'">'.$nav_icon.$nav_class["friendly_name"].'</a></div>';
+                      
+                      // define the navigation identifier for marking nav entry as active
+                      $url_query = parse_url($nav_link_details[1], PHP_URL_QUERY);
+                      $url_query_explode = explode("=", $url_query);
+                      $navigation_identifier = $url_query_explode[1];
+                      NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
+                      
+                      // if no query identifier found use the script name (like for the history entry)
+                      if (empty($navigation_identifier)){
+                        $navigation_identifier = $nav_link_details[1];
+                      }
+                      
+                    }else{
+                      // Don't print any actions anymore (no add icon in menu)
+                      continue;
+                    }
+                    
+                    $link_i++;
+                    
+                    # change "Add" to icon
+                    if ($nav_link_details[0] == "Add"){
+                      $nav_link_text = get_image( array( "type" => "design",
+                                                         "name" => "add",
+                                                         "size" => 16,
+                                                         "tooltip" => 'Add '.$nav_class["friendly_name"],
+                                                         "class" => "lighten"
+                                                         ) );
+                    }elseif($nav_link_details[0] == "Show"){
+                      # do not print the show link anymore, its not linked on the name itself
+                      continue;
+                    }else{
+                      $nav_link_text = $nav_link_details[0];
+                    }
+                    $link = '<a href="'.$nav_link_details[1].'" >'.$nav_link_text.'</a>';
+                }
+                $link_output .= "<li>";
+                $link_output .= $link;
+                $link_output .= "</li>";
+            }else{
+                // the new case when there is no :: in 
+                $friendly_name_link = '<a href="'.$entry.'" >'.$nav_icon.$nav_class["friendly_name"].'</a>';
+                $navigation_identifier = $nav_class["nav_links"];
+                NConf_DEBUG::set($navigation_identifier, 'DEBUG', "navigation identifier");
+            }
+        }
+        
+        /* verify that we have a check and can access this variable here and other places */
+        //global $class;
+        //NConf_DEBUG::set($class, 'DEBUG', "GLOBAL CLASS");
+        if (!empty($_GET["class"])){
+          $class = $_GET["class"];
+        }elseif(!empty($_GET["item"])){
+          $class = $_GET["item"];
+        }elseif(!empty($_SERVER['SCRIPT_NAME'])){
+          //$class = $icon;
+          $class = basename($_SERVER['SCRIPT_NAME']);
+                  //NConf_DEBUG::set($class, 'DEBUG', "nav_icon");
+          
+        }
+        //NConf_DEBUG::set(basename($_SERVER['SCRIPT_NAME']), 'DEBUG', "script name");
+        // Allow active menu regarding the class only on several pages:
+        switch (basename($_SERVER['SCRIPT_NAME']) ) {
+            case 'overview.php':
+            case 'detail.php':
+            case 'clone_host.php':
+            case 'handle_item.php':
+            case 'delete_item.php':
+            case 'modify_item_service.php':
+                # do nothing, this allows these pages to set active the current set class    
+                break;
+            
+            default:
+                // default: set class to the script name
+                unset($class);
+                $class = basename($_SERVER['SCRIPT_NAME']);
+                break;
+        }
+        
+        $active = (!empty($class) AND $class == $navigation_identifier) ? "active" : '';
+        
+        // If not yet active, check for "nav_alias" setting, which allows to have subpages having an active navigation item configured on the menu item.
+        if (!$active AND !empty($nav_class["nav_alias"]) ){
+            foreach ($nav_class["nav_alias"] AS $nav_alias){
+                if ( !empty($nav_alias) AND $nav_alias == $class){
+                    $active = "active";
+                }
+            }
+        }
+        
+        // we still need a possibility to allow scripts to mark their "active" menu item, especially for site like :
+        // detail_admin_items.php?type=class&id=1 where also attrs has access to.
+         
+        echo '<li class="'.$active.'">'.$friendly_name_link.'</li>';
     }
     //END foreach
 
     // Last Block has to be closed :
-    echo '</table>';
+    echo '</ul>';
 
   }
 
 }
-
-
+/* 
+ * get_image() function
+ * creates images
+ * OPTIONS:
+ *   - type =   "design"  : images in the design path
+ *              "base"    : nconf base images (nconf/img)
+ *   - name =   "NAME"    : the name of the icon (like "add")
+ *   - size =   "SIZE"    : select a special size of the image ("16" -> add_16.png)
+ *   - format = "FORMAT"  : add the format of the file (default: png for .png files)
+ *   - output = "path"    : limits the output to the path 
+ *   - class =  "CLASS"   : define classes for the image (space separated)
+ *   - alt =    "ALT TEXT"  : define an alt text if it should differ than the name (which is default), set NULL for no alt at all
+ *   - tooltip = "TOOLTIP TEXT" : the text for the tooltip (activates the tooltip itself)
+ */
+function get_image(array $options) {
+  //NConf_DEBUG::set($options, 'DEBUG', "image options");
+  # type
+  if ($options["type"] == "design"){
+    $path = 'design_templates/'.TEMPLATE_DIR.'/img/';
+  }elseif ($options["type"] == "base"){
+    $path = 'img/';
+  }
+  
+  # add the name
+  $path .= $options["name"];
+  
+  # add the size
+  if (!empty($options["size"])){
+    $path .= '_' . $options["size"];
+  }
+  
+  # add the format of the image (.png)
+  if (!empty($options["format"])){
+    $path .= '.' . $options["format"];
+  }else{
+    $path .= '.png';
+  }
+  
+  # if file does not exist, return false
+  if (!file_exists($path)){
+    return FALSE;
+  }
+  
+  # output
+  if ($options["output"] == "path"){
+    return $path;
+  }else{
+    $class = (!empty($options["class"])) ? $options["class"] : '';
+    
+    # alt text
+    if (isset($options["alt"])){
+      $alt = $options["alt"];
+    }else{
+      $alt = $options["name"];
+    }
+  
+    if (!empty($options["tooltip"])){
+      $image = '<img src="'.$path.'" class="jQ_tooltip '.$class.'" title="'.$options["tooltip"].'" alt="'.$alt.'">';
+    }else{
+      $image = '<img src="'.$path.'" class="'.$class.'" alt="'.$alt.'">';
+    }
+    //NConf_DEBUG::set($image, 'DEBUG', "get image");
+    return $image;
+  }
+  
+}
 
 ###
 # oncall check

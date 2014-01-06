@@ -96,7 +96,7 @@ if ( isset($_SESSION["cache"]["modify_class"][$id]) ){
     <?php
     $detail_navigation = '<a class="button_back jQ_tooltip" title="back" href="'.$_SESSION["go_back_page_ok"].'"></a>';
     echo '<div id="ui-nconf-icon-bar">'.$detail_navigation.'</div>';
-    echo "<h2>".$title."</h2>";
+    echo NConf_HTML::page_title('', $title);
     ?>
     <input type=hidden name="class_id" value="<?php echo $id; ?>">
     <input type=hidden name="ordering" value="<?php echo $class_entry["ordering"]; ?>">

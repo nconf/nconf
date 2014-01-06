@@ -220,7 +220,8 @@ sub addItem {
             unless(($class_name eq "service-dependency" && ($attr eq "host_name" || $attr eq "dependent_host_name"))
                 || ($class_name eq "host" && $attr eq "hostgroups")
                 || ($class_name eq "service" && $attr eq "servicegroups")
-                || ($class_name eq "contact" && $attr eq "contactgroups")){
+                || ($class_name eq "contact" && $attr eq "contactgroups")
+		|| ($class_name eq "hostgroup" && $attr eq "advanced-services")){
 
                 &logger(2, "Could not find attribute '$attr' belonging to class '$class_name'. Skipping import of this attribute.");
                 $main_hash{$attr} = undef;
@@ -229,7 +230,7 @@ sub addItem {
 
         # special, class-specific attribute manipulation:
         # process "check_command" attrs of services & advanced-services
-        if(($class_name eq "service" || $class_name eq "advanced-service") && $attr eq "check_command" && $main_hash{$attr} =~ /\!/){
+        if(($class_name eq "service" || $class_name eq "advanced-service" || $class_name eq "service-template") && $attr eq "check_command" && $main_hash{$attr} =~ /\!/){
             # separate checkcommand from params
             $main_hash{$attr} =~ /^([^!]+)(!.*)$/;
             $main_hash{$attr} = $1;
@@ -367,7 +368,7 @@ sub addItem {
 
     # check if all mandatory attributes have been supplied
     foreach my $man_attr (@class_mandatory_attrs){
-        if((!$main_hash{$man_attr} && $main_hash{$man_attr} != 0) || $main_hash{$man_attr} eq ""){
+        if((!$main_hash{$man_attr} && $main_hash{$man_attr} != 0) || $main_hash{$man_attr} eq "" || !length $main_hash{$man_attr}){
 
             # ignore NConf-specific mandatory attributes (set to default value)
             if($class_attrs_hash{$class_name}->{$man_attr}->{'write_to_conf'} ne "yes"){
@@ -480,15 +481,18 @@ sub insertValue {
     # invoke insertValue() recursively to link items to multiple groups
     if(($class_name eq "host" && $attr eq "hostgroups") 
     || ($class_name eq "service" && $attr eq "servicegroups") 
-    || ($class_name eq "contact" && $attr eq "contactgroups")){
+    || ($class_name eq "contact" && $attr eq "contactgroups")
+    || ($class_name eq "hostgroup" && $attr eq "advanced-services")) {
 
         # change the class we're working with
         if($class_name eq "host"){$class_name="hostgroup"}
         elsif($class_name eq "service"){$class_name="servicegroup"}
         elsif($class_name eq "contact"){$class_name="contactgroup"}
+	elsif($class_name eq "hostgroup"){$class_name="advanced-service"}
 
         # change the attr name we're working with
-        $attr = "members";
+	if($class_name eq "advanced-service"){$attr = "hostgroup_name"}
+	else{$attr = "members"}
 
         # fetch the name of the item to which we're linking our group(s)
         my $item_name = &getItemName($id_item);
@@ -513,6 +517,11 @@ sub insertValue {
                 $group =~ s/^\+//;
             }
             unless($group){next}
+
+            # quote any characters that must be escaped in SQL
+            $group = &NConf::DB::dbQuote($group);
+            $group =~ s/^'//;
+            $group =~ s/'$//;
 
             # check if the group to be linked actually exists
             my $id_group = &getItemId($group,$class_name);
@@ -656,10 +665,20 @@ sub insertValue {
 		        # get ID of host which the service belongs to
 		        my $host_id = &getItemId($hostname, 'host');
 
+                # quote any characters that must be escaped in SQL
+                $value = &NConf::DB::dbQuote($value);
+                $value =~ s/^'//;
+                $value =~ s/'$//;
+
             	# check if services to be linked actually exist
 		        $id_item_linked2 = &getServiceId($value,$host_id);
 
 	        }else{
+                # quote any characters that must be escaped in SQL
+                $value = &NConf::DB::dbQuote($value);
+                $value =~ s/^'//;
+                $value =~ s/'$//;
+
             	# check if items to be linked actually exist
             	$id_item_linked2 = &getItemId("$value","$class_attrs_hash{$class_name}->{$attr}->{'assign_to_class'}");
 	        }

@@ -1,0 +1,26 @@
+####################################################
+##  Update information for NConf 1.3.0 to 1.3.1   ##
+####################################################
+
+##------------------------------------------------##
+##       Changes to the NConf configuration       ##
+##------------------------------------------------##
+
+The following (optional) configuration options have been added:
+- LOG_REMOTE_IP_HISTORY [1|0]
+
+##------------------------------------------------##
+##     Changes to the generated configuration     ##
+##------------------------------------------------##
+
+
+##------------------------------------------------##
+##              Additional changes                ##
+##------------------------------------------------##
+
+Changed the pattern used to parse for SNMP TRAP services within the 
+collector configuration: services ending on "*TRAP" (caps) will be removed.
+
+####################################################
+##           End of update information            ##
+####################################################

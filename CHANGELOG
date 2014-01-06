@@ -1,3 +1,25 @@
+Release 1.3.1 (tbd)
+
+FIXED   security issue: contents of the config directory were viewable. Added .htaccess file to prevent users from accessing .ini files etc.
+FIXED   security issue: 2 vulnerabilities listed on exploit-db.com for version 1.3.0
+FIXED   compatibility problems with Internet Explorer 8 (and earlier)
+FIXED   compatibility issue with some Icinga versions: generating the config would fail if advanced-services were not assigned to either a host or hostgroup.
+FIXED   issue when importing items that are linked to other items which contain special characters in their names (e.g. service 'C:\ Drive')
+FIXED   bug in Nagios config importer where the first item was being skipped if there was a comment above it
+
+ADDED   icon preview to the OS details page
+ADDED   authentication configuration option LOG_REMOTE_IP_HISTORY
+ADDED   php-mysql check with proper message on INSTALL.php when not having mysql support.
+ADDED   sha1 password support for apache htpasswd files -> see "sha_raw" encryption mode
+ADDED   new icons for the new navigation
+ADDED   "Add new ..." on each overview page, to create new items
+
+CHANGED the whole navigation bar
+CHANGED the style of the title on all pages
+CHANGED advanced-actions box
+CHANGED default behavior of multi-modify from "overwrite existing" to "add additional" (only for attributes that allow multiple values)
+CHANGED the pattern used to parse for SNMP TRAP services within the collector configuration: services ending on "*TRAP" (caps) will be removed.
+
 Release 1.3.0 (2011-12-11)
 
 FIXED   a bug with the $SUPERADMIN_GROUPS array (array couldn't be unset). Also, superadmin groups are now listed first in the 'contact_groups' attr,

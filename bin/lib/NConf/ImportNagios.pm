@@ -82,18 +82,21 @@ sub parseNagiosConfigFile {
 
     # unset input record separator (read whole file at once!)
 	$/ = undef;
-	my @blocks = split(/[^#\s]\s*\n\s*define\s+/, <LIST>);
+	#my @blocks = split(/[^#\s]\s*\n\s*define\s+/, <LIST>); # 20120131 A. Gargiulo changed this regex
+	my @blocks = split(/\n[ \r\t\f]*define[ \r\t\f]*/, <LIST>); # CAUTION: changing this regex might mess up the linecount mechanism! 
+
 	foreach (@blocks){
 
         # count amount of lines in current block
-        my $linecount = 0;
+        my $linecount = 1;
         while($_ =~ /\n/g){$linecount++}
+        my $filepos_new = $filepos + $linecount;
 
         # skip empty blocks and commented blocks
         chomp $_;
-        unless($_){next}
-        if($_ =~ /^\s*$/){next}
-        if($_ =~ /^\s*#/){next}
+        unless($_){$filepos=$filepos_new;next}
+        if($_ =~ /^\s*$/){$filepos=$filepos_new;next}
+        if($_ =~ /^\s*#/){$filepos=$filepos_new;next}
         my $block = $_;
 
         # check if more than one class type is defined within the input file
@@ -174,10 +177,18 @@ sub parseNagiosConfigFile {
                 $block_hash{$naming_attr} = $block_naming_attr;
 
             }elsif($input_class eq "advanced-service"){
-                # for advanced-services, set the naming attr to match the service_description, 
+                # for advanced-services, set the naming attr to match the service_description (if available), 
                 # run getUniqueNameCounter() to add a numeric counter, if necessary
-                $block_naming_attr = &getUniqueNameCounter($input_class, $block_hash{'service_description'});
-                $block_hash{$naming_attr} = $block_naming_attr;
+		if($block_hash{'service_description'} ne ""){
+                	$block_naming_attr = &getUniqueNameCounter($input_class, $block_hash{'service_description'});
+	                $block_hash{$naming_attr} = $block_naming_attr;
+		}else{
+			# auto-generate a service_description in case none was defined 
+			# (might be necessary in cases where the service_description is inherited from a service-template)
+			# however, since the service_description attribute is marked as mandatory, the import will fail unless the falg is changed
+                	$block_naming_attr = &getUniqueNameCounter($input_class, "imported_$input_class");
+	                $block_hash{$naming_attr} = $block_naming_attr;
+		}
 
             }else{
                 # in any other case, exit with an error
@@ -205,7 +216,7 @@ sub parseNagiosConfigFile {
             $main_hash{$block_naming_attr} = \%block_hash;
         }
 
-        $filepos += $linecount;
+        $filepos = $filepos_new;
     }
 
     close(LIST);

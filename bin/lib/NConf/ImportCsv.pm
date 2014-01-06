@@ -150,7 +150,8 @@ sub parseCsv {
                 }
     
                 # add each item to the line-hash according to the specified CSV syntax
-                if (my $value = shift @$row) {
+                my $value = shift @$row;
+                if ($value || length $value) {
                     $line_hash{$attr} = $value;
                 }
     
@@ -331,7 +332,10 @@ sub parseHostServiceCsv {
                 }
 
                 # add each item to the host-hash according to the specified host syntax
-                if (my $value = shift @$row) {$host_hash{$attr} = $value;}
+                my $value = shift @$row;
+                if ($value || length $value) {
+                    $host_hash{$attr} = $value;
+                }
 
                 # fetch and store some values separately
                 if($attr eq "host_name"){$host_name = $host_hash{$attr}}
@@ -373,7 +377,8 @@ sub parseHostServiceCsv {
                     }
 
                     # add each item to the service-hash according to the specified service syntax
-                    if (my $value = shift @$row) {
+                    my $value = shift @$row;
+                    if ($value || length $value) {
                         $srv_attr_hash{$attr} = $value;
                         # fetch and store service name separately
                         if($attr eq "service_description"){$srv_name = $value}

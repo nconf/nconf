@@ -1,64 +1,66 @@
 /* list color */
 .color_list1, .odd {
-    background-color: #F9F9F9;
+  background-color: #F9F9F9;
 }
+
 /* darker one */
 .color_list2, .even {
-    background-color: #EEEEEE;
+  background-color: #EEEEEE;
 }
 
 /* borderline in history & history tab */
 .color_list3 {
-    background-color: #D0D0D0;
+  background-color: #D0D0D0;
 }
 
 /* hover over table lines */
 #highlight:hover {
-     background-color: #D0D0D0;
-}
-.highlight:hover {
-     background-color: #D0D0D0;
+  background-color: #D0D0D0;
 }
 
+.highlight:hover {
+  background-color: #D0D0D0;
+}
 
 /* host with NO monitor: row color in overview */
 .color_nomon {
-    background-color: #FFCC99;
+  background-color: #FFCC99;
 }
+
 .color_nomon:hover {
-    background-color: #FFB366;
+  background-color: #FFB366;
 }
 
 /* NO monitored text color */
 .color_nomon_text {
-    color:  red;
+  color: red;
 }
 
 /* warning color (eg in overview) */
 .color_warning {
-    background-color: #E98080 !important;
+  background-color: #E98080 !important;
 }
 
-#attention{
-    color: red;
+#attention {
+  color: red;
 }
 
-.attention, .red{
-    color: red;
+.attention, .red {
+  color: red;
 }
 
-.orange{
-    color: orange;
+.orange {
+  color: orange;
 }
 
-.green{
-    color: green;
+.green {
+  color: green;
 }
 
-.mark_as_mandatory{
-    color: red;
-    width: 20px;
-    vertical-align: top;
+.mark_as_mandatory {
+  color: red;
+  width: 20px;
+  vertical-align: top;
 }
 
 /*
@@ -66,26 +68,26 @@
 */
 
 .color_group_border {
-    background-color:       #D0D0D0;
-    border-left:  3px solid #D0D0D0;
-    border-right: 3px solid #D0D0D0;
+  background-color: #D0D0D0;
+  border-left: 3px solid #D0D0D0;
+  border-right: 3px solid #D0D0D0;
 }
+
 .color_group_border_close {
-    border-top: 3px solid #D0D0D0;
+  border-top: 3px solid #D0D0D0;
 }
+
 .color_group_border_left {
-    border-left: 3px solid #D0D0D0;
+  border-left: 3px solid #D0D0D0;
 }
 
 .color_group_border_right {
-    border-right:3px solid #D0D0D0 !important;
+  border-right: 3px solid #D0D0D0 !important;
 }
 
 .color_group_border_top_bottom {
-    border-top: 3px solid #D0D0D0 ;
+  border-top: 3px solid #D0D0D0;
 }
-
-
 
 /*
    OTHER TABLE COLOR
@@ -93,157 +95,176 @@
 
 /* background of normal tables titlebar */
 .bg_header {
-    background-color: #D0D0D0;
-    height: 20px;
+  background-color: #D0D0D0;
+  height: 20px;
 }
+
 /* table in history */
-.bg_header_2{
-    background-color: #D0D0D0;
-    font-weight: bold;
+.bg_header_2 {
+  background-color: #D0D0D0;
+  font-weight: bold;
 }
-
-
-
 
 /* install text */
 
-.status_failed{
-    color: red;
-    font-weight: bold
+.status_failed {
+  color: red;
+  font-weight: bold
 }
 
-.status_unknown{
-    color: orange;
-    font-weight: bold
+.status_unknown {
+  color: orange;
+  font-weight: bold
 }
 
-.status_ok{
-    color: green;
-    font-weight: bold
+.status_ok {
+  color: green;
+  font-weight: bold
 }
-
-
-
 
 /* additional migration from other css */
 input[type=text], input[type=password], select, textarea {
-    width: 250px;
+  width: 250px;
 }
 
 .livesearch_input {
-    width: 183px;
-    margin-bottom: 4px;
+  width: 183px;
+  margin-bottom: 4px;
 }
 
-
-#buttons input{
-    width: 50px;
+#buttons input {
+  width: 50px;
 }
 
-.editor_field{
-    width:100%;
-    *width: 760px;
-    font-family:Courier New,Courier;
+.editor_field {
+  width: 100%;
+  *width: 760px;
+  font-family: Courier New, Courier;
 }
 
 .editor_info {
-    width: 450px;
-    text-align: left;
-    float:right;
-    margin-top: 17px;
+  width: 450px;
+  text-align: left;
+  float: right;
+  margin-top: 17px;
 }
 
 .dependency_info {
-    width: 250px;
-    text-align: left;
-    padding-bottom: 5px;
-    padding-left: 5px;
+  width: 250px;
+  text-align: left;
+  padding-bottom: 5px;
+  padding-left: 5px;
 }
+
 .dependency_info h2 {
-    margin-left: -5px;
-    padding-left: 5px;
+  margin-left: -5px;
+  padding-left: 5px;
 }
 
 .error {
-    width: 500px;
+  width: 500px;
 }
 
 /*  CSS for functions from dhtmlgoodies.com  */
 
 /* style for multiple_select boxes (dhtmlgoodies.com) */
-    .multipleSelectBoxControl span{ /* Labels above select boxes*/
-        font-family:arial;
-        font-size:11px;
-        font-weight:bold;
-    }
-    .multipleSelectBoxControl div select{   /* Select box layout */
-        font-family:arial;
-        height:100%;
-    }
-    .multipleSelectBoxControl input{    /* Small butons */
-        /*width:25px; */
-    }
-    
-    .multipleSelectBoxControl div{
-        float:left;
-    }
-
-.assign_many td{
-    padding-top: 1em;
-    padding-bottom: 1em;
+.multipleSelectBoxControl.ui-nconf-content.ui-widget-content {
+  padding-bottom: 10px;
 }
 
+/* show a dashed right border if it is resizable */
+.multipleSelectBoxControl.ui-nconf-content.ui-widget-content.ui-resizable:hover {
+  border-right: 1px dashed #dddddd;
+}
+
+.multipleSelectBoxControl span {
+  /* Labels above select boxes*/
+  font-family: arial;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.multipleSelectBoxControl div select {
+  /* Select box layout */
+  font-family: arial;
+  height: 100%;
+}
+
+.multipleSelectBoxControl input {
+  /* Small butons */
+  /*width:25px; */
+}
+
+.multipleSelectBoxControl div {
+  float: left;
+}
+
+.assign_many td {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.select-container {
+  position: relative;
+  width: 500px;
+  height: 180px;
+}
 
 /* style for moving divs */
-    
-.dhtmlgoodies_question{ /* Styling question */
 
-    overflow:hidden;
-    cursor:pointer;
-}
-.dhtmlgoodies_answer{   /* Parent box of slide down content */
+.dhtmlgoodies_question {
+  /* Styling question */
 
-    visibility:hidden;
-    height:0px;
-    overflow:hidden;
-    position:relative;
-
-}
-.dhtmlgoodies_answer_content{   /* Content that is slided down */
-    padding:1px;
-    font-size:0.9em;
-    position:relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.feedback{
-    padding: 5px 15px;
-    background-color: #F3F3F3;
-}
-.feedback div, .feedback b{
-    margin-left: 10px;
-}
+.dhtmlgoodies_answer {
+  /* Parent box of slide down content */
 
-.feedback h2{
-    margin-left: -10px;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  position: relative;
+
 }
 
-
-.replaceDiv{
-    margin-top: 6px;
-    text-align: center;
-    width: 100%;
+.dhtmlgoodies_answer_content {
+  /* Content that is slided down */
+  padding: 1px;
+  font-size: 0.9em;
+  position: relative;
 }
 
-.replaceDiv input{
-    vertical-align: middle;
-    margin-left:  10px;
-    margin-right: 2px;
+.feedback {
+  padding: 5px 15px;
+  background-color: #F3F3F3;
 }
 
-.nagios_docu_link{
-    text-decoration: underline;
+.feedback div, .feedback b {
+  margin-left: 10px;
 }
 
-.monospace{
-    font-family: monospace;
+.feedback h2 {
+  margin-left: -10px;
+}
+
+.replaceDiv {
+  margin-top: 6px;
+  text-align: center;
+  width: 100%;
+}
+
+.replaceDiv input {
+  vertical-align: middle;
+  margin-left: 10px;
+  margin-right: 2px;
+}
+
+.nagios_docu_link {
+  text-decoration: underline;
+}
+
+.monospace {
+  font-family: monospace;
 }

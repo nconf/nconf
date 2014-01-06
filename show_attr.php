@@ -48,7 +48,10 @@ if ( isset($_GET["class"]) ) {
 
 // Page output begin
 
-echo NConf_HTML::title('Show attributes: '.$class);
+# Title
+echo NConf_HTML::page_title('attributes', 'Administrate attributes');
+
+
 
 $content = 'This mask allows administrators to modify the data schema of the NConf application.
             There is no need to make any changes to the schema for ordinary operation.
@@ -61,6 +64,16 @@ echo NConf_HTML::limit_space(
     NConf_HTML::show_error('WARNING', $content)
     , 'style="float: right; width: 555px;"'
 );
+// Create link
+$add_link =  '<div class="overview-add"><br>';
+    $add_item = get_image( array(  "type" => "design",
+                                   "name" => "add",
+                                   "size" => 16,
+                                   "class" => "lighten"
+                                ) );
+    $add_link .= '<a href="modify_attr.php">'.$add_item.' Create new attribute</a>';
+    $add_link .= '</div>';
+echo $add_link;
 
 echo '<form name="filter" action="'.$request_url.'" method="get">
 <fieldset class="inline">
@@ -124,10 +137,10 @@ echo '
 
 echo '</form>';
 
-echo '<div class="clearer"></div>
-        <h2>&nbsp;Overview</h2>';
 
-
+    
+echo '<div class="clearer"></div>';
+echo '<h2>Overview of '.$class.'</h2>';
 
 // Attr manipulation
 if ( !empty($_GET["do"]) AND !empty($_GET["id"]) ){
