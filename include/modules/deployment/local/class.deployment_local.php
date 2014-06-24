@@ -62,6 +62,41 @@ class local extends NConf_Deployment_Modules
         return $status;
     }
 
+    private function check_target_exists($host_info){
+        $status = TRUE;
+        if (!array_key_exists("target_file", $host_info)) {
+            NConf_HTML::set_info(NConf_HTML::table_row_check('target_file', 'FAILED', 'target_file does not exist in config)'), 'add');
+            $status = FALSE;
+        } else {
+            $target = $host_info["target_file"];
+            if ((substr($target, -1) == "/") OR is_dir($host_info["source_file"])) {
+                // force target directory if source is directory
+                $dirname = dirname($target . '/.');
+            }else{
+                // get dirname
+                $dirname = dirname($target);
+            }
+
+            // check target directory
+            if (!file_exists($dirname)){
+                if (!is_dir($dirname)){
+                    $structure = $dirname;
+                    // create directory
+                    $status = mkdir($structure, 0775, true);
+                    NConf_HTML::set_info( NConf_HTML::table_row_check('PHP mkdir:', $status, 'Create target directory ('.$dirname.')' ) , 'add' );
+                }
+
+                // check target again
+                if (!is_dir($dirname)){
+                    NConf_HTML::set_info(NConf_HTML::table_row_check('target_file', 'FAILED', 'Target directory does not exist, or permissions denied ('.$dirname.')' ), 'add');
+                    $status = FALSE;
+                }
+            }
+        }
+
+        return $status;
+    }
+
     public function command($host_infos){
         // check source
         $status = '';
