@@ -28,6 +28,27 @@ class local extends NConf_Deployment_Modules
         return $status;
     }
 
+    private function recursive_delete($src){
+        $status = TRUE;
+        if (false === ($status = file_exists($src))) {
+            NConf_HTML::set_info( NConf_HTML::table_row_check('PHP recursive_delete:', $status, 'file_exists(' . $src . ')' ), 'add');
+        } elseif ($status = is_writeable($src)) {
+            if (is_dir($src)) {
+                $files = array_diff(scandir($src), array('.', '..'));
+                foreach($files as $file) {
+                    $status = $status && $this->recursive_delete($src . "/" . $file);
+                }
+                $status = $status && rmdir($src);
+            } else {
+                $status = $status && unlink($src);
+            }
+        } else {
+            NConf_HTML::set_info( NConf_HTML::table_row_check('PHP recursive_delete:', $status, 'is_writeable(' . $src . ')' ), 'add');
+        }
+        
+        return $status;
+    }
+
     public function command($host_infos){
         // check source
         $status = '';
