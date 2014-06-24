@@ -49,6 +49,19 @@ class local extends NConf_Deployment_Modules
         return $status;
     }
 
+    private function check_source_exists($host_info){
+        $status = TRUE;
+        if (!array_key_exists("source_file", $host_info)) {
+            NConf_HTML::set_info(NConf_HTML::table_row_check('source_file', 'FAILED', 'source_file does not exist in config)'), 'add');
+            $status = FALSE;
+        } elseif (!file_exists($host_info["source_file"])) {
+            NConf_HTML::set_info(NConf_HTML::table_row_check('source_file', 'FAILED', 'Source file does not exist (' . $host_info["source_file"] . ')'), 'add');
+            $status = FALSE;
+        }
+
+        return $status;
+    }
+
     public function command($host_infos){
         // check source
         $status = '';
