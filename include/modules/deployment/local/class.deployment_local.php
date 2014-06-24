@@ -5,7 +5,7 @@ class local extends NConf_Deployment_Modules
     protected $gunzip   = 'gunzip -f';
 
 
-    public function recursive_copy($src,$dst){
+    private function recursive_copy($src,$dst){
         $status = TRUE;
         $dir = opendir($src);
         @mkdir($dst);
