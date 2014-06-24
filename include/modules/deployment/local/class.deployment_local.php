@@ -183,6 +183,15 @@ class local extends NConf_Deployment_Modules
                     NConf_HTML::set_info(NConf_HTML::table_row_check('PHP rename:', $status, 'rename('.$host_infos["source_file"].', '.$host_infos["target_file"].')' ), 'add');
                     break;
                 }
+                case "delete": {
+                    if (!empty($host_infos["remove_file"])){
+                        $status = $this->recursive_delete($host_infos["remove_file"]);
+                        NConf_HTML::set_info( NConf_HTML::table_row_check('PHP delete:', $status, 'recursive delete('.$host_infos["remove_file"].')' ), 'add');
+                    }else{
+                        return FALSE;
+                    }
+                    break;
+                }
             }
         }
 
