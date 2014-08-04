@@ -157,7 +157,7 @@ if(isset($_POST['predef_value'])){
 if(isset($_POST['max_length'])){
     $max_length = $_POST['max_length'];
 }else{
-    $max_length = "";
+    $max_length = "0";
 }
 
 if($_POST['ordering'] != ""){
