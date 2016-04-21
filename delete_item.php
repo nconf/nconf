@@ -70,8 +70,9 @@ if(  ( ( isset($_POST["delete"]) ) AND ($_POST["delete"] == "yes") ) AND
         }
 
         // Delete entry
-        $query = 'DELETE FROM ConfigItems
-                    WHERE id_item='.$id;
+        $query = 'DELETE FROM ConfigValues WHERE fk_id_item='.$id;
+        $result = db_handler($query, "result", "Delete entry");
+        $query = 'DELETE FROM ConfigItems  WHERE id_item='.$id;
 
         $result = db_handler($query, "result", "Delete entry");
         if ( $result ){
