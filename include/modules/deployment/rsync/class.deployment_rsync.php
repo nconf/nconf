@@ -34,7 +34,10 @@ class rsync extends NConf_Deployment_Modules
         $run_command = FALSE;
         if ( is_array($status) ){
             foreach ($status AS $output_line){
-                if ( strstr($output_line, "Number of files transferred: ") ){
+                if ( strstr($output_line, "Number of files transferred: ") ||
+                     strstr($output_line, "Number of created files: ") ||
+                     strstr($output_line, "Number of deleted files: ") ||
+                     strstr($output_line, "Number of regular files transferred: ") ){
                     $transferred = explode(":", $output_line);
                     if ( trim($transferred[1]) > 0 ){
                         // files transferred, run command if defined
